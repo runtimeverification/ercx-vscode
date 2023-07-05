@@ -8,15 +8,23 @@ import { TestCase, testData, TestFile } from './testTree';
 import { readFile } from 'fs/promises';
 import * as YAML from 'js-yaml';
 import { readFileSync } from 'fs';
+import { CodelensProvider } from './CodelensProvider';
 
 export const ercxRootSet = new Set<vscode.TestItem>();
 
 export async function activate(context: vscode.ExtensionContext) {
+	const codelensProvider = new CodelensProvider();
+	vscode.languages.registerCodeLensProvider("solidity", codelensProvider);
+
+	vscode.commands.registerCommand("ercx.codelensAction", (args: any) => {
+		vscode.window.showInformationMessage(`CodeLens action clicked with args=${args}`);
+	});
+
 	const ctrl = vscode.tests.createTestController('ERCxtests', 'ERCx Tests');
 	context.subscriptions.push(ctrl);
 
 	const fileChangedEmitter = new vscode.EventEmitter<vscode.Uri>();
-	const runHandler = (request: vscode.TestRunRequest2, cancellation: vscode.CancellationToken) => {
+	const runHandler = (request: vscode.TestRunRequest, cancellation: vscode.CancellationToken) => {
 		const run = ctrl.createTestRun(request);
 		const queue: vscode.TestItem[] = [];
 
