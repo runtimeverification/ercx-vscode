@@ -16,8 +16,8 @@ export async function activate(context: vscode.ExtensionContext) {
 	const codelensProvider = new CodelensProvider();
 	vscode.languages.registerCodeLensProvider("solidity", codelensProvider);
 
-	vscode.commands.registerCommand("ercx.codelensAction", (args: any) => {
-		vscode.window.showInformationMessage(`CodeLens action clicked with args=${args}`);
+	vscode.commands.registerCommand("ercx.codelensAction", (args: any, ctrctName: any) => {
+		vscode.window.showInformationMessage(`CodeLens action clicked with args=${args} ${ctrctName}`);
 	});
 
 	const ctrl = vscode.tests.createTestController('ERCxtests', 'ERCx Tests');
