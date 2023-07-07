@@ -11,6 +11,7 @@ import { readFileSync } from 'fs';
 import { CodelensProvider } from './CodelensProvider';
 
 export const ercxRootSet = new Set<vscode.TestItem>();
+export const ercxTests = new Map<string, ERCxTest>();
 
 export async function activate(context: vscode.ExtensionContext) {
 	const codelensProvider = new CodelensProvider();
@@ -61,7 +62,8 @@ export async function activate(context: vscode.ExtensionContext) {
 							if (tresult['success']) {
 								run.passed(test, 1);
 							} else {
-								run.failed(test, new vscode.TestMessage("error"), 1);
+								const msg:string = ercxTests.get(test.label)?.feedback ?? "error";
+								run.failed(test, new vscode.TestMessage(msg), 1);
 							}
 						}
 					}
@@ -148,6 +150,8 @@ function addERCxTests(controller: vscode.TestController) {
 	}
 
 	for (const [k, v] of Object.entries(ercxYaml.tests)) {
+		const et = new ERCxTest(k, (v as any)['level'], (v as any)['property'], (v as any)['feedback'], (v as any)['expected'], (v as any)['categories']);
+		ercxTests.set(k, et);
 		const ti = controller.createTestItem(k, k);
 		const lvl = (v as any)['level'];
 		const pti = levels.get(lvl);
@@ -162,4 +166,14 @@ function addERCxTests(controller: vscode.TestController) {
 	ercxRoot.canResolveChildren = true;
 
 	return { ercxRoot, data };
+}
+
+class ERCxTest {
+	constructor(public readonly name: string,
+			public readonly level:string,
+			public readonly property: string,
+			public readonly feedback: string,
+			public readonly expected: string,
+			public readonly categories: string[]) {
+	}
 }
