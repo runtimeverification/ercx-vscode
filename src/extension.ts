@@ -21,7 +21,8 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(ctrl);
 
 	vscode.commands.registerCommand("ercx.codelensAction", (fileName: vscode.Uri, ctrctName: string, range:vscode.Range) => {
-		vscode.window.showInformationMessage(`CodeLens action clicked with args=${fileName} ${ctrctName} ${range}`);
+		//vscode.window.showInformationMessage(`CodeLens action clicked with args=${fileName} ${ctrctName} ${range}`);
+		console.log(`CodeLens action clicked with args=${fileName} ${ctrctName} ${range}`);
 		addERCxTests(ctrl, fileName, range);
 	});
 
@@ -132,7 +133,7 @@ function addERCxTests(controller: vscode.TestController, fileName:vscode.Uri, ra
 	const ercxYaml = YAML.load(readFileSync("/home/radu/work/ercx/ercx/src/ercx/standards/ERC20.yaml", "utf8")) as any;
 	console.log(ercxYaml['levels']);
 
-	const ercxRoot = controller.createTestItem("ERCx", fileName.path.split('/').pop()!);
+	const ercxRoot = controller.createTestItem("ERCx", fileName.path.split('/').pop()! + " - ERC20 Tests");
 	ercxRootSet.add(ercxRoot);
 	const levels = new Map<string, vscode.TestItem>;
 	for (const level of ercxYaml.levels) {
