@@ -17,16 +17,18 @@ export async function activate(context: vscode.ExtensionContext) {
 	const codelensProvider = new CodelensProvider();
 	vscode.languages.registerCodeLensProvider("solidity", codelensProvider);
 
-	vscode.commands.registerCommand("ercx.codelensAction", (args: any, ctrctName: any) => {
-		vscode.window.showInformationMessage(`CodeLens action clicked with args=${args} ${ctrctName}`);
-	});
-
 	const ctrl = vscode.tests.createTestController('ERCxtests', 'ERCx Tests');
 	context.subscriptions.push(ctrl);
 
+	vscode.commands.registerCommand("ercx.codelensAction", (fileName: vscode.Uri, ctrctName: string, range:vscode.Range) => {
+		vscode.window.showInformationMessage(`CodeLens action clicked with args=${fileName} ${ctrctName} ${range}`);
+		addERCxTests(ctrl, fileName, range);
+	});
+
+
 	const fileChangedEmitter = new vscode.EventEmitter<vscode.Uri>();
 	const runHandler = (request: vscode.TestRunRequest, cancellation: vscode.CancellationToken) => {
-		const run = ctrl.createTestRun(request);
+		const run = ctrl.createTestRun(request, `Running Tests`, false);
 		const queue: vscode.TestItem[] = [];
 
 		// Loop through all included tests, or all known tests, and add them to our queue
@@ -62,8 +64,10 @@ export async function activate(context: vscode.ExtensionContext) {
 							if (tresult['success']) {
 								run.passed(test, 1);
 							} else {
-								const msg:string = ercxTests.get(test.label)?.feedback ?? "error";
-								run.failed(test, new vscode.TestMessage(msg), 1);
+								const feedback:string = ercxTests.get(test.label)?.feedback ?? "error";
+								const expected:string = ercxTests.get(test.label)?.property ?? "error";
+								run.failed(test, vscode.TestMessage.diff(new vscode.MarkdownString(feedback), expected, feedback), 1);
+								//run.failed(test, new vscode.TestMessage(new vscode.MarkdownString(feedback)), 1);
 							}
 						}
 					}
@@ -92,18 +96,6 @@ export async function activate(context: vscode.ExtensionContext) {
 	};
 
 	ctrl.createRunProfile('Run Tests', vscode.TestRunProfileKind.Run, runHandler, true, undefined, true);
-
-	ctrl.resolveHandler = async item => {
-		if (!item) {
-			context.subscriptions.push(...startWatchingWorkspace(ctrl, fileChangedEmitter));
-			return;
-		}
-
-		const data = testData.get(item);
-		if (data instanceof TestFile) {
-			await data.updateFromDisk(ctrl, item);
-		}
-	};
 }
 
 function getWorkspaceTestPatterns() {
@@ -118,20 +110,20 @@ function getWorkspaceTestPatterns() {
 }
 
 async function findInitialFiles(controller: vscode.TestController, pattern: vscode.GlobPattern) {
-	addERCxTests(controller);
+	//addERCxTests(controller);
 }
 
 function startWatchingWorkspace(controller: vscode.TestController, fileChangedEmitter: vscode.EventEmitter<vscode.Uri> ) {
 	return getWorkspaceTestPatterns().map(({ workspaceFolder, pattern }) => {
 		const watcher = vscode.workspace.createFileSystemWatcher(pattern);
 
-		addERCxTests(controller);
+		//addERCxTests(controller);
 
 		return watcher;
 	});
 }
 
-function addERCxTests(controller: vscode.TestController) {
+function addERCxTests(controller: vscode.TestController, fileName:vscode.Uri, range:vscode.Range) {
 	const existing = controller.items.get("ERCx");
 	if (existing) {
 		return { file: existing, data: testData.get(existing) as TestFile };
@@ -140,11 +132,12 @@ function addERCxTests(controller: vscode.TestController) {
 	const ercxYaml = YAML.load(readFileSync("/home/radu/work/ercx/ercx/src/ercx/standards/ERC20.yaml", "utf8")) as any;
 	console.log(ercxYaml['levels']);
 
-	const ercxRoot = controller.createTestItem("ERCx", "ERCx Conformance tests");
+	const ercxRoot = controller.createTestItem("ERCx", fileName.path.split('/').pop()!);
 	ercxRootSet.add(ercxRoot);
 	const levels = new Map<string, vscode.TestItem>;
 	for (const level of ercxYaml.levels) {
-		const ti = controller.createTestItem(level, level);
+		const ti = controller.createTestItem(level, level, fileName);
+		ti.range = range;
 		levels.set(level, ti);
 		ercxRoot.children.add(ti);
 	}
@@ -152,7 +145,8 @@ function addERCxTests(controller: vscode.TestController) {
 	for (const [k, v] of Object.entries(ercxYaml.tests)) {
 		const et = new ERCxTest(k, (v as any)['level'], (v as any)['property'], (v as any)['feedback'], (v as any)['expected'], (v as any)['categories']);
 		ercxTests.set(k, et);
-		const ti = controller.createTestItem(k, k);
+		const ti = controller.createTestItem(k, k, fileName);
+		ti.range = range;
 		const lvl = (v as any)['level'];
 		const pti = levels.get(lvl);
 		pti?.children.add(ti);

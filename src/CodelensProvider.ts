@@ -35,7 +35,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 						title: "ERCx run tests",
 						tooltip: "Generate and run tests for this contract",
 						command: "ercx.codelensAction",
-						arguments: [document.fileName, matches[1]]
+						arguments: [document.uri, matches[1], range]
 					}));
 				}
 			}
