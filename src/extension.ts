@@ -61,14 +61,14 @@ export async function activate(context: vscode.ExtensionContext) {
 					for (const [k1, v1] of Object.entries((v as any)['test_results'])) {
 						const tresult = v1 as any;
 						//console.log(k1 + " " + tresult);
-						if (k1.startsWith(test.label)) {
+						if (k1.startsWith(test.id + "(")) {
 							if (tresult['success']) {
 								run.passed(test, 1);
 							} else {
-								const feedback:string = ercxTests.get(test.label)?.feedback ?? "error";
-								const expected:string = ercxTests.get(test.label)?.property ?? "error";
+								const feedback:string = ercxTests.get(test.id)?.feedback ?? "error";
+								const expected:string = ercxTests.get(test.id)?.property ?? "error";
 								run.failed(test, vscode.TestMessage.diff(new vscode.MarkdownString(feedback), expected, feedback), 1);
-								//run.failed(test, new vscode.TestMessage(new vscode.MarkdownString(feedback)), 1);
+								//run.failed(test, new vscode.TestMessage(new vscode.MarkdownString(feedback)), 1); // this can take Markdown as input
 							}
 						}
 					}
@@ -137,16 +137,19 @@ function addERCxTests(controller: vscode.TestController, fileName:vscode.Uri, ra
 	ercxRootSet.add(ercxRoot);
 	const levels = new Map<string, vscode.TestItem>;
 	for (const level of ercxYaml.levels) {
-		const ti = controller.createTestItem(level, level, fileName);
+		const Level:string = level[0].toUpperCase() + level.slice(1); // capitalize first letter
+		const ti = controller.createTestItem(level, Level, fileName);
 		ti.range = range;
 		levels.set(level, ti);
 		ercxRoot.children.add(ti);
 	}
 
 	for (const [k, v] of Object.entries(ercxYaml.tests)) {
+		if (k == "testAbiFoundInEtherscan" || k == "testAddressIsImplementationContract") // these tests only make sense for deployed contracts not source code
+			continue;
 		const et = new ERCxTest(k, (v as any)['level'], (v as any)['property'], (v as any)['feedback'], (v as any)['expected'], (v as any)['categories']);
 		ercxTests.set(k, et);
-		const ti = controller.createTestItem(k, k, fileName);
+		const ti = controller.createTestItem(k, et.Name, fileName);
 		ti.range = range;
 		const lvl = (v as any)['level'];
 		const pti = levels.get(lvl);
@@ -164,11 +167,13 @@ function addERCxTests(controller: vscode.TestController, fileName:vscode.Uri, ra
 }
 
 class ERCxTest {
+	public readonly Name: string;
 	constructor(public readonly name: string,
 			public readonly level:string,
 			public readonly property: string,
 			public readonly feedback: string,
 			public readonly expected: string,
 			public readonly categories: string[]) {
+				this.Name = name.slice(4);
 	}
 }
