@@ -39,8 +39,9 @@ export async function activate(context: vscode.ExtensionContext) {
 			ctrl.items.forEach(test => queue.push(test));
 		}
 
-		const res = JSON.parse(readFileSync("/home/radu/work/ercx-vscode/results/result.json", "utf8"));
-		console.log(res);
+		// try to find the result file if not found then run ERCx
+		const resultFile:string = queue.at(0)?.uri?.fsPath.toString().substring(0, queue.at(0)?.uri?.fsPath.toString().lastIndexOf(".")) + ".result.json";
+		const res = JSON.parse(readFileSync(resultFile, "utf8"));
 
 		// For every test that was queued, try to run it. Call run.passed() or run.failed().
 		// The `TestMessage` can contain extra information, like a failing location or
@@ -62,7 +63,7 @@ export async function activate(context: vscode.ExtensionContext) {
 						const tresult = v1 as any;
 						//console.log(k1 + " " + tresult);
 						if (k1.startsWith(test.id + "(")) {
-							if (tresult['success']) {
+							if (tresult['status'] == "Success") {
 								run.passed(test, 1);
 							} else {
 								const feedback:string = ercxTests.get(test.id)?.feedback ?? "error";
@@ -133,7 +134,7 @@ function addERCxTests(controller: vscode.TestController, fileName:vscode.Uri, ra
 	const ercxYaml = YAML.load(readFileSync("/home/radu/work/ercx/ercx/src/ercx/standards/ERC20.yaml", "utf8")) as any;
 	console.log(ercxYaml['levels']);
 
-	const ercxRoot = controller.createTestItem("ERCx", fileName.path.split('/').pop()! + " - ERC20 Tests");
+	const ercxRoot = controller.createTestItem("ERCx", fileName.path.split('/').pop()! + " - ERC20 Tests", fileName);
 	ercxRootSet.add(ercxRoot);
 	const levels = new Map<string, vscode.TestItem>;
 	for (const level of ercxYaml.levels) {
@@ -161,7 +162,7 @@ function addERCxTests(controller: vscode.TestController, fileName:vscode.Uri, ra
 	const data = new TestFile();
 	testData.set(ercxRoot, data);
 
-	ercxRoot.canResolveChildren = true;
+	//ercxRoot.canResolveChildren = true;
 
 	return { ercxRoot, data };
 }

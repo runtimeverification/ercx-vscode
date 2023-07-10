@@ -1,12 +1,12 @@
 {
   "test/ERC20Abi.t.sol:ERC20Abi": {
     "duration": {
-      "secs": 2,
-      "nanos": 648484584
+      "secs": 8,
+      "nanos": 163111041
     },
     "test_results": {
       "testAllowanceAbi()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -19,7 +19,7 @@
         "breakpoints": {}
       },
       "testAllowanceSignature()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -32,7 +32,7 @@
         "breakpoints": {}
       },
       "testApprovalEventSignature()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -45,7 +45,7 @@
         "breakpoints": {}
       },
       "testApproveAbi()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -58,7 +58,7 @@
         "breakpoints": {}
       },
       "testApproveSignature()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -71,7 +71,7 @@
         "breakpoints": {}
       },
       "testBalanceOfAbi()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -84,7 +84,7 @@
         "breakpoints": {}
       },
       "testBalanceOfSignature()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -97,7 +97,7 @@
         "breakpoints": {}
       },
       "testDecimalsAbi()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -110,7 +110,7 @@
         "breakpoints": {}
       },
       "testDecimalsSignature()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -123,7 +123,7 @@
         "breakpoints": {}
       },
       "testNameAbi()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -136,7 +136,7 @@
         "breakpoints": {}
       },
       "testNameSignature()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -149,7 +149,7 @@
         "breakpoints": {}
       },
       "testSymbolAbi()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -162,7 +162,7 @@
         "breakpoints": {}
       },
       "testSymbolSignature()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -175,7 +175,7 @@
         "breakpoints": {}
       },
       "testTotalSupplyAbi()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -188,7 +188,7 @@
         "breakpoints": {}
       },
       "testTotalSupplySignature()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -201,7 +201,7 @@
         "breakpoints": {}
       },
       "testTransferAbi()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -214,7 +214,7 @@
         "breakpoints": {}
       },
       "testTransferEventSignature()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -227,7 +227,7 @@
         "breakpoints": {}
       },
       "testTransferFromAbi()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -240,7 +240,7 @@
         "breakpoints": {}
       },
       "testTransferFromSignature()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -253,7 +253,7 @@
         "breakpoints": {}
       },
       "testTransferSignature()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -270,12 +270,12 @@
   },
   "test/ERC20Minimal.t.sol:ERC20Minimal": {
     "duration": {
-      "secs": 4,
-      "nanos": 233701619
+      "secs": 7,
+      "nanos": 834951966
     },
     "test_results": {
       "testPositiveApprovalEventEmission(uint8,uint8,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -283,12 +283,12 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x02ee593b00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffd",
-              "gas": 67305,
-              "stipend": 21844
+              "calldata": "0x02ee593b000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002",
+              "gas": 66933,
+              "stipend": 21472
             },
             "runs": 256,
-            "mean_gas": 44906,
+            "mean_gas": 44882,
             "median_gas": 45461
           }
         },
@@ -301,7 +301,7 @@
         "breakpoints": {}
       },
       "testPositiveApproveAllowsPositiveTransferFrom(uint256,uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -309,13 +309,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x80f71720000000000000000000000000000000000000000000000000000000000000216400000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000004112000000000000000000000000000000000000000000000000000000000000450e",
-              "gas": 490715,
-              "stipend": 21660
+              "calldata": "0x80f71720000000000000000000000000000000000000000000000000000000000000494c000000000000000000000000000000000000000000000000000000000000064000000000000000000000000000000000000000000000000000000000000044c40000000000000000000000000000000000000000000000000000000000003203",
+              "gas": 490724,
+              "stipend": 21672
             },
             "runs": 256,
-            "mean_gas": 469237,
-            "median_gas": 469001
+            "mean_gas": 469429,
+            "median_gas": 469009
           }
         },
         "traces": [],
@@ -327,7 +327,7 @@
         "breakpoints": {}
       },
       "testPositiveApproveAllowsZeroTransferFrom(uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -335,12 +335,12 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xa34137b500000000000000000000000000000000000000000000000000000000000031af0000000000000000000000000000000000000000000000000000000000002fd50000000000000000000000000000000000000000000000000000000000003eae",
-              "gas": 490271,
-              "stipend": 21520
+              "calldata": "0xa34137b5000000000000000000000000000000000073aacc37f2f24628af616b4790313d32ebe595d752bf218a790aeefc9d55fc76ade2fb6b382e562a9dee312dae1c490000000000000000000000000000000000000000000000000000000000000001",
+              "gas": 490674,
+              "stipend": 22024
             },
             "runs": 256,
-            "mean_gas": 468698,
+            "mean_gas": 468697,
             "median_gas": 468703
           }
         },
@@ -353,7 +353,7 @@
         "breakpoints": {}
       },
       "testPositiveApproveLeadsToAllowance(uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -361,9 +361,9 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x1bda36c50000000000000000000000000000000000000000000000000000000000000001",
-              "gas": 61886,
-              "stipend": 21204
+              "calldata": "0x1bda36c50000000000000000006fe5000ee18c41fb141a7b9c03479e8d5cd4fe444c6dc8",
+              "gas": 62138,
+              "stipend": 21456
             },
             "runs": 256,
             "mean_gas": 40682,
@@ -379,7 +379,7 @@
         "breakpoints": {}
       },
       "testPositiveTransferEventEmission(uint256,uint8,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -387,13 +387,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xf7864ccc000000000000000000000000000000000000000000000000000000230089d4590000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000bd331309b10e606df351a4db35fa59535a000000000000000000000000000000000000000000000000000017676c49bc86",
-              "gas": 473422,
-              "stipend": 21912
+              "calldata": "0xf7864ccc00000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000ece5eb125c95e859ae33c78e600000000000000000000383f87cd03e853e3df5ccfa3771ed27ff700e8b0acc7",
+              "gas": 473499,
+              "stipend": 22008
             },
             "runs": 256,
-            "mean_gas": 457307,
-            "median_gas": 455295
+            "mean_gas": 456355,
+            "median_gas": 455293
           }
         },
         "traces": [],
@@ -405,7 +405,7 @@
         "breakpoints": {}
       },
       "testPositiveTransferFromEventEmission(uint256,uint8,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -413,13 +413,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xe68a4a7700000000000000000000000000000000000000000000000000000000000015d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000331f000000000000000000000000000000000000000000000000000000000000003f",
-              "gas": 499876,
-              "stipend": 21636
+              "calldata": "0xe68a4a77000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000534b51cfe54ca410000000000000000000000b739ffb920500e5f4c23c4eaef7bee74d07e11588c",
+              "gas": 500116,
+              "stipend": 21936
             },
             "runs": 256,
-            "mean_gas": 479294,
-            "median_gas": 478135
+            "mean_gas": 479408,
+            "median_gas": 478118
           }
         },
         "traces": [],
@@ -431,7 +431,7 @@
         "breakpoints": {}
       },
       "testUserBalanceInitialized(uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -439,13 +439,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xe4ccfec9000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000001f4020a2bf3a8f5bb367f71a994",
-              "gas": 462493,
-              "stipend": 21500
+              "calldata": "0xe4ccfec900000000000000000000000000000000000144f20e87bdacb04050f66280fc0200000000000000000000066d56d1b1d928a68173dacba7b496a3f2754cf0cd9f",
+              "gas": 462704,
+              "stipend": 21764
             },
             "runs": 256,
-            "mean_gas": 440990,
-            "median_gas": 441005
+            "mean_gas": 440995,
+            "median_gas": 441010
           }
         },
         "traces": [],
@@ -457,7 +457,7 @@
         "breakpoints": {}
       },
       "testZeroApprovalEventEmission(uint8,uint8)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -465,12 +465,12 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x1868c29c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003",
+              "calldata": "0x1868c29c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
               "gas": 46568,
               "stipend": 21332
             },
             "runs": 256,
-            "mean_gas": 24673,
+            "mean_gas": 24689,
             "median_gas": 25236
           }
         },
@@ -483,7 +483,7 @@
         "breakpoints": {}
       },
       "testZeroApproveLeadsToAllowance()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [
@@ -510,7 +510,7 @@
         "breakpoints": {}
       },
       "testZeroTransferFromByOtherEmitsEvent()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [
@@ -546,7 +546,7 @@
         "breakpoints": {}
       },
       "testZeroTransferFromByOtherPossible()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [
@@ -573,7 +573,7 @@
         "breakpoints": {}
       },
       "testZeroTransferFromByOtherToSelfPossible()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [
@@ -600,7 +600,7 @@
         "breakpoints": {}
       },
       "testZeroTransferFromBySelfEmitsEvent()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [
@@ -636,7 +636,7 @@
         "breakpoints": {}
       },
       "testZeroTransferFromBySelfPossible()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [
@@ -663,7 +663,7 @@
         "breakpoints": {}
       },
       "testZeroTransferFromBySelfToSelfPossible()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [
@@ -690,7 +690,7 @@
         "breakpoints": {}
       },
       "testZeroTransferToOthersEmitsEvent()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [
@@ -726,7 +726,7 @@
         "breakpoints": {}
       },
       "testZeroTransferToOthersPossible()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [
@@ -753,7 +753,7 @@
         "breakpoints": {}
       },
       "testZeroTransferToSelfEmitsEvent()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [
@@ -789,7 +789,7 @@
         "breakpoints": {}
       },
       "testZeroTransferToSelfPossible()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [
@@ -820,12 +820,12 @@
   },
   "test/ERC20Recommended.t.sol:ERC20Recommended": {
     "duration": {
-      "secs": 3,
-      "nanos": 505072080
+      "secs": 5,
+      "nanos": 617870763
     },
     "test_results": {
       "testCannotTransferFromMoreThanAllowanceLowerThanBalance(uint256,uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -833,13 +833,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xf5a567430000000000000000000000000000000000000000000000000d80157ea48c992100000000000000000000000000000000000000000013402e7b0cc0d700b54e5f000000000000000000000000000000000000000000385118ddf31a18789a818f0000000000000000000000000000000000000000000000000000000000000003",
-              "gas": 488276,
-              "stipend": 21936
+              "calldata": "0xf5a567430000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000cd389826bb24200000000000004a58820c90458b166265d4203f2ddc8e25ce1365cbf59d4995c000000000000000000008f709273c9a360723ef0344944efc0cfc83e09d491bc",
+              "gas": 488526,
+              "stipend": 22248
             },
             "runs": 256,
-            "mean_gas": 466337,
-            "median_gas": 466340
+            "mean_gas": 466335,
+            "median_gas": 466345
           }
         },
         "traces": [],
@@ -851,7 +851,7 @@
         "breakpoints": {}
       },
       "testCannotTransferFromMoreThanBalanceButLowerThanAllowance(uint256,uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -859,13 +859,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x799a6c1a000000000000000000000000000000000000008c47f4e65c484c6cd103ef12380000000000000000000000000000000000000000000000000a7708a2ab730d3a00000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000002",
-              "gas": 488923,
-              "stipend": 21852
+              "calldata": "0x799a6c1a000000000000000000000000000000000000000000000000000019985a5b195900000000000000000000000000000000000000000000000000000000501b85e600000000000000000000000000000000000000000000000000000000000035e500000000000066e740a7125eb5c177cf7bae64c6173cf19a9be91b5ddcd0eab6",
+              "gas": 489067,
+              "stipend": 22032
             },
             "runs": 256,
-            "mean_gas": 467019,
-            "median_gas": 467024
+            "mean_gas": 467023,
+            "median_gas": 467033
           }
         },
         "traces": [],
@@ -877,7 +877,7 @@
         "breakpoints": {}
       },
       "testCannotTransferMoreThanBalance(uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -885,13 +885,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x2deb1f8d00000000000000000000000000000000000000000000000000000000000012b800000000000000000000000000000000000000000000000000000000000006410000000000000000000000000000000000000000000000000000000000000010",
-              "gas": 464568,
-              "stipend": 21508
+              "calldata": "0x2deb1f8dfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffd00000000000000001255bbc7eb9153675f9122186c0d408d10decf61ac1a2fe70000000000000000000c6a43dab9ff3416661a04c8c2f4385f567091bbc0e0c0",
+              "gas": 465278,
+              "stipend": 22396
             },
             "runs": 256,
-            "mean_gas": 442998,
-            "median_gas": 443003
+            "mean_gas": 442996,
+            "median_gas": 443000
           }
         },
         "traces": [],
@@ -903,7 +903,7 @@
         "breakpoints": {}
       },
       "testNoApprovalCannotTransferFrom(uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -911,13 +911,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x617112e900000000000000000000000000000000000000000000000000000000000000440000000000000000000000000000000000000000000000000000000000002b540000000000000000000000000000000000000000000000000000000000001864",
-              "gas": 466925,
-              "stipend": 21508
+              "calldata": "0x617112e9000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000000",
+              "gas": 466896,
+              "stipend": 21472
             },
             "runs": 256,
-            "mean_gas": 445375,
-            "median_gas": 445396
+            "mean_gas": 445373,
+            "median_gas": 445380
           }
         },
         "traces": [],
@@ -929,7 +929,7 @@
         "breakpoints": {}
       },
       "testNoSelfApprovalCannotSelfTransferFrom(uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -937,13 +937,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x501b85e700000000000000000000000000000000000000000000000000000000000000220000000000000000000000000000000000000000000000000000000000001b6400000000000000000000000000000000000000000000000000000000000000c2",
-              "gas": 466898,
-              "stipend": 21496
+              "calldata": "0x501b85e7000000000000000000000000000000000000000000000000000000000000e70a000000000000000000000000000000000000000000000000000000fe87829a3f0000000000000000000000000000000000000000000000000000000000000000",
+              "gas": 466927,
+              "stipend": 21532
             },
             "runs": 256,
-            "mean_gas": 445355,
-            "median_gas": 445364
+            "mean_gas": 445350,
+            "median_gas": 445356
           }
         },
         "traces": [],
@@ -959,12 +959,12 @@
   },
   "test/ERC20Desirable.t.sol:ERC20Desirable": {
     "duration": {
-      "secs": 18,
-      "nanos": 582289785
+      "secs": 41,
+      "nanos": 933879053
     },
     "test_results": {
       "testAddressZeroHasNoToken()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -981,7 +981,7 @@
         "breakpoints": {}
       },
       "testBalanceOfCaller(uint8,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -989,13 +989,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x39d67c9300000000000000000000000000000000000000000000000000000000000000000000000065acaa654a0c9d636b6a646d4acbb3cfe751bd5ea66a8c7766e0c3bf0000000000000000000000000000000000000000000000000000000000000000",
-              "gas": 467464,
-              "stipend": 21784
+              "calldata": "0x39d67c930000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400d0000000000000000000000000000000000000000000000000000000000003b79",
+              "gas": 467234,
+              "stipend": 21496
             },
             "runs": 256,
-            "mean_gas": 445032,
-            "median_gas": 445654
+            "mean_gas": 444979,
+            "median_gas": 445642
           }
         },
         "traces": [],
@@ -1007,7 +1007,7 @@
         "breakpoints": {}
       },
       "testBalanceOfNonCaller(uint8,uint8,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1015,13 +1015,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x3fef1c8300000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000001000000000000000000000001a65073ec05593d9038969f88e7464775a0eb5a4b000000000000000000000000000000000000043f6d221b99cb2f275e7c59a541",
-              "gas": 468684,
-              "stipend": 22020
+              "calldata": "0x3fef1c83000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000020000000002c0843117384744d158e8604957431c935cc7ec49fbd2f6744b1f05000000000000000000000fa2cb7b2cdc3d3f7b169d51698b3dd7718364c7109f",
+              "gas": 468828,
+              "stipend": 22200
             },
             "runs": 256,
-            "mean_gas": 447574,
-            "median_gas": 448244
+            "mean_gas": 447597,
+            "median_gas": 448269
           }
         },
         "traces": [],
@@ -1033,7 +1033,7 @@
         "breakpoints": {}
       },
       "testCannotApprovePositiveAmountToZeroAddress(uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
@@ -1087,7 +1087,7 @@
         "breakpoints": {}
       },
       "testFeeTakingTransferFromPotential(uint256[2],uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1095,13 +1095,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xe117dc0d0000000000000000000000000000000000000000000000000000000000004da900000000000000000000000000000000000000000000000000000000000026a900000000000000000000000000000000000000000000000000000000000004e000000000000000000000000000000000000000000000000000000000000015a70000000000000000000000000000000000000000000000000000000000000dd2",
-              "gas": 497876,
-              "stipend": 21824
+              "calldata": "0xe117dc0d4d7920546f6b656e2044656661756c74204e616d65000000000000000000002b000000000000000000000000000000000000000000000000000000000000287d000000000000000000000000000000000000000000000000000000000000009900000000000000000000000000000000000000000000000000000000000024d10000000000000000000000000000000000000000000000000000000000005a56",
+              "gas": 498058,
+              "stipend": 22052
             },
             "runs": 256,
-            "mean_gas": 476484,
-            "median_gas": 476008
+            "mean_gas": 476793,
+            "median_gas": 476011
           }
         },
         "traces": [],
@@ -1113,7 +1113,7 @@
         "breakpoints": {}
       },
       "testFeeTakingTransferFromPresent(uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1121,13 +1121,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xd489f95a00000000000000000000000000000000000000000000000000000000000000d200000000000000000000000000000000000000000000000000000000000051fa0000000000000000000000000000000000000000000000000000000000000912",
+              "calldata": "0xd489f95a00000000000000000000000000000000000000000000000000000000000000e2000000000000000000000000000000000000000000000000000000000000040b00000000000000000000000000000000000000000000000000000000000005d0",
               "gas": 493752,
               "stipend": 21508
             },
             "runs": 256,
-            "mean_gas": 472572,
-            "median_gas": 472209
+            "mean_gas": 472760,
+            "median_gas": 472208
           }
         },
         "traces": [],
@@ -1139,7 +1139,7 @@
         "breakpoints": {}
       },
       "testFeeTakingTransferPotential(uint256[2],uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1147,13 +1147,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xa5850ee400000000000000000000000000000000000000000000000000000000000040e000000000000000000000000000000000000000000000000000000000000018e700000000000000000000000000000000000000000000000000000000000003e600000000000000000000000000000000000000000000000000000000000006e60000000000000000000000000000000000000000000000000000000000000022",
-              "gas": 475033,
-              "stipend": 21812
+              "calldata": "0xa5850ee400000000000000000000000000000000000000000000000aa7432783618d689afffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc00000000000006867445183ec046c1f760f2ec85e1b74287421ab4ebac6da5c000000fdea7aff24959687e0e5516d25c3ca1e36468f5302377975d07f4d5ee34000000000000000000000000000000066ec2a1cce687c9838e793224b533fb4b",
+              "gas": 476041,
+              "stipend": 23072
             },
             "runs": 256,
-            "mean_gas": 453522,
-            "median_gas": 453160
+            "mean_gas": 453515,
+            "median_gas": 453161
           }
         },
         "traces": [],
@@ -1165,7 +1165,7 @@
         "breakpoints": {}
       },
       "testFeeTakingTransferPresent(uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1173,13 +1173,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x294373e80000000000000000000000000000000000000000000000000000000000001b5f000000000000000000000000000000000000000000000000000000000000451e0000000000000000000000000000000000000000000000000000000000003b1a",
-              "gas": 470895,
-              "stipend": 21520
+              "calldata": "0x294373e8000000000000000000000000000000000000359beed890b2e2c8164510a9b1af00000000000107e5b4225341f90aef9d62d0359a8cb81e27eefc21e9b6bc9dcb0000000000000000000000000000000000000000000000000000000000000000",
+              "gas": 487151,
+              "stipend": 21940
             },
             "runs": 256,
-            "mean_gas": 450209,
-            "median_gas": 449358
+            "mean_gas": 449712,
+            "median_gas": 449353
           }
         },
         "traces": [],
@@ -1191,7 +1191,7 @@
         "breakpoints": {}
       },
       "testMultipleTransferFromExceedAllowance(uint256,uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1199,13 +1199,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x3d5f3658000000000000000000000000000000000000000000000000000000000000581b000000000000000000000000000000000000000000000000000000000000538d4d79546f6b656e0000000000000000000000000000000000000000000000000e000000000000000000000000000000000000000000000000000000000000060d",
-              "gas": 495561,
-              "stipend": 21744
+              "calldata": "0x3d5f36580000000000000000000000000000000000000000000000000000000000000e4f0000000000000000000000000000000000000000000000000000000000000763000000000000000000000000000000000000000000000000000000000000400c00000000000000000000000000000000000000000000000000000000000088d2",
+              "gas": 495504,
+              "stipend": 21672
             },
             "runs": 256,
-            "mean_gas": 474386,
-            "median_gas": 473763
+            "mean_gas": 474203,
+            "median_gas": 473774
           }
         },
         "traces": [],
@@ -1217,7 +1217,7 @@
         "breakpoints": {}
       },
       "testOverwriteApprovePositiveToZero(uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1225,13 +1225,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xb4a41d030000000000000000000000000000000000000000000000000000000000004358",
+              "calldata": "0xb4a41d03000000000000000000000000000000000000000000000000000000000000034d",
               "gas": 53780,
               "stipend": 21216
             },
             "runs": 256,
             "mean_gas": 32541,
-            "median_gas": 32559
+            "median_gas": 32561
           }
         },
         "traces": [],
@@ -1243,7 +1243,7 @@
         "breakpoints": {}
       },
       "testOverwriteApproveZeroToPositive(uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1251,9 +1251,9 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xb6a9aad70000000000000000000000000000000000000000000000000000000000000005",
-              "gas": 67211,
-              "stipend": 21204
+              "calldata": "0xb6a9aad70000000000000000000000000000000000000000000000000000000000001064",
+              "gas": 67223,
+              "stipend": 21216
             },
             "runs": 256,
             "mean_gas": 46007,
@@ -1269,7 +1269,7 @@
         "breakpoints": {}
       },
       "testOverwriteApproveZeroToZero()": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [
@@ -1305,7 +1305,7 @@
         "breakpoints": {}
       },
       "testOwnerBalanceInitialized()": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": null,
         "logs": [
@@ -1348,7 +1348,7 @@
         "breakpoints": {}
       },
       "testPositiveMultipleTransfer(uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1356,13 +1356,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x89afdc5600000000000000000000000000000000000000000000000000000000000003ae0000000000000000000000000000000000000000000000000000000000002e420000000000000000000000000000000000000000000000000000000026999b87",
-              "gas": 499913,
-              "stipend": 21544
+              "calldata": "0x89afdc560000000000000000000000000000000000000000000000000000000000004832000000000000000000000000000000000000000000000000000000000983883c00000000000000000000000000000000000000000000000000000000000000b5",
+              "gas": 499904,
+              "stipend": 21532
             },
             "runs": 256,
-            "mean_gas": 479012,
-            "median_gas": 478340
+            "mean_gas": 479006,
+            "median_gas": 478331
           }
         },
         "traces": [],
@@ -1374,7 +1374,7 @@
         "breakpoints": {}
       },
       "testPositiveMultipleTransferFrom(uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1382,13 +1382,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xbbe82a5c0000000000000000000000000000000000000000000000000003d601b9ccec30000000000000000815dc005042f6af8c8e7ab96d6b4e028017b53e8db6b51fa70000000000000000000000000000000000000000000000000000000000000000",
-              "gas": 541482,
-              "stipend": 21820
+              "calldata": "0xbbe82a5c000001666c641a55501fe69ba6a9750e03d1479ea9491c609736736d7e376d2f00000464896d502657fc0c5034f7dd92fd7b7f3ea511f53f01b393e6f2bd2abf0000000000000000000000000000000000000000000000000000000000000002",
+              "gas": 525850,
+              "stipend": 22180
             },
             "runs": 256,
-            "mean_gas": 504563,
-            "median_gas": 503756
+            "mean_gas": 504371,
+            "median_gas": 503761
           }
         },
         "traces": [],
@@ -1400,7 +1400,7 @@
         "breakpoints": {}
       },
       "testPositiveSelfApprove(uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1408,13 +1408,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x4010aee0000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000003525500a93551a1c8d0d19a100000302ef83dab0cfb4e449cd123cf3c57c80add208eba7b8c69e4c956cd87a",
-              "gas": 485646,
-              "stipend": 21964
+              "calldata": "0x4010aee00000000000000000000000000000000000000000000000000000000000000da20000000000000000000000000000000000000000000000000000000000000dd30000000000000000000000000000000000000000000000000000000000000b15",
+              "gas": 485291,
+              "stipend": 21520
             },
             "runs": 256,
-            "mean_gas": 463733,
-            "median_gas": 463753
+            "mean_gas": 463730,
+            "median_gas": 463741
           }
         },
         "traces": [],
@@ -1426,7 +1426,7 @@
         "breakpoints": {}
       },
       "testPositiveSelfApproveTransferFrom(uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1434,13 +1434,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x824aeb820000000000000000000000000000000000000000000000000000000003c00da200000000000000000000000000000000f1703274990b7190fdad54a30f8a432d000000000000425dd1218606cc47aa6573b9d3ce3f0b78253b2bed5facfeab35",
-              "gas": 490349,
-              "stipend": 22000
+              "calldata": "0x824aeb820000000000000000000000000000000000000000000000000000000000003158496e73756666696369656e742062616c616e6365000000000000000000000028000000000000000000000000000000000000000000000000000000000000498d",
+              "gas": 490148,
+              "stipend": 21748
             },
             "runs": 256,
-            "mean_gas": 468653,
-            "median_gas": 468426
+            "mean_gas": 468715,
+            "median_gas": 468416
           }
         },
         "traces": [],
@@ -1452,7 +1452,7 @@
         "breakpoints": {}
       },
       "testPositiveSelfTransfer(uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1460,13 +1460,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xd5db2835000000000000000000000000000000000000000000000000000000000000049500000000000000000000000000000000000000000000000000000000000056c70000000000000000000000000000000000000000000000000000000000000017",
-              "gas": 468072,
-              "stipend": 21508
+              "calldata": "0xd5db28350000000000000000000000000000000000000000000000000000000000004cb000000000000000000000000000000000000000000000000000000000f436f9fe0000000000000000000000000000000000000000000000000000000000000714",
+              "gas": 468100,
+              "stipend": 21544
             },
             "runs": 256,
-            "mean_gas": 446770,
-            "median_gas": 446542
+            "mean_gas": 446900,
+            "median_gas": 446552
           }
         },
         "traces": [],
@@ -1478,7 +1478,7 @@
         "breakpoints": {}
       },
       "testPositiveTotalTransferFromToOther(uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1486,13 +1486,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x59deb00b000000000000000000000000000000000000000000000000000000000000035900000000000000000000000000000000000000000000000000000000000005ba",
+              "calldata": "0x59deb00b000000000000000000000000000000000000000000000000000000000000066d0000000000000000000000000000000000000000000000000000000000001b02",
               "gas": 511508,
               "stipend": 21368
             },
             "runs": 256,
-            "mean_gas": 490110,
-            "median_gas": 490123
+            "mean_gas": 490116,
+            "median_gas": 490135
           }
         },
         "traces": [],
@@ -1504,7 +1504,7 @@
         "breakpoints": {}
       },
       "testPositiveTotalTransferToOther(uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1512,12 +1512,12 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x5eccc4940000000000000000000fc1c60f5d6f030e463a74b97ced6402c4a0e4dbe944e50000000000000000000000000000000000000000000000000000000e462cf513",
-              "gas": 488852,
-              "stipend": 21656
+              "calldata": "0x5eccc49400000000000000000000000000000000000000000000000000000000000022340000000000000000000000000000000000000000000000000000000059deb00b",
+              "gas": 488641,
+              "stipend": 21392
             },
             "runs": 256,
-            "mean_gas": 467227,
+            "mean_gas": 467226,
             "median_gas": 467244
           }
         },
@@ -1530,13 +1530,13 @@
         "breakpoints": {}
       },
       "testPositiveTransferFromToZeroShouldRevert(uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
             "sender": null,
             "addr": null,
-            "calldata": "0xe20257d0000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000",
+            "calldata": "0xe20257d0000000000000000000000000000000000000000000000000000000000000038b000000000000000000000000000000000000000000000000000000004e487b710000000000000000000000000000000000000000000000000000000000004ec9",
             "signature": null,
             "contract_name": null,
             "traces": null
@@ -1585,7 +1585,7 @@
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6",
               "0x0000000000000000000000001d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e"
             ],
-            "data": "0x0000000000000000000000000000000000000000000000000000000000000001"
+            "data": "0x000000000000000000000000000000000000000000000000000000000000038b"
           },
           {
             "address": "0x5615deb798bb3e4dfa0139dfa1b3d433cc23b72f",
@@ -1594,7 +1594,7 @@
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6",
               "0x0000000000000000000000000000000000000000000000000000000000000000"
             ],
-            "data": "0x0000000000000000000000000000000000000000000000000000000000000001"
+            "data": "0x000000000000000000000000000000000000000000000000000000000000038b"
           },
           {
             "address": "0x7fa9385be102ac3eac297483dd6233d62b3e1496",
@@ -1628,7 +1628,7 @@
         "breakpoints": {}
       },
       "testPositiveTransferToZeroShouldRevert(uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
@@ -1717,7 +1717,7 @@
         "breakpoints": {}
       },
       "testTotalSupplyConstantAfterTransfer(uint256,uint8,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1725,13 +1725,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xcbd257490000000000000000000007f4b0d67724a08a5b9527b73580d34c5a68fc448f0c0000000000000000000000000000000000000000000000000000000000000003000001eb0ef970d69d9413e0d362d5769dbbf3052d01b3aae0f9f461474d6d8d0000000000000000000000000000000000000000000000000000000000000001",
-              "gas": 490345,
-              "stipend": 22224
+              "calldata": "0xcbd2574900000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002000000000000015498fa6f309d269dd8a636ae51b9ecd0158cd86e51b9fd11cb000000042a8bc44fb9139d29ddafdc52264d2c3dfe57758e18b237c2bda0875e",
+              "gas": 472854,
+              "stipend": 22260
             },
             "runs": 256,
-            "mean_gas": 457102,
-            "median_gas": 454481
+            "mean_gas": 455776,
+            "median_gas": 454468
           }
         },
         "traces": [],
@@ -1743,7 +1743,7 @@
         "breakpoints": {}
       },
       "testTotalSupplyConstantAfterTransferFrom(uint256,uint8,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1751,13 +1751,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xf436f9ff000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000012d57d0f3476dc5",
-              "gas": 512804,
-              "stipend": 21708
+              "calldata": "0xf436f9ff0000000001edcb1ae3a964c0e8644452ec7c697dd157e6c83148d23747e2587000000000000000000000000000000000000000000000000000000000000000010000002f062138230e85a5012da204f85f2ae5665121d874a53425be0dac295400000000000000000000000000000000000000000000000000000000000003ce",
+              "gas": 495754,
+              "stipend": 22296
             },
             "runs": 256,
-            "mean_gas": 478787,
-            "median_gas": 477325
+            "mean_gas": 478437,
+            "median_gas": 477309
           }
         },
         "traces": [],
@@ -1769,7 +1769,7 @@
         "breakpoints": {}
       },
       "testTotalSupplyInitialized()": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": null,
         "logs": [
@@ -1812,7 +1812,7 @@
         "breakpoints": {}
       },
       "testTransferDoesNotUpdateOthersBalances(uint256,uint8,uint8,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1820,13 +1820,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xc0e5da2a00000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000049a60000000000000000000000000000000000000000000000000000000000000003",
-              "gas": 477956,
-              "stipend": 21764
+              "calldata": "0xc0e5da2a000000000000000000000000000000000003055442cd4c3ca11304a026bd612b00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000081187cc3a7bf6dee0b38fef0f6c9568e44afdc932afe94495e98445290000000000000000000000000000000000000000000000000000000000010e9e",
+              "gas": 478369,
+              "stipend": 22280
             },
             "runs": 256,
-            "mean_gas": 461158,
-            "median_gas": 458346
+            "mean_gas": 460270,
+            "median_gas": 456171
           }
         },
         "traces": [],
@@ -1838,7 +1838,7 @@
         "breakpoints": {}
       },
       "testTransferFromDecreaseAllowanceAsExpected(uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1846,12 +1846,12 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xe59d8c5500000000000000000000000000000000000000000000000000000000000014e40000000000000000000000000000000000000000000000000000000000009d3e0000000000000000000000000000000000000000000000000000000000001f88",
-              "gas": 510930,
-              "stipend": 21520
+              "calldata": "0xe59d8c55000000000000000000000000000000000003d037f9954f7762f50e899ed2d36400000000000000045096ff8999a719e86cfe93ef34acf97eba966ae32db5435000000000000000000000000000000000007fc7187c0450c3c75e7223c312f907",
+              "gas": 511400,
+              "stipend": 22108
             },
             "runs": 256,
-            "mean_gas": 489360,
+            "mean_gas": 489357,
             "median_gas": 489367
           }
         },
@@ -1864,7 +1864,7 @@
         "breakpoints": {}
       },
       "testTransferFromDoesNotUpdateOthersBalances(uint256,uint8,uint8,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -1872,13 +1872,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xba6b430e00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000004a158e93c00000000000d251364f0777492ffc4cda7ec02744edf2afa7961bbdf07e82d0c",
-              "gas": 501152,
-              "stipend": 22124
+              "calldata": "0xba6b430e000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003000000017156b282661baaacccfb51ca5128de9b288da621760ebe07cbc243c60000000000000000000000000000000009e41c91a44653efd7cfa1e27f79c132",
+              "gas": 501276,
+              "stipend": 22280
             },
             "runs": 256,
-            "mean_gas": 483866,
-            "median_gas": 479098
+            "mean_gas": 483814,
+            "median_gas": 479084
           }
         },
         "traces": [],
@@ -1890,13 +1890,13 @@
         "breakpoints": {}
       },
       "testZeroAddressCannotApprovePositiveAmount(uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
             "sender": null,
             "addr": null,
-            "calldata": "0xb6e9208900000000000000000000000000000000000000000000000000000000000035a8",
+            "calldata": "0xb6e920890000000000000000000000000000000000000000000000000000000000000001",
             "signature": null,
             "contract_name": null,
             "traces": null
@@ -1910,7 +1910,7 @@
               "0x0000000000000000000000000000000000000000000000000000000000000000",
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6"
             ],
-            "data": "0x00000000000000000000000000000000000000000000000000000000000035a8"
+            "data": "0x0000000000000000000000000000000000000000000000000000000000000001"
           },
           {
             "address": "0x7fa9385be102ac3eac297483dd6233d62b3e1496",
@@ -1944,7 +1944,7 @@
         "breakpoints": {}
       },
       "testZeroAddressCannotTransferPositiveAmount(uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
@@ -2019,7 +2019,7 @@
         "breakpoints": {}
       },
       "testZeroMultipleTransfer(uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -2027,13 +2027,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x5b90091c00000000000000000000000000000000000000000000000000000000000050490000000000000000000000000000000000000000000000000000000000000444",
-              "gas": 481290,
-              "stipend": 21368
+              "calldata": "0x5b90091c00000000000000000000000000000000004f4d891136ae3e4fa59f6ce6d003f20000000000000000000000000000000000000000000000000000000000000002",
+              "gas": 481405,
+              "stipend": 21512
             },
             "runs": 256,
-            "mean_gas": 459891,
-            "median_gas": 459909
+            "mean_gas": 459889,
+            "median_gas": 459898
           }
         },
         "traces": [],
@@ -2045,7 +2045,7 @@
         "breakpoints": {}
       },
       "testZeroMultipleTransferFrom(uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -2053,12 +2053,12 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x0983883c001632e8053cedab70b1b6f44bd73921d6980d63b8ac3b9b0b6988624e2d6d770000000000000000000000000000000000000000000000000000000000000001",
-              "gas": 506988,
-              "stipend": 21704
+              "calldata": "0x0983883c000000000000000000000000000000000000000000000000000000000000043c0000000000000000000000000000000000000000000000000000000000004b6e",
+              "gas": 506720,
+              "stipend": 21368
             },
             "runs": 256,
-            "mean_gas": 485322,
+            "mean_gas": 485323,
             "median_gas": 485342
           }
         },
@@ -2071,7 +2071,7 @@
         "breakpoints": {}
       },
       "testZeroSelfApprove(uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -2079,13 +2079,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x31a0a78b0000000000000000000000000000000000000000000000000000000000000003000000000000ac36a8076a22b2c4c09d41fc7eed7260dbcc071bec8c417c6670",
-              "gas": 469130,
-              "stipend": 21644
+              "calldata": "0x31a0a78b0000000000000000000000000000000000000000000000000000000000002418000000000000000000000000000000000000000000000000000000000000342f",
+              "gas": 468909,
+              "stipend": 21368
             },
             "runs": 256,
-            "mean_gas": 447509,
-            "median_gas": 447524
+            "mean_gas": 447516,
+            "median_gas": 447532
           }
         },
         "traces": [],
@@ -2097,7 +2097,7 @@
         "breakpoints": {}
       },
       "testZeroSelfApproveTransferFrom(uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -2105,13 +2105,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xb5ac974000000000000000000000000000000000000000000000540e8310874a8f39f6140000000000000000000000000000000000000000000000000000000000000003",
-              "gas": 473652,
-              "stipend": 21452
+              "calldata": "0xb5ac974000000000000000000000000000000000000000000000000000000000000004150000000000000000000000000000000000000000000000000000000000000f73",
+              "gas": 473584,
+              "stipend": 21368
             },
             "runs": 256,
-            "mean_gas": 452188,
-            "median_gas": 452202
+            "mean_gas": 452187,
+            "median_gas": 452207
           }
         },
         "traces": [],
@@ -2123,7 +2123,7 @@
         "breakpoints": {}
       },
       "testZeroSelfTransfer(uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -2131,12 +2131,12 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x73839d1f0000000000000be8eff5dc9ef2944dbe43fd3352c363f613c15801dd3944af820000000000000000000000000000000000000000000000000000000000000001",
-              "gas": 467840,
-              "stipend": 21644
+              "calldata": "0x73839d1f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002",
+              "gas": 467591,
+              "stipend": 21332
             },
             "runs": 256,
-            "mean_gas": 446226,
+            "mean_gas": 446222,
             "median_gas": 446242
           }
         },
@@ -2149,7 +2149,7 @@
         "breakpoints": {}
       },
       "testZeroTotalTransferFromToOther(uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -2157,9 +2157,9 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x191a0a620000000000000000000000000000000000000000000000000000000000000001",
-              "gas": 479162,
-              "stipend": 21204
+              "calldata": "0x191a0a620000000000000000000000000000000000000000000000000000000000001063",
+              "gas": 479172,
+              "stipend": 21216
             },
             "runs": 256,
             "mean_gas": 457942,
@@ -2175,7 +2175,7 @@
         "breakpoints": {}
       },
       "testZeroTotalTransferToOther(uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -2183,9 +2183,9 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0xedbf025f000000000000000000000000002934f5b2957a8b71f9cd01bbb5a5c4eff925f1",
-              "gas": 472420,
-              "stipend": 21420
+              "calldata": "0xedbf025f0000000000000000000000000000000000000000000000000000000000006b8a",
+              "gas": 472256,
+              "stipend": 21216
             },
             "runs": 256,
             "mean_gas": 451025,
@@ -2201,13 +2201,13 @@
         "breakpoints": {}
       },
       "testZeroTransferFromToZeroShouldRevert(uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
             "sender": null,
             "addr": null,
-            "calldata": "0x2444923900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "calldata": "0x244492394e6f7420616c6c6f77656420746f207472616e7366657200000000000000000000000000000000000000000000000000000000000000000000000000000035de",
             "signature": null,
             "contract_name": null,
             "traces": null
@@ -2299,7 +2299,7 @@
         "breakpoints": {}
       },
       "testZeroTransferToZeroShouldRevert(uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
@@ -2392,18 +2392,18 @@
   },
   "test/ERC20Fingerprint.t.sol:ERC20Fingerprint": {
     "duration": {
-      "secs": 1,
-      "nanos": 590230778
+      "secs": 2,
+      "nanos": 374062021
     },
     "test_results": {
       "testInfiniteApprovalConstant(uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
             "sender": null,
             "addr": null,
-            "calldata": "0x9a088e8a000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000",
+            "calldata": "0x9a088e8a000000000000000000000000000000000000000000000000000000000000186d00000000000000000000000000000000000000000000000000000000000032b600000000000000000000000000000000000000000000000000000000000001d1",
             "signature": null,
             "contract_name": null,
             "traces": null
@@ -2461,7 +2461,7 @@
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6",
               "0x000000000000000000000000a4d4c1f8a763ef6a0140d04291eceef913ffc272"
             ],
-            "data": "0x0000000000000000000000000000000000000000000000000000000000000001"
+            "data": "0x000000000000000000000000000000000000000000000000000000000000186d"
           },
           {
             "address": "0x7fa9385be102ac3eac297483dd6233d62b3e1496",
@@ -2475,7 +2475,7 @@
             "topics": [
               "0xb2de2fbe801a0df6c0cbddfd448ba3c41d48a040ca35c56c8196ef0fcae721a8"
             ],
-            "data": "0x0000000000000000000000000000000000000000000000000000000000000040fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe000000000000000000000000000000000000000000000000000000000000000a2020202020204c65667400000000000000000000000000000000000000000000"
+            "data": "0x0000000000000000000000000000000000000000000000000000000000000040ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe792000000000000000000000000000000000000000000000000000000000000000a2020202020204c65667400000000000000000000000000000000000000000000"
           },
           {
             "address": "0x7fa9385be102ac3eac297483dd6233d62b3e1496",
@@ -2487,19 +2487,19 @@
         ],
         "decoded_logs": [
           "Error: a == b not satisfied [uint]",
-          "      Left: 115792089237316195423570985008687907853269984665640564039457584007913129639934",
+          "      Left: 115792089237316195423570985008687907853269984665640564039457584007913129633682",
           "     Right: 115792089237316195423570985008687907853269984665640564039457584007913129639935"
         ],
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x9a088e8a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001885bc000000000000fa9081a2673f080022cb9eb5ac928d5ae0d96f47372a6d455a67",
-              "gas": 495359,
-              "stipend": 21784
+              "calldata": "0x",
+              "gas": 0,
+              "stipend": 0
             },
-            "runs": 1,
-            "mean_gas": 473575,
-            "median_gas": 473575
+            "runs": 0,
+            "mean_gas": 0,
+            "median_gas": 0
           }
         },
         "traces": [],
@@ -2511,7 +2511,7 @@
         "breakpoints": {}
       },
       "testInfiniteApprovalNotConstant(uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -2519,13 +2519,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x374fe12f000000000000000000000000000000000000000000000000000000000000030500000000000000000000000000000000000000000000000000000000000027ad0000000000000000000000000000000000000000000000000000000000003ea6",
-              "gas": 511101,
-              "stipend": 21520
+              "calldata": "0x374fe12f00000000000000000000000000000000000000000000000000000000000000010000000000000000045fa021203b4b4d257e9e9c29f0ed442ff643d4db64d60a0000000000000000000000000000000000000000000000000000000000000001",
+              "gas": 511293,
+              "stipend": 21760
             },
             "runs": 256,
-            "mean_gas": 488598,
-            "median_gas": 489528
+            "mean_gas": 488291,
+            "median_gas": 489533
           }
         },
         "traces": [],
@@ -2537,7 +2537,7 @@
         "breakpoints": {}
       },
       "testOverwriteApprovePositiveToPositive(uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -2545,9 +2545,9 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x318cfd8f00000000000000000000000000000000000000000000000000000000000000b600000000000000000000000000000000000000000000000000000000000021dc",
-              "gas": 67655,
-              "stipend": 21356
+              "calldata": "0x318cfd8f00000000000000000000000000000000000000000000000000000000000033bb0000000000000000000000000000000000000000000000000000000000003c89",
+              "gas": 67667,
+              "stipend": 21368
             },
             "runs": 256,
             "mean_gas": 46299,
@@ -2563,7 +2563,7 @@
         "breakpoints": {}
       },
       "testReverstOnInfiniteApproval(uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
@@ -2652,13 +2652,13 @@
         "breakpoints": {}
       },
       "testRevertsIfApprovalGreaterThanBalance(uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
             "sender": null,
             "addr": null,
-            "calldata": "0x48d35b4300000000000000000000000000000000000000000000000016038b01217532f500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "calldata": "0x48d35b43000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
             "signature": null,
             "contract_name": null,
             "traces": null
@@ -2707,7 +2707,7 @@
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6",
               "0x0000000000000000000000001d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e"
             ],
-            "data": "0x00000000000000000000000000000000000000000000000016038b01217532f5"
+            "data": "0x0000000000000000000000000000000000000000000000000000000000000003"
           },
           {
             "address": "0x7fa9385be102ac3eac297483dd6233d62b3e1496",
@@ -2741,13 +2741,13 @@
         "breakpoints": {}
       },
       "testTransferFromDecreaseAllowanceGtExpected(uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
             "sender": null,
             "addr": null,
-            "calldata": "0xe7ff1492000000000000000000000000000000000000000000000000000000000000001b00000000000000000000000000000000000000000000000000000000000004320000000000000000000000000000000000000000000000000000000000000108",
+            "calldata": "0xe7ff1492000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001",
             "signature": null,
             "contract_name": null,
             "traces": null
@@ -2796,7 +2796,7 @@
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6",
               "0x0000000000000000000000001d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e"
             ],
-            "data": "0x0000000000000000000000000000000000000000000000000000000000000432"
+            "data": "0x0000000000000000000000000000000000000000000000000000000000000001"
           },
           {
             "address": "0x5615deb798bb3e4dfa0139dfa1b3d433cc23b72f",
@@ -2805,7 +2805,7 @@
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6",
               "0x000000000000000000000000a4d4c1f8a763ef6a0140d04291eceef913ffc272"
             ],
-            "data": "0x000000000000000000000000000000000000000000000000000000000000001b"
+            "data": "0x0000000000000000000000000000000000000000000000000000000000000001"
           },
           {
             "address": "0x7fa9385be102ac3eac297483dd6233d62b3e1496",
@@ -2819,20 +2819,20 @@
             "topics": [
               "0xb2de2fbe801a0df6c0cbddfd448ba3c41d48a040ca35c56c8196ef0fcae721a8"
             ],
-            "data": "0x000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000004170000000000000000000000000000000000000000000000000000000000000009202056616c756520610000000000000000000000000000000000000000000000"
+            "data": "0x000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000009202056616c756520610000000000000000000000000000000000000000000000"
           },
           {
             "address": "0x7fa9385be102ac3eac297483dd6233d62b3e1496",
             "topics": [
               "0xb2de2fbe801a0df6c0cbddfd448ba3c41d48a040ca35c56c8196ef0fcae721a8"
             ],
-            "data": "0x000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000004170000000000000000000000000000000000000000000000000000000000000009202056616c756520620000000000000000000000000000000000000000000000"
+            "data": "0x000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000009202056616c756520620000000000000000000000000000000000000000000000"
           }
         ],
         "decoded_logs": [
           "Error: a > b not satisfied [uint]",
-          "  Value a: 1047",
-          "  Value b: 1047"
+          "  Value a: 0",
+          "  Value b: 0"
         ],
         "kind": {
           "Fuzz": {
@@ -2855,7 +2855,7 @@
         "breakpoints": {}
       },
       "testTransferFromDecreaseAllowanceLtExpected(uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
@@ -2973,18 +2973,18 @@
   },
   "test/ERC20AddOn.t.sol:ERC20AddOn": {
     "duration": {
-      "secs": 1,
-      "nanos": 490194977
+      "secs": 5,
+      "nanos": 55459851
     },
     "test_results": {
       "testDecreaseAllowance(uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
             "sender": null,
             "addr": null,
-            "calldata": "0xba47dd420000000000000000000000000000000000000000000000000000000000003d950000000000000000000000000000000000000000000000000000000000000021",
+            "calldata": "0xba47dd4200000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000",
             "signature": null,
             "contract_name": null,
             "traces": null
@@ -2998,7 +2998,7 @@
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6",
               "0x0000000000000000000000001d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e"
             ],
-            "data": "0x0000000000000000000000000000000000000000000000000000000000003d95"
+            "data": "0x0000000000000000000000000000000000000000000000000000000000000002"
           },
           {
             "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
@@ -3006,34 +3006,10 @@
               "0x41304facd9323d75b11bcdd609cb38effffdb05710f7caf0e9b16c6d9d709f50"
             ],
             "data": "0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000174572726f723a20417373657274696f6e204661696c6564000000000000000000"
-          },
-          {
-            "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
-            "topics": [
-              "0x41304facd9323d75b11bcdd609cb38effffdb05710f7caf0e9b16c6d9d709f50"
-            ],
-            "data": "0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000224572726f723a2061203d3d2062206e6f7420736174697366696564205b75696e745d000000000000000000000000000000000000000000000000000000000000"
-          },
-          {
-            "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
-            "topics": [
-              "0xb2de2fbe801a0df6c0cbddfd448ba3c41d48a040ca35c56c8196ef0fcae721a8"
-            ],
-            "data": "0x00000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000003d95000000000000000000000000000000000000000000000000000000000000000a2020202020204c65667400000000000000000000000000000000000000000000"
-          },
-          {
-            "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
-            "topics": [
-              "0xb2de2fbe801a0df6c0cbddfd448ba3c41d48a040ca35c56c8196ef0fcae721a8"
-            ],
-            "data": "0x00000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000003d74000000000000000000000000000000000000000000000000000000000000000a2020202020526967687400000000000000000000000000000000000000000000"
           }
         ],
         "decoded_logs": [
-          "Error: Assertion Failed",
-          "Error: a == b not satisfied [uint]",
-          "      Left: 15765",
-          "     Right: 15732"
+          "Error: Assertion Failed"
         ],
         "kind": {
           "Fuzz": {
@@ -3056,7 +3032,7 @@
         "breakpoints": {}
       },
       "testDecreaseAllowanceAbi()": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": null,
         "logs": [
@@ -3083,7 +3059,7 @@
         "breakpoints": {}
       },
       "testDecreaseAllowanceBehaviorExact(uint256,uint256,uint256,uint256)": {
-        "success": true,
+        "status": "Success",
         "reason": null,
         "counterexample": null,
         "logs": [],
@@ -3091,13 +3067,13 @@
         "kind": {
           "Fuzz": {
             "first_case": {
-              "calldata": "0x386a1d76000000000000000000000000000000000000000000000000000000000000056800000000000000000000000000000000000000000000000000000000000040a400000000000000000000000000000000000000000000000000000000000024740000000000000000000000000000000000000000000000000000000000004367",
+              "calldata": "0x386a1d760000000000000000000000000000000000000000000000000000000000003480000000000000000000000000000000000000000000000000000000000000508c000000000000000000000000000000000000000000000000000000000000224c0000000000000000000000000000000000000000000000000000000000001dd9",
               "gas": 484421,
               "stipend": 21672
             },
             "runs": 256,
-            "mean_gas": 461788,
-            "median_gas": 462651
+            "mean_gas": 461549,
+            "median_gas": 462672
           }
         },
         "traces": [],
@@ -3109,7 +3085,7 @@
         "breakpoints": {}
       },
       "testDecreaseAllowanceBehaviorInexact(uint256,uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
@@ -3198,13 +3174,13 @@
         "breakpoints": {}
       },
       "testDecreaseAllowanceDoubleSpend(uint256,uint256,uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
             "sender": null,
             "addr": null,
-            "calldata": "0xf3afa39c00000000000005738c0bf6f7bbc9e8c7d7c760ba36b16ca9b2c37e84b7de19c60000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "calldata": "0xf3afa39c757473223a205b0a2020202020207b0a202020202020202022696e64657865650000000000000000000000000000000000000000000000000000000000001dc66162696c697479223a20226e6f6e70617961626c65222c0a202020202274797000000000000000000000000000000000000000000000000000000000000000c9000000000000000000000000000000000000000000000000000000000000071c",
             "signature": null,
             "contract_name": null,
             "traces": null
@@ -3218,7 +3194,7 @@
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6",
               "0x0000000000000000000000001d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e"
             ],
-            "data": "0x00000000000005738c0bf6f7bbc9e8c7d7c760ba36b16ca9b2c37e84b7de19c6"
+            "data": "0x757473223a205b0a2020202020207b0a202020202020202022696e6465786565"
           },
           {
             "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
@@ -3262,6 +3238,111 @@
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6",
               "0x0000000000000000000000001d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e"
             ],
+            "data": "0x000000000000000000000000000000000000000000000000000000000000071c"
+          },
+          {
+            "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
+            "topics": [
+              "0x41304facd9323d75b11bcdd609cb38effffdb05710f7caf0e9b16c6d9d709f50"
+            ],
+            "data": "0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000174572726f723a20417373657274696f6e204661696c6564000000000000000000"
+          },
+          {
+            "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
+            "topics": [
+              "0x41304facd9323d75b11bcdd609cb38effffdb05710f7caf0e9b16c6d9d709f50"
+            ],
+            "data": "0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000224572726f723a2061203d3d2062206e6f7420736174697366696564205b75696e745d000000000000000000000000000000000000000000000000000000000000"
+          },
+          {
+            "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
+            "topics": [
+              "0xb2de2fbe801a0df6c0cbddfd448ba3c41d48a040ca35c56c8196ef0fcae721a8"
+            ],
+            "data": "0x0000000000000000000000000000000000000000000000000000000000000040757473223a205b0a2020202020207b0a202020202020202022696e6465785e49000000000000000000000000000000000000000000000000000000000000000a2020202020204c65667400000000000000000000000000000000000000000000"
+          },
+          {
+            "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
+            "topics": [
+              "0xb2de2fbe801a0df6c0cbddfd448ba3c41d48a040ca35c56c8196ef0fcae721a8"
+            ],
+            "data": "0x0000000000000000000000000000000000000000000000000000000000000040757473223a205b0a2020202020207b0a202020202020202022696e6465784083000000000000000000000000000000000000000000000000000000000000000a2020202020526967687400000000000000000000000000000000000000000000"
+          }
+        ],
+        "decoded_logs": [
+          "Error: Assertion Failed",
+          "Error: a == b not satisfied [uint]",
+          "      Left: 53126352167345950868023543394317060395828102649302068288201860426856484331081",
+          "     Right: 53126352167345950868023543394317060395828102649302068288201860426856484323459"
+        ],
+        "kind": {
+          "Fuzz": {
+            "first_case": {
+              "calldata": "0x",
+              "gas": 0,
+              "stipend": 0
+            },
+            "runs": 0,
+            "mean_gas": 0,
+            "median_gas": 0
+          }
+        },
+        "traces": [],
+        "labeled_addresses": {
+          "0x1d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e": "bob",
+          "0x328809bc894f92807417d2dad6b7c998c1afdac6": "alice",
+          "0xa4d4c1f8a763ef6a0140d04291eceef913ffc272": "carol"
+        },
+        "breakpoints": {}
+      },
+      "testDecreaseAllowanceSignature()": {
+        "status": "Failure",
+        "reason": null,
+        "counterexample": null,
+        "logs": [
+          {
+            "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
+            "topics": [
+              "0x41304facd9323d75b11bcdd609cb38effffdb05710f7caf0e9b16c6d9d709f50"
+            ],
+            "data": "0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000174572726f723a20417373657274696f6e204661696c6564000000000000000000"
+          }
+        ],
+        "decoded_logs": [
+          "Error: Assertion Failed"
+        ],
+        "kind": {
+          "Standard": 210394580
+        },
+        "traces": [],
+        "labeled_addresses": {
+          "0x1d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e": "bob",
+          "0x328809bc894f92807417d2dad6b7c998c1afdac6": "alice",
+          "0xa4d4c1f8a763ef6a0140d04291eceef913ffc272": "carol"
+        },
+        "breakpoints": {}
+      },
+      "testIncreaseAllowance(uint256,uint256)": {
+        "status": "Failure",
+        "reason": null,
+        "counterexample": {
+          "Single": {
+            "sender": null,
+            "addr": null,
+            "calldata": "0xa430f20400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "signature": null,
+            "contract_name": null,
+            "traces": null
+          }
+        },
+        "logs": [
+          {
+            "address": "0xfefc6baf87cf3684058d62da40ff3a795946ab06",
+            "topics": [
+              "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+              "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6",
+              "0x0000000000000000000000001d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e"
+            ],
             "data": "0x0000000000000000000000000000000000000000000000000000000000000000"
           },
           {
@@ -3295,113 +3376,8 @@
         },
         "breakpoints": {}
       },
-      "testDecreaseAllowanceSignature()": {
-        "success": false,
-        "reason": null,
-        "counterexample": null,
-        "logs": [
-          {
-            "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
-            "topics": [
-              "0x41304facd9323d75b11bcdd609cb38effffdb05710f7caf0e9b16c6d9d709f50"
-            ],
-            "data": "0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000174572726f723a20417373657274696f6e204661696c6564000000000000000000"
-          }
-        ],
-        "decoded_logs": [
-          "Error: Assertion Failed"
-        ],
-        "kind": {
-          "Standard": 210394580
-        },
-        "traces": [],
-        "labeled_addresses": {
-          "0x1d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e": "bob",
-          "0x328809bc894f92807417d2dad6b7c998c1afdac6": "alice",
-          "0xa4d4c1f8a763ef6a0140d04291eceef913ffc272": "carol"
-        },
-        "breakpoints": {}
-      },
-      "testIncreaseAllowance(uint256,uint256)": {
-        "success": false,
-        "reason": null,
-        "counterexample": {
-          "Single": {
-            "sender": null,
-            "addr": null,
-            "calldata": "0xa430f2040000000000000000000000000000000000000000000000000000000000002cec0000000000000000000000000000000000000000000000000000000000003103",
-            "signature": null,
-            "contract_name": null,
-            "traces": null
-          }
-        },
-        "logs": [
-          {
-            "address": "0xfefc6baf87cf3684058d62da40ff3a795946ab06",
-            "topics": [
-              "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
-              "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6",
-              "0x0000000000000000000000001d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e"
-            ],
-            "data": "0x0000000000000000000000000000000000000000000000000000000000002cec"
-          },
-          {
-            "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
-            "topics": [
-              "0x41304facd9323d75b11bcdd609cb38effffdb05710f7caf0e9b16c6d9d709f50"
-            ],
-            "data": "0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000174572726f723a20417373657274696f6e204661696c6564000000000000000000"
-          },
-          {
-            "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
-            "topics": [
-              "0x41304facd9323d75b11bcdd609cb38effffdb05710f7caf0e9b16c6d9d709f50"
-            ],
-            "data": "0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000224572726f723a2061203d3d2062206e6f7420736174697366696564205b75696e745d000000000000000000000000000000000000000000000000000000000000"
-          },
-          {
-            "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
-            "topics": [
-              "0xb2de2fbe801a0df6c0cbddfd448ba3c41d48a040ca35c56c8196ef0fcae721a8"
-            ],
-            "data": "0x00000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000002cec000000000000000000000000000000000000000000000000000000000000000a2020202020204c65667400000000000000000000000000000000000000000000"
-          },
-          {
-            "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
-            "topics": [
-              "0xb2de2fbe801a0df6c0cbddfd448ba3c41d48a040ca35c56c8196ef0fcae721a8"
-            ],
-            "data": "0x00000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000005def000000000000000000000000000000000000000000000000000000000000000a2020202020526967687400000000000000000000000000000000000000000000"
-          }
-        ],
-        "decoded_logs": [
-          "Error: Assertion Failed",
-          "Error: a == b not satisfied [uint]",
-          "      Left: 11500",
-          "     Right: 24047"
-        ],
-        "kind": {
-          "Fuzz": {
-            "first_case": {
-              "calldata": "0x",
-              "gas": 0,
-              "stipend": 0
-            },
-            "runs": 0,
-            "mean_gas": 0,
-            "median_gas": 0
-          }
-        },
-        "traces": [],
-        "labeled_addresses": {
-          "0x1d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e": "bob",
-          "0x328809bc894f92807417d2dad6b7c998c1afdac6": "alice",
-          "0xa4d4c1f8a763ef6a0140d04291eceef913ffc272": "carol"
-        },
-        "breakpoints": {}
-      },
       "testIncreaseAllowanceAbi()": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": null,
         "logs": [
@@ -3428,7 +3404,7 @@
         "breakpoints": {}
       },
       "testIncreaseAllowanceDoubleSpend(uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
@@ -3526,7 +3502,7 @@
         "breakpoints": {}
       },
       "testIncreaseAllowanceSignature()": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": null,
         "logs": [
@@ -3553,13 +3529,13 @@
         "breakpoints": {}
       },
       "testPositiveDecreaseAllowanceAllowsPositiveTransferFrom(uint256,uint256,uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
             "sender": null,
             "addr": null,
-            "calldata": "0x7ee38b8000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000",
+            "calldata": "0x7ee38b80000000000000000000000000000000000000000000000000000000000000aa0400000000000000000000000000000000000000000000000000000000000006a60000000000000000000000000000000000000000000000000000000000003e7b0000000000000000000000000000000000000000000000000000000000005cc60000000000000000000000000000000000000000000000000000000000000078",
             "signature": null,
             "contract_name": null,
             "traces": null
@@ -3573,7 +3549,7 @@
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6",
               "0x0000000000000000000000001d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e"
             ],
-            "data": "0x0000000000000000000000000000000000000000000000000000000000000004"
+            "data": "0x000000000000000000000000000000000000000000000000000000000000aa04"
           },
           {
             "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
@@ -3624,7 +3600,7 @@
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6",
               "0x0000000000000000000000001d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e"
             ],
-            "data": "0x0000000000000000000000000000000000000000000000000000000000000001"
+            "data": "0x0000000000000000000000000000000000000000000000000000000000003e7b"
           }
         ],
         "decoded_logs": [
@@ -3651,13 +3627,13 @@
         "breakpoints": {}
       },
       "testPositiveDecreaseAllowanceAllowsZeroTransferFrom(uint256,uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
             "sender": null,
             "addr": null,
-            "calldata": "0x0e558b8f000000000000000000000000000000000000000000000000000019985a5b19590000000000000000000000000000000000000000000000000000000000003194000000000000000000000000000000000000000000000000000000000000a66d0000000000000000000000000000000000000000000000000000000000004387",
+            "calldata": "0x0e558b8f000000000000000000000000000000000000000000000000000000000000271100000000000000000000000000000000000000000000000000000000000026d3000000000000000000000000000000000000000000000000000000000000a66d50bb669a95c7b50b7e8a6f09454034b2b14cf2b85c730dca9a539ca82cb6e375",
             "signature": null,
             "contract_name": null,
             "traces": null
@@ -3671,7 +3647,7 @@
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6",
               "0x0000000000000000000000001d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e"
             ],
-            "data": "0x000000000000000000000000000000000000000000000000000019985a5b1959"
+            "data": "0x0000000000000000000000000000000000000000000000000000000000002711"
           },
           {
             "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
@@ -3749,7 +3725,7 @@
         "breakpoints": {}
       },
       "testPositiveDecreaseAllowanceEventEmission(uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": "Expected an emit, but no logs were emitted afterward. You might have mismatched events or not enough events were emitted.",
         "counterexample": {
           "Single": {
@@ -3812,13 +3788,13 @@
         "breakpoints": {}
       },
       "testPositiveIncreaseAllowanceAllowsPositiveTransferFrom(uint256,uint256,uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
             "sender": null,
             "addr": null,
-            "calldata": "0x58695f5600000000000000000000000000000000000000000000000000000000000002b8000000000000000000000000000000000000000000000000000000000000027200000000000000000000000000000000000000000000000000000000000022df7cd332d19b93bcabe3cce7ca0c18a052f57e5fd03b4758a09f30f5ddc4b22ec60000000000000000000000000000000000000000000000000000000000001e21",
+            "calldata": "0x58695f56000000000000000000000000000000000000000000000000000000000000416100000000000000000000000000000000000000000000000000000000000013820000000000000000000000000000000000000000000000000000000000002f8b50bb669a95c7b50b7e8a6f09454034b2b14cf2b85c730dca9a539ca82cb6e357000000000000000000000000000000000000000000000808080808081319599c",
             "signature": null,
             "contract_name": null,
             "traces": null
@@ -3832,7 +3808,7 @@
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6",
               "0x0000000000000000000000001d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e"
             ],
-            "data": "0x0000000000000000000000000000000000000000000000000000000000001e21"
+            "data": "0x000000000000000000000000000000000000000000000808080808081319599c"
           },
           {
             "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
@@ -3883,7 +3859,7 @@
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6",
               "0x0000000000000000000000001d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e"
             ],
-            "data": "0x0000000000000000000000000000000000000000000000000000000000000272"
+            "data": "0x0000000000000000000000000000000000000000000000000000000000001382"
           }
         ],
         "decoded_logs": [
@@ -3910,7 +3886,7 @@
         "breakpoints": {}
       },
       "testPositiveIncreaseAllowanceAllowsZeroTransferFrom(uint256,uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
@@ -4008,7 +3984,7 @@
         "breakpoints": {}
       },
       "testPositiveIncreaseAllowanceEventEmission(uint8,uint8,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": "Expected an emit, but no logs were emitted afterward. You might have mismatched events or not enough events were emitted.",
         "counterexample": {
           "Single": {
@@ -4062,13 +4038,13 @@
         "breakpoints": {}
       },
       "testPositiveSelfDecreaseAllowance(uint256,uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
             "sender": null,
             "addr": null,
-            "calldata": "0xb7973d8050bb669a95c7b50b7e8a6f09454034b2b14cf2b85c730dca9a539ca82cb6e3b300000000000000000000000000000000000000000000000000000000000032b20000000000000000000000000000000000000000000000000000000000006e240000000000000000000000000000000000000000000000000000000000001f48",
+            "calldata": "0xb7973d800000000000000000000000000000000000000000000000000000000000000014000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000",
             "signature": null,
             "contract_name": null,
             "traces": null
@@ -4082,7 +4058,7 @@
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6",
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6"
             ],
-            "data": "0x50bb669a95c7b50b7e8a6f09454034b2b14cf2b85c730dca9a539ca82cb6e3b3"
+            "data": "0x0000000000000000000000000000000000000000000000000000000000000014"
           },
           {
             "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
@@ -4138,21 +4114,21 @@
             "topics": [
               "0xb2de2fbe801a0df6c0cbddfd448ba3c41d48a040ca35c56c8196ef0fcae721a8"
             ],
-            "data": "0x000000000000000000000000000000000000000000000000000000000000004050bb669a95c7b50b7e8a6f09454034b2b14cf2b85c730dca9a539ca82cb6e3b3000000000000000000000000000000000000000000000000000000000000000a2020202020204c65667400000000000000000000000000000000000000000000"
+            "data": "0x00000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000014000000000000000000000000000000000000000000000000000000000000000a2020202020204c65667400000000000000000000000000000000000000000000"
           },
           {
             "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
             "topics": [
               "0xb2de2fbe801a0df6c0cbddfd448ba3c41d48a040ca35c56c8196ef0fcae721a8"
             ],
-            "data": "0x000000000000000000000000000000000000000000000000000000000000004050bb669a95c7b50b7e8a6f09454034b2b14cf2b85c730dca9a539ca82cb6b101000000000000000000000000000000000000000000000000000000000000000a2020202020526967687400000000000000000000000000000000000000000000"
+            "data": "0x00000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000013000000000000000000000000000000000000000000000000000000000000000a2020202020526967687400000000000000000000000000000000000000000000"
           }
         ],
         "decoded_logs": [
           "Error: Assertion Failed",
           "Error: a == b not satisfied [uint]",
-          "      Left: 36516136433507714556481507284757523525550975291680945358964353894568634540979",
-          "     Right: 36516136433507714556481507284757523525550975291680945358964353894568634528001"
+          "      Left: 20",
+          "     Right: 19"
         ],
         "kind": {
           "Fuzz": {
@@ -4175,13 +4151,13 @@
         "breakpoints": {}
       },
       "testPositiveSelfDecreaseAllowanceTransferFrom(uint256,uint256,uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
             "sender": null,
             "addr": null,
-            "calldata": "0x9196b91300000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "calldata": "0x9196b91300000000000000000000000000000000000000000000000000000000000002fa0000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
             "signature": null,
             "contract_name": null,
             "traces": null
@@ -4195,7 +4171,7 @@
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6",
               "0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6"
             ],
-            "data": "0x0000000000000000000000000000000000000000000000000000000000000003"
+            "data": "0x00000000000000000000000000000000000000000000000000000000000002fa"
           },
           {
             "address": "0x34a1d3fff3958843c43ad80f30b94c510645c316",
@@ -4273,7 +4249,7 @@
         "breakpoints": {}
       },
       "testPositiveSelfIncreaseAllowance(uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
@@ -4377,13 +4353,13 @@
         "breakpoints": {}
       },
       "testPositiveSelfIncreaseAllowanceTransferFrom(uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
             "sender": null,
             "addr": null,
-            "calldata": "0xc1b7f0ee0000000000000000000000000000000000000000000000000000000000001e2150bb669a95c7b50b7e8a6f09454034b2b14cf2b85c730dca9a539ca82cb6e3bb50bb669a95c7b50b7e8a6f09454034b2b14cf2b85c730dca9a539ca82cb6e376",
+            "calldata": "0xc1b7f0ee00000000000000000000000000000000000000000000000000000000000000d3202276696577222c0a202020202274797065223a202266756e6374696f6e220a0000000000000000000000000000000000000000000000000000000000001c75",
             "signature": null,
             "contract_name": null,
             "traces": null
@@ -4465,7 +4441,7 @@
         "breakpoints": {}
       },
       "testZeroDecreaseAllowanceEventEmission(uint8,uint8)": {
-        "success": false,
+        "status": "Failure",
         "reason": "Expected an emit, but no logs were emitted afterward. You might have mismatched events or not enough events were emitted.",
         "counterexample": {
           "Single": {
@@ -4519,7 +4495,7 @@
         "breakpoints": {}
       },
       "testZeroIncreaseAllowanceEventEmission(uint8,uint8)": {
-        "success": false,
+        "status": "Failure",
         "reason": "Expected an emit, but no logs were emitted afterward. You might have mismatched events or not enough events were emitted.",
         "counterexample": {
           "Single": {
@@ -4573,7 +4549,7 @@
         "breakpoints": {}
       },
       "testZeroSelfDecreaseAllowance(uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
@@ -4662,7 +4638,7 @@
         "breakpoints": {}
       },
       "testZeroSelfDecreaseAllowanceTransferFrom(uint256,uint256,uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
@@ -4760,7 +4736,7 @@
         "breakpoints": {}
       },
       "testZeroSelfIncreaseAllowance(uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
@@ -4840,13 +4816,13 @@
         "breakpoints": {}
       },
       "testZeroSelfIncreaseAllowanceTransferFrom(uint256,uint256)": {
-        "success": false,
+        "status": "Failure",
         "reason": null,
         "counterexample": {
           "Single": {
             "sender": null,
             "addr": null,
-            "calldata": "0x7bfe1eb80000000000000000000000000000000000000000000000000000000000000f8d000000000000000000000000000000000000000000000000000000000000377d",
+            "calldata": "0x7bfe1eb800000000000000000000000000000000000000000000000000000000000045b10000000000000000000000000000000000000000000000000000000000004767",
             "signature": null,
             "contract_name": null,
             "traces": null
@@ -4932,4 +4908,3 @@
     "warnings": []
   }
 }
-
