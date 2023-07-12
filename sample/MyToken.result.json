@@ -2562,7 +2562,7 @@
         },
         "breakpoints": {}
       },
-      "testReverstOnInfiniteApproval(uint256,uint256)": {
+      "testRevertsOnInfiniteApproval(uint256,uint256)": {
         "status": "Failure",
         "reason": null,
         "counterexample": {

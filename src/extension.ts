@@ -5,7 +5,7 @@
 
 import * as vscode from 'vscode';
 import { TestCase, testData, TestFile } from './testTree';
-import { readFile } from 'fs/promises';
+import { exec, execSync } from "child_process";
 import * as YAML from 'js-yaml';
 import { readFileSync } from 'fs';
 import { CodelensProvider } from './CodelensProvider';
@@ -20,10 +20,10 @@ export async function activate(context: vscode.ExtensionContext) {
 	const ctrl = vscode.tests.createTestController('ERCxtests', 'ERCx Tests');
 	context.subscriptions.push(ctrl);
 
-	vscode.commands.registerCommand("ercx.codelensAction", (fileName: vscode.Uri, ctrctName: string, range:vscode.Range) => {
+	vscode.commands.registerCommand("ercx.codelensAction", (document: vscode.TextDocument, ctrctName: string, range:vscode.Range) => {
 		//vscode.window.showInformationMessage(`CodeLens action clicked with args=${fileName} ${ctrctName} ${range}`);
-		console.log(`CodeLens action clicked with args=${fileName} ${ctrctName} ${range}`);
-		addERCxTests(ctrl, fileName, range);
+		console.log(`CodeLens action clicked with args=${document.uri} ${ctrctName} ${range}`);
+		addERCxTests(ctrl, document, range);
 	});
 
 
@@ -125,7 +125,7 @@ function startWatchingWorkspace(controller: vscode.TestController, fileChangedEm
 	});
 }
 
-function addERCxTests(controller: vscode.TestController, fileName:vscode.Uri, range:vscode.Range) {
+function addERCxTests(controller: vscode.TestController, document: vscode.TextDocument, range:vscode.Range) {
 	const existing = controller.items.get("ERCx");
 	if (existing) {
 		return { file: existing, data: testData.get(existing) as TestFile };
@@ -134,12 +134,15 @@ function addERCxTests(controller: vscode.TestController, fileName:vscode.Uri, ra
 	const ercxYaml = YAML.load(readFileSync("/home/radu/work/ercx/ercx/src/ercx/standards/ERC20.yaml", "utf8")) as any;
 	console.log(ercxYaml['levels']);
 
-	const ercxRoot = controller.createTestItem("ERCx", fileName.path.split('/').pop()! + " - ERC20 Tests", fileName);
+	const docTokens = getSolidityTokenLoc(document);
+	console.log("docTokens:" + docTokens);
+
+	const ercxRoot = controller.createTestItem("ERCx", document.uri.path.split('/').pop()! + " - ERC20 Tests", document.uri);
 	ercxRootSet.add(ercxRoot);
 	const levels = new Map<string, vscode.TestItem>;
 	for (const level of ercxYaml.levels) {
 		const Level:string = level[0].toUpperCase() + level.slice(1); // capitalize first letter
-		const ti = controller.createTestItem(level, Level, fileName);
+		const ti = controller.createTestItem(level, Level, document.uri);
 		ti.range = range;
 		levels.set(level, ti);
 		ercxRoot.children.add(ti);
@@ -150,10 +153,10 @@ function addERCxTests(controller: vscode.TestController, fileName:vscode.Uri, ra
 			continue;
 		const et = new ERCxTest(k, (v as any)['level'], (v as any)['property'], (v as any)['feedback'], (v as any)['expected'], (v as any)['categories']);
 		ercxTests.set(k, et);
-		const ti = controller.createTestItem(k, et.Name, fileName);
-		ti.range = range;
-		const lvl = (v as any)['level'];
-		const pti = levels.get(lvl);
+		const ti = controller.createTestItem(k, et.Name, document.uri);
+		// find a token that fits one of the categories
+		ti.range = docTokens.get(et.categories.find(c => docTokens.has(c)) ?? "\n") ?? range;
+		const pti = levels.get(et.level);
 		pti?.children.add(ti);
 	}
 
@@ -176,5 +179,33 @@ class ERCxTest {
 			public readonly expected: string,
 			public readonly categories: string[]) {
 				this.Name = name.slice(4);
+	}
+}
+
+function getSolidityTokenLoc(document:vscode.TextDocument):Map<string, vscode.Range> {
+    const fileAst = JSON.parse(execSync(`solc --ast-compact-json ${document.uri.path}`).toString().split(new RegExp(`======= \\S+ =======`))[1]);
+	console.log(fileAst);
+	const tokenLoc = new Map<string, vscode.Range>();
+	getSolidityTokenLoc2(document, fileAst, tokenLoc);
+	return tokenLoc;
+}
+
+function getSolidityTokenLoc2(document:vscode.TextDocument, jsonObj:any, tokenLoc:Map<string, vscode.Range>) {
+	if ((jsonObj['nodeType'] ?? "").endsWith("Definition") || (jsonObj['nodeType'] ?? "").endsWith("Declaration")) {
+		const name = jsonObj['name'];
+		const src = jsonObj['src'];
+		const srcParts = src.split(':');
+		const offset = parseInt(srcParts[0]);
+		const len = parseInt(srcParts[1]);
+		const range = new vscode.Range(document.positionAt(offset), document.positionAt(offset + len));
+		tokenLoc.set(name, range);
+	}
+	for (const [k, v] of Object.entries(jsonObj)) {
+		//console.log(typeof v);
+		if (Array.isArray(v)) {
+			v.forEach((child:any) => getSolidityTokenLoc2(document, child, tokenLoc));
+		} else if (typeof v === 'object') {
+			getSolidityTokenLoc2(document, v, tokenLoc);
+		}
 	}
 }
