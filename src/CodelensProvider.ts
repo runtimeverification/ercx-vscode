@@ -32,7 +32,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 				const range = document.getWordRangeAtPosition(position, new RegExp(this.regex));
 				if (range) {
 					this.codeLenses.push(new vscode.CodeLens(range, {
-						title: "ERCx run tests",
+						title: "ERCx generate tests",
 						tooltip: "Generate and run tests for this contract",
 						command: "ercx.codelensAction",
 						arguments: [document, matches[1], range]

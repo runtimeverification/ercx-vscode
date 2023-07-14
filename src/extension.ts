@@ -1,4 +1,5 @@
 // ercx -gen -gensource -tokpath ERC20Basic.sol -tokclass ERC20Basic -fd . -o test -finit -json -ot testPositiveTransferEventEmission -exec 20
+// time ercx -gen -gensource -tokpath MyToken.sol -tokclass MyToken -fd fdDir -o test -finit -json -exec 20
 // run on ERC20Basic.sol
 // /home/radu/work/ercx/ercx/src/ercx/standards/ERC20.yaml
 // make shell - to enter the ercx shell
@@ -7,8 +8,9 @@ import * as vscode from 'vscode';
 import { TestCase, testData, TestFile } from './testTree';
 import { exec, execSync } from "child_process";
 import * as YAML from 'js-yaml';
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { CodelensProvider } from './CodelensProvider';
+import * as path from "path";
 
 export const ercxRootSet = new Set<vscode.TestItem>();
 export const ercxTests = new Map<string, ERCxTest>();
@@ -41,6 +43,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 		// try to find the result file if not found then run ERCx
 		const resultFile:string = queue.at(0)?.uri?.fsPath.toString().substring(0, queue.at(0)?.uri?.fsPath.toString().lastIndexOf(".")) + ".result.json";
+		//TODO: const ercxRunRes:string = execERCxAndGetResult(queue.at(0)?.uri?.fsPath.toString() ?? "", "MyToken");
 		const res = JSON.parse(readFileSync(resultFile, "utf8"));
 
 		// For every test that was queued, try to run it. Call run.passed() or run.failed().
@@ -131,7 +134,10 @@ function addERCxTests(controller: vscode.TestController, document: vscode.TextDo
 		return { file: existing, data: testData.get(existing) as TestFile };
 	}
 
-	const ercxYaml = YAML.load(readFileSync("/home/radu/work/ercx/ercx/src/ercx/standards/ERC20.yaml", "utf8")) as any;
+	const ercxYamlPath = path.join(vscode.workspace.getConfiguration('ercx').get('ercxPath') ?? "work/ercx/ercx", "src/ercx/standards/ERC20.yaml");
+	console.log("Exists " + ercxYamlPath + ": " + existsSync(ercxYamlPath));
+	//console.log(execSync("pwd", {"cwd":ercxYamlPath}).toString());
+	const ercxYaml = YAML.load(readFileSync(ercxYamlPath, "utf8")) as any;
 	console.log(ercxYaml['levels']);
 
 	const docTokens = getSolidityTokenLoc(document);
@@ -151,11 +157,12 @@ function addERCxTests(controller: vscode.TestController, document: vscode.TextDo
 	for (const [k, v] of Object.entries(ercxYaml.tests)) {
 		if (k == "testAbiFoundInEtherscan" || k == "testAddressIsImplementationContract") // these tests only make sense for deployed contracts not source code
 			continue;
-		const et = new ERCxTest(k, (v as any)['level'], (v as any)['property'], (v as any)['feedback'], (v as any)['expected'], (v as any)['categories']);
+		const et = new ERCxTest(k, (v as any)['level'], (v as any)['property'], (v as any)['feedback'], (v as any)['expected'], (v as any)['concerned_function'], (v as any)['categories']);
 		ercxTests.set(k, et);
 		const ti = controller.createTestItem(k, et.Name, document.uri);
 		// find a token that fits one of the categories
-		ti.range = docTokens.get(et.categories.find(c => docTokens.has(c)) ?? "\n") ?? range;
+		//ti.range = docTokens.get(et.categories.find(c => docTokens.has(c)) ?? "\n") ?? range;
+		ti.range = docTokens.get(et.concerned_function) ?? range;
 		const pti = levels.get(et.level);
 		pti?.children.add(ti);
 	}
@@ -177,6 +184,7 @@ class ERCxTest {
 			public readonly property: string,
 			public readonly feedback: string,
 			public readonly expected: string,
+			public readonly concerned_function: string,
 			public readonly categories: string[]) {
 				this.Name = name.slice(4);
 	}
@@ -208,4 +216,18 @@ function getSolidityTokenLoc2(document:vscode.TextDocument, jsonObj:any, tokenLo
 			getSolidityTokenLoc2(document, v, tokenLoc);
 		}
 	}
+}
+
+function execERCxAndGetResult(document:string, contractName:string):string {
+	const ercxPath:string = path.join(vscode.workspace.getConfiguration('ercx').get('ercxPath') ?? "../../ercx/ercx");
+	// ercx -gen -gensource -nologo -tokpath MyToken.sol -tokclass MyToken -fd fdDir -o test -finit -json -exec 20
+	const cmd = `python -m src.ercx.ercx -gen -gensource -nologo -tokpath ${document} -tokclass ${contractName} -fd ${contractName}fdDir -o test -finit -json -exec 20`;
+	//const cmd = `ls -al`;
+	console.log(cmd);
+	const res = execSync(cmd, {cwd: ercxPath}).toString();
+	console.log(res);
+	if (existsSync(`${ercxPath}/report-local.json`)) {
+		return readFileSync(`${ercxPath}/report-local.json`).toString();
+	}
+	return "";
 }

@@ -21,6 +21,19 @@
 		"workspaceContains:*.sol"
 	],
 	"main": "./out/extension.js",
+	"contributes": {
+        "configuration": {
+            "type": "object",
+            "title": "ERCx configuration",
+            "properties": {
+                "ercx.ercxPath": {
+                    "type": "string",
+                    "default": "work/ercx/ercx",
+                    "description": "Path to the ERCx working folder. Where you find the Makefile."
+                }
+            }
+        }
+    },
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
