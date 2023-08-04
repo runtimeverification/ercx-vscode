@@ -51,5 +51,8 @@
 		"eslint": "^8.26.0",
 		"typescript": "^5.0.2",
 		"vscode-dts": "^0.3.3"
+	},
+	"dependencies": {
+		"cross-fetch": "^4.0.0"
 	}
 }

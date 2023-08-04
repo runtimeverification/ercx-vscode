@@ -11,6 +11,7 @@ import * as YAML from 'js-yaml';
 import { existsSync, readFileSync } from 'fs';
 import { CodelensProvider } from './CodelensProvider';
 import * as path from "path";
+import fetch from 'cross-fetch';
 
 export const ercxRootSet = new Set<vscode.TestItem>();
 export const ercxTests = new Map<string, ERCxTest>();
@@ -45,6 +46,26 @@ export async function activate(context: vscode.ExtensionContext) {
 		const resultFile:string = queue.at(0)?.uri?.fsPath.toString().substring(0, queue.at(0)?.uri?.fsPath.toString().lastIndexOf(".")) + ".result.json";
 		//TODO: const ercxRunRes:string = execERCxAndGetResult(queue.at(0)?.uri?.fsPath.toString() ?? "", "MyToken");
 		const res = JSON.parse(readFileSync(resultFile, "utf8"));
+
+
+		const apiRes = fetch("https://ercx.runtimeverification.com/api/v1/reports", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body:JSON.stringify({
+				"sourceCodeFile": {
+					"name": "MyToken.sol",
+					"content": "contract MyToken { ... }",
+					"path": "contracts/MyToken.sol"
+				},
+				"tokenClass": "MyToken"
+			})
+		});
+		const json = apiRes.then(response => {
+			console.log(response);
+		});
+		console.log(json);
 
 		// For every test that was queued, try to run it. Call run.passed() or run.failed().
 		// The `TestMessage` can contain extra information, like a failing location or
