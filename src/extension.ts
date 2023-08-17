@@ -44,8 +44,10 @@ export async function activate(context: vscode.ExtensionContext) {
 
 		// try to find the result file if not found then run ERCx
 		const resultFile:string = queue.at(0)?.uri?.fsPath.toString().substring(0, queue.at(0)?.uri?.fsPath.toString().lastIndexOf(".")) + ".result.json";
+		const filePath:string = queue.at(0)?.uri?.fsPath.toString() + "";
+		const fileContent:string = readFileSync(filePath, "utf8");
 		//TODO: const ercxRunRes:string = execERCxAndGetResult(queue.at(0)?.uri?.fsPath.toString() ?? "", "MyToken");
-		const res = JSON.parse(readFileSync(resultFile, "utf8"));
+		let res = JSON.parse("{}"); //JSON.parse(readFileSync(resultFile, "utf8"));
 
 
 		const apiRes = fetch("https://ercx.runtimeverification.com/api/v1/reports", {
@@ -55,54 +57,65 @@ export async function activate(context: vscode.ExtensionContext) {
 			},
 			body:JSON.stringify({
 				"sourceCodeFile": {
-					"name": "MyToken.sol",
-					"content": "contract MyToken { ... }",
-					"path": "contracts/MyToken.sol"
+					"name": path.parse(filePath).base,
+					"content": fileContent,
+					"path": queue.at(0)?.uri?.fsPath.toString()
 				},
 				"tokenClass": "MyToken"
 			})
-		});
-		const json = apiRes.then(response => {
-			console.log(response);
-		});
-		console.log(json);
+		}).then(response => {
+			console.log(response.body);
+			if (response.ok) {
+				const x = response.json();
+				x.then(body => {
+					if (body['status'] == "DONE") {
+						const report = JSON.parse(body['json']);
+						console.log("report: " + report);
+						res = report;
+						// For every test that was queued, try to run it. Call run.passed() or run.failed().
+						// The `TestMessage` can contain extra information, like a failing location or
+						// a diff output. But here we'll just give it a textual message.
+						while (queue.length > 0 && !cancellation.isCancellationRequested) {
+							const test = queue.pop()!;
 
-		// For every test that was queued, try to run it. Call run.passed() or run.failed().
-		// The `TestMessage` can contain extra information, like a failing location or
-		// a diff output. But here we'll just give it a textual message.
-		while (queue.length > 0 && !cancellation.isCancellationRequested) {
-			const test = queue.pop()!;
-
-			// Skip tests the user asked to exclude
-			if (request.exclude?.includes(test)) {
-				continue;
-			}
-			console.log("test:" + test.label);
-			if (test.children.size != 0) {
-				test.children.forEach(test => queue.push(test));
-			} else {
-				for (const [k, v] of Object.entries(res)) {
-					//console.log(k + " " + v);
-					for (const [k1, v1] of Object.entries((v as any)['test_results'])) {
-						const tresult = v1 as any;
-						//console.log(k1 + " " + tresult);
-						if (k1.startsWith(test.id + "(")) {
-							if (tresult['status'] == "Success") {
-								run.passed(test, 1);
+							// Skip tests the user asked to exclude
+							if (request.exclude?.includes(test)) {
+								continue;
+							}
+							console.log("test:" + test.label);
+							if (test.children.size != 0) {
+								test.children.forEach(test => queue.push(test));
 							} else {
-								const feedback:string = ercxTests.get(test.id)?.feedback ?? "error";
-								const expected:string = ercxTests.get(test.id)?.property ?? "error";
-								run.failed(test, vscode.TestMessage.diff(new vscode.MarkdownString(feedback), expected, feedback), 1);
-								//run.failed(test, new vscode.TestMessage(new vscode.MarkdownString(feedback)), 1); // this can take Markdown as input
+								for (const [k, v] of Object.entries(res)) {
+									//console.log(k + " " + v);
+									for (const [k1, v1] of Object.entries((v as any)['test_results'])) {
+										const tresult = v1 as any;
+										//console.log(k1 + " " + tresult);
+										if (k1.startsWith(test.id + "(")) {
+											if (tresult['status'] == "Success") {
+												run.passed(test, 1);
+											} else {
+												const feedback:string = ercxTests.get(test.id)?.feedback ?? "error";
+												const expected:string = ercxTests.get(test.id)?.property ?? "error";
+												run.failed(test, vscode.TestMessage.diff(new vscode.MarkdownString(feedback), expected, feedback), 1);
+												//run.failed(test, new vscode.TestMessage(new vscode.MarkdownString(feedback)), 1); // this can take Markdown as input
+											}
+										}
+									}
+								}
 							}
 						}
-					}
-				}
-			}
-		}
 
-		// Make sure to end the run after all tests have been executed:
-		run.end();
+					} else {
+						console.log("Status: " + body['status']);
+					}
+					// Make sure to end the run after all tests have been executed:
+					run.end();
+				});
+			} else
+				console.log("response !OK");
+		}).catch(error => console.log("API error: " + error));
+		console.log("Interpreting result" + res);
 	};
 
 	const startTestRun = (request: vscode.TestRunRequest) => {
