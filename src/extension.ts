@@ -7,14 +7,14 @@
 import * as vscode from 'vscode';
 import { TestCase, testData, TestFile } from './testTree';
 import { exec, execSync } from "child_process";
-import * as YAML from 'js-yaml';
 import { existsSync, readFileSync } from 'fs';
 import { CodelensProvider } from './CodelensProvider';
 import * as path from "path";
 import fetch from 'cross-fetch';
 
 export const ercxRootSet = new Set<vscode.TestItem>();
-export const ercxTests = new Map<string, ERCxTest>();
+export const ercxTestsAPI = new Map<string, ERCxTestAPI>();
+export const ercxAPIUri:string = vscode.workspace.getConfiguration('ercx').get('ercxAPIUri') ?? "https://ercx.runtimeverification.com/api/v1/";
 
 export async function activate(context: vscode.ExtensionContext) {
 	const codelensProvider = new CodelensProvider();
@@ -26,7 +26,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand("ercx.codelensAction", (document: vscode.TextDocument, ctrctName: string, range:vscode.Range) => {
 		//vscode.window.showInformationMessage(`CodeLens action clicked with args=${fileName} ${ctrctName} ${range}`);
 		console.log(`CodeLens action clicked with args=${document.uri} ${ctrctName} ${range}`);
-		addERCxTests(ctrl, document, range);
+		addERCxTestsAPI(ctrl, document, range);
 	});
 
 
@@ -49,13 +49,11 @@ export async function activate(context: vscode.ExtensionContext) {
 		//TODO: const ercxRunRes:string = execERCxAndGetResult(queue.at(0)?.uri?.fsPath.toString() ?? "", "MyToken");
 		let res = JSON.parse("{}"); //JSON.parse(readFileSync(resultFile, "utf8"));
 
-
-		const apiRes = fetch("https://ercx.runtimeverification.com/api/v1/reports", {
+		const apiRes = fetch(ercxAPIUri + "reports", {
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
+			headers: { "Content-Type": "application/json" },
 			body:JSON.stringify({
+				"standard": "ERC20",
 				"sourceCodeFile": {
 					"name": path.parse(filePath).base,
 					"content": fileContent,
@@ -95,8 +93,8 @@ export async function activate(context: vscode.ExtensionContext) {
 											if (tresult['status'] == "Success") {
 												run.passed(test, 1);
 											} else {
-												const feedback:string = ercxTests.get(test.id)?.feedback ?? "error";
-												const expected:string = ercxTests.get(test.id)?.property ?? "error";
+												const feedback:string = ercxTestsAPI.get(test.id)?.feedback ?? "error";
+												const expected:string = ercxTestsAPI.get(test.id)?.property ?? "error";
 												run.failed(test, vscode.TestMessage.diff(new vscode.MarkdownString(feedback), expected, feedback), 1);
 												//run.failed(test, new vscode.TestMessage(new vscode.MarkdownString(feedback)), 1); // this can take Markdown as input
 											}
@@ -105,29 +103,20 @@ export async function activate(context: vscode.ExtensionContext) {
 								}
 							}
 						}
-
 					} else {
 						console.log("Status: " + body['status']);
 					}
 					// Make sure to end the run after all tests have been executed:
 					run.end();
 				});
-			} else
+			} else {
 				console.log("response !OK");
-		}).catch(error => console.log("API error: " + error));
+				// Make sure to end the run after all tests have been executed:
+				run.end();
+			}
+		}, err => console.log("Report error: " + err))
+		.catch(error => console.log("API error: " + error));
 		console.log("Interpreting result" + res);
-	};
-
-	const startTestRun = (request: vscode.TestRunRequest) => {
-		const queue: { test: vscode.TestItem; data: TestCase }[] = [];
-		const run = ctrl.createTestRun(request);
-		const res = JSON.parse(readFileSync("/home/radu/work/ercx-vscode/results/result.json", "utf8"));
-		console.log("results:");
-		console.log(res);
-
-
-
-		run.end();
 	};
 
 	ctrl.refreshHandler = async () => {
@@ -162,65 +151,73 @@ function startWatchingWorkspace(controller: vscode.TestController, fileChangedEm
 	});
 }
 
-function addERCxTests(controller: vscode.TestController, document: vscode.TextDocument, range:vscode.Range) {
+function addERCxTestsAPI(controller: vscode.TestController, document: vscode.TextDocument, range:vscode.Range) {
 	const existing = controller.items.get("ERCx");
 	if (existing) {
 		return { file: existing, data: testData.get(existing) as TestFile };
 	}
 
-	const ercxYamlPath = path.join(vscode.workspace.getConfiguration('ercx').get('ercxPath') ?? "work/ercx/ercx", "src/ercx/standards/ERC20.yaml");
-	console.log("Exists " + ercxYamlPath + ": " + existsSync(ercxYamlPath));
-	//console.log(execSync("pwd", {"cwd":ercxYamlPath}).toString());
-	const ercxYaml = YAML.load(readFileSync(ercxYamlPath, "utf8")) as any;
-	console.log(ercxYaml['levels']);
+	// fetch list of tests from the API
+	const apiRes = fetch(ercxAPIUri + "property-tests?standard=ERC20", {
+			method: "GET",
+			headers: { "Content-Type": "application/json"}
+		}).then(response => {
+			console.log(response.body);
+			if (response.ok) {
+				const x = response.json();
+				x.then(body => {
+					const apitsts = body as ERCxTestAPI[];
+					for (const tst of apitsts)
+						ercxTestsAPI.set(tst.name, tst);
+					console.log(ercxTestsAPI);
+					addERCxTestsAPI2(controller, document, range);
+				});
+			}
+		}, err => console.log("Property tests fetch error: " + err))
+		.catch(error => console.log("API error: " + error));
+}
 
+// construct TestItems based on the test list from the API
+function addERCxTestsAPI2(controller: vscode.TestController, document: vscode.TextDocument, range:vscode.Range) {
 	const docTokens = getSolidityTokenLoc(document);
 	console.log("docTokens:" + docTokens);
 
 	const ercxRoot = controller.createTestItem("ERCx", document.uri.path.split('/').pop()! + " - ERC20 Tests", document.uri);
 	ercxRootSet.add(ercxRoot);
 	const levels = new Map<string, vscode.TestItem>;
-	for (const level of ercxYaml.levels) {
-		const Level:string = level[0].toUpperCase() + level.slice(1); // capitalize first letter
-		const ti = controller.createTestItem(level, Level, document.uri);
-		ti.range = range;
-		levels.set(level, ti);
-		ercxRoot.children.add(ti);
-	}
 
-	for (const [k, v] of Object.entries(ercxYaml.tests)) {
-		if (k == "testAbiFoundInEtherscan" || k == "testAddressIsImplementationContract") // these tests only make sense for deployed contracts not source code
+	for (const et of ercxTestsAPI.values()) {
+		if (et.name == "testAbiFoundInEtherscan" || et.name == "testAddressIsImplementationContract") // these tests only make sense for deployed contracts not source code
 			continue;
-		const et = new ERCxTest(k, (v as any)['level'], (v as any)['property'], (v as any)['feedback'], (v as any)['expected'], (v as any)['concerned_function'], (v as any)['categories']);
-		ercxTests.set(k, et);
-		const ti = controller.createTestItem(k, et.Name, document.uri);
+		const ti = controller.createTestItem(et.name, et.name.slice(4), document.uri);
 		// find a token that fits one of the categories
-		//ti.range = docTokens.get(et.categories.find(c => docTokens.has(c)) ?? "\n") ?? range;
-		ti.range = docTokens.get(et.concerned_function) ?? range;
+		ti.range = docTokens.get(et.concernedFunctions[0]) ?? range;
+
+		if (!levels.has(et.level)) { // first time finding a level?
+			const Level:string = et.level[0].toUpperCase() + et.level.slice(1); // capitalize first letter
+			const lti = controller.createTestItem(et.level, Level, document.uri);
+			lti.range = range;
+			levels.set(et.level, lti);
+			ercxRoot.children.add(lti);
+		}
 		const pti = levels.get(et.level);
 		pti?.children.add(ti);
 	}
 
 	controller.items.add(ercxRoot);
-
 	const data = new TestFile();
 	testData.set(ercxRoot, data);
-
 	//ercxRoot.canResolveChildren = true;
-
-	return { ercxRoot, data };
 }
-
-class ERCxTest {
-	public readonly Name: string;
-	constructor(public readonly name: string,
+class ERCxTestAPI {
+	constructor(public readonly name:string,
+			public readonly version:number,
 			public readonly level:string,
-			public readonly property: string,
-			public readonly feedback: string,
-			public readonly expected: string,
-			public readonly concerned_function: string,
+			public readonly property:string,
+			public readonly feedback:string,
+			public readonly expected:string,
+			public readonly concernedFunctions:string[],
 			public readonly categories: string[]) {
-				this.Name = name.slice(4);
 	}
 }
 
@@ -250,18 +247,4 @@ function getSolidityTokenLoc2(document:vscode.TextDocument, jsonObj:any, tokenLo
 			getSolidityTokenLoc2(document, v, tokenLoc);
 		}
 	}
-}
-
-function execERCxAndGetResult(document:string, contractName:string):string {
-	const ercxPath:string = path.join(vscode.workspace.getConfiguration('ercx').get('ercxPath') ?? "../../ercx/ercx");
-	// ercx -gen -gensource -nologo -tokpath MyToken.sol -tokclass MyToken -fd fdDir -o test -finit -json -exec 20
-	const cmd = `python -m src.ercx.ercx -gen -gensource -nologo -tokpath ${document} -tokclass ${contractName} -fd ${contractName}fdDir -o test -finit -json -exec 20`;
-	//const cmd = `ls -al`;
-	console.log(cmd);
-	const res = execSync(cmd, {cwd: ercxPath}).toString();
-	console.log(res);
-	if (existsSync(`${ercxPath}/report-local.json`)) {
-		return readFileSync(`${ercxPath}/report-local.json`).toString();
-	}
-	return "";
 }

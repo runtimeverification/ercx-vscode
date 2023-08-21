@@ -6,7 +6,7 @@
 	"publisher": "RuntimeVerification",
 	"private": true,
 	"license": "BSD-3",
-	"repository": "https://github.com/Microsoft/vscode-extension-samples",
+	"repository": "https://github.com/runtimeverification/ercx-vscode",
 	"enabledApiProposals": [
 		"testCoverage",
 		"testContinuousRun"
@@ -22,18 +22,18 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-        "configuration": {
-            "type": "object",
-            "title": "ERCx configuration",
-            "properties": {
-                "ercx.ercxPath": {
-                    "type": "string",
-                    "default": "work/ercx/ercx",
-                    "description": "Path to the ERCx working folder. Where you find the Makefile."
-                }
-            }
-        }
-    },
+		"configuration": {
+			"type": "object",
+			"title": "ERCx configuration",
+			"properties": {
+				"ercx.ercxAPIUri": {
+					"type": "string",
+					"default": "https://pr-384.ercx-sandbox.runtimeverification.com/api/v1/",
+					"description": "URL to the ERCx api."
+				}
+			}
+		}
+	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
