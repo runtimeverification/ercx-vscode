@@ -7,6 +7,7 @@
 	"private": true,
 	"license": "BSD-3",
 	"repository": "https://github.com/runtimeverification/ercx-vscode",
+	"icon": "media/ERC-X-symbol-transparent-square-100x100-01.png",
 	"enabledApiProposals": [
 		"testCoverage",
 		"testContinuousRun"
