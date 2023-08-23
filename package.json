@@ -1,6 +1,6 @@
 {
 	"name": "ercx-vscode",
-	"displayName": "ercx-vscode",
+	"displayName": "ERCx VSCode",
 	"description": "Run the ERCx tests inside VSCode.",
 	"version": "0.0.1",
 	"publisher": "RuntimeVerification",
@@ -8,12 +8,16 @@
 	"license": "BSD-3",
 	"repository": "https://github.com/runtimeverification/ercx-vscode",
 	"icon": "media/ERC-X-symbol-transparent-square-100x100-01.png",
+	"author": {
+		"name": "Runtime Verification",
+		"email": "radu.mereuta@runtimeverification.com",
+		"url": "https://github.com/radumereuta"
+	},
 	"enabledApiProposals": [
-		"testCoverage",
-		"testContinuousRun"
+		"testCoverage"
 	],
 	"engines": {
-		"vscode": "^1.68.0"
+		"vscode": "^1.71.0"
 	},
 	"categories": [
 		"Other"
@@ -45,12 +49,12 @@
 	},
 	"devDependencies": {
 		"@types/js-yaml": "^4.0.5",
-		"@types/node": "^16.11.7",
+		"@types/node": "^16.18.43",
 		"@types/yaml": "^1.9.7",
-		"@typescript-eslint/eslint-plugin": "^5.42.0",
-		"@typescript-eslint/parser": "^5.42.0",
-		"eslint": "^8.26.0",
-		"typescript": "^5.0.2",
+		"@typescript-eslint/eslint-plugin": "^5.62.0",
+		"@typescript-eslint/parser": "^5.62.0",
+		"eslint": "^8.47.0",
+		"typescript": "^5.1.6",
 		"vscode-dts": "^0.3.3"
 	},
 	"dependencies": {

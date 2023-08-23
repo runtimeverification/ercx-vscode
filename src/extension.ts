@@ -6,8 +6,8 @@
 
 import * as vscode from 'vscode';
 import { TestCase, testData, TestFile } from './testTree';
-import { exec, execSync } from "child_process";
-import { existsSync, readFileSync } from 'fs';
+import { execSync } from "child_process";
+import { readFileSync } from 'fs';
 import { CodelensProvider } from './CodelensProvider';
 import * as path from "path";
 import fetch from 'cross-fetch';
