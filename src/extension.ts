@@ -35,6 +35,30 @@ export async function activate(context: vscode.ExtensionContext) {
 		log(`CodeLens action clicked with args=${document.uri} ${ctrctName} ${range}`);
 		addERCxTestsAPI(ctrl, document, range, ctrctName);
 	});
+	context.subscriptions.push(vscode.commands.registerCommand('ercx.generateTests20', (contractName:string) => {
+		log("Command: " + contractName);
+		log(vscode.window.activeTextEditor?.document.uri);
+		log(vscode.window.activeTextEditor?.selection.active);
+		if (vscode.window.activeTextEditor) {
+			const regexStr = /contract\s+(\S+)/g;
+			const regex = new RegExp(regexStr);
+			const document = vscode.window.activeTextEditor.document;
+			const cursorOffset:number = document.offsetAt(vscode.window.activeTextEditor.selection.active);
+			const text:string = document.getText();
+			let matches;
+			let ctrctName = "";
+			let range:vscode.Range = vscode.window.activeTextEditor.selection;
+			// find the last contract before the cursor
+			while ((matches = regex.exec(text)) !== null && matches.index < cursorOffset) {
+				ctrctName = matches[1];
+				const line = document?.lineAt(document.positionAt(matches.index).line);
+				const indexOf = line.text.indexOf(matches[1]);
+				const position = new vscode.Position(line.lineNumber, indexOf);
+				range = document.getWordRangeAtPosition(position, new RegExp(regex)) ?? range;
+			}
+			addERCxTestsAPI(ctrl, document, range, ctrctName);
+		}
+	}));
 
 
 	const fileChangedEmitter = new vscode.EventEmitter<vscode.Uri>();
@@ -244,7 +268,7 @@ function addERCxTestsAPI(controller: vscode.TestController, document: vscode.Tex
 // construct TestItems based on the test list from the API
 function addERCxTestsAPI2(controller: vscode.TestController, document: vscode.TextDocument, range:vscode.Range, ctrctName:string) {
 	const docTokens = getSolidityTokenLoc(document);
-	log("docTokens:" + docTokens);
+	log("ERCx add tests for: " + ctrctName);
 
 	const ercxRoot = controller.createTestItem("ERCx", document.uri.path.split('/').pop()! + " - ERC20 Tests", document.uri);
 	ercxRootSet.add(ercxRoot);

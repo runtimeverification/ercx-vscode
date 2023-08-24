@@ -34,6 +34,22 @@
 					"description": "URL to the ERCx api."
 				}
 			}
+		},
+		"commands": [
+			{
+				"command": "ercx.generateTests20",
+				"title": "Generate ERC20 tests",
+				"category": "ERCx",
+				"when": "editorLangId == solidity"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"when": "editorLangId == solidity",
+					"command": "ercx.generateTests20"
+				}
+			]
 		}
 	},
 	"scripts": {
