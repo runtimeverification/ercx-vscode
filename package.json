@@ -23,7 +23,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"workspaceContains:*.sol"
+		"onLanguage:solidity"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -33,7 +33,7 @@
 			"properties": {
 				"ercx.ercxAPIUri": {
 					"type": "string",
-					"default": "https://pr-384.ercx-sandbox.runtimeverification.com/api/v1/",
+					"default": "https://ercx-sandbox.runtimeverification.com/api/v1/",
 					"description": "URL to the ERCx api."
 				}
 			}

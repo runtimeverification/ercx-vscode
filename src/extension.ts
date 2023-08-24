@@ -16,6 +16,7 @@ const ercxRootSet = new Set<vscode.TestItem>();
 const ercxTestsAPI = new Map<string, ERCxTestAPI>();
 const ercxAPIUri:string = vscode.workspace.getConfiguration('ercx').get('ercxAPIUri') ?? "https://ercx.runtimeverification.com/api/v1/";
 const outputChannel = vscode.window.createOutputChannel('ERCx');
+const ercxTestData = new WeakMap<vscode.TestItem, ERCxTestData>();
 
 function log(msg?:any) {
 	console.log(msg);
@@ -32,7 +33,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand("ercx.codelensAction", (document: vscode.TextDocument, ctrctName: string, range:vscode.Range) => {
 		//vscode.window.showInformationMessage(`CodeLens action clicked with args=${fileName} ${ctrctName} ${range}`);
 		log(`CodeLens action clicked with args=${document.uri} ${ctrctName} ${range}`);
-		addERCxTestsAPI(ctrl, document, range);
+		addERCxTestsAPI(ctrl, document, range, ctrctName);
 	});
 
 
@@ -43,9 +44,15 @@ export async function activate(context: vscode.ExtensionContext) {
 
 		// Loop through all included tests, or all known tests, and add them to our queue
 		if (request.include) {
-            request.include.forEach(test => queue.push(test));
+            request.include.forEach(test => {
+				queue.push(test);
+				markQueueing(run, test);
+			});
 		} else {
-			ctrl.items.forEach(test => queue.push(test));
+			ctrl.items.forEach(test => {
+				queue.push(test);
+				markQueueing(run, test);
+			});
 		}
 
 		// try to find the result file if not found then run ERCx
@@ -63,7 +70,7 @@ export async function activate(context: vscode.ExtensionContext) {
 					"content": fileContent,
 					"path": queue.at(0)?.uri?.fsPath.toString()
 				},
-				"tokenClass": "MyToken" //TODO: find the token name
+				"tokenClass": ercxTestData.get(queue[0])?.contractName
 			})
 		}).then(response => {
 			if (response.ok) {
@@ -75,6 +82,7 @@ export async function activate(context: vscode.ExtensionContext) {
 						run.end();
 					} else if (body['status'] == "RUNNING") {
 						log("running...");
+						markStarted(run, queue);
 						new Promise(resolve => setTimeout(resolve, 1000)).then(rr => 
 							testingRunning(body['id'] as string, run, request, queue, cancellation)
 						);
@@ -97,6 +105,16 @@ export async function activate(context: vscode.ExtensionContext) {
 	};
 
 	ctrl.createRunProfile('Run Tests', vscode.TestRunProfileKind.Run, runHandler, true, undefined, true);
+}
+function markQueueing(run: vscode.TestRun, test:vscode.TestItem) {
+	run.enqueued(test);
+	test.children.forEach(t => markQueueing(run, t));
+}
+function markStarted(run: vscode.TestRun, test:vscode.TestItem[]) {
+	test.forEach(t => {
+		run.started(t);
+		t.children.forEach(t2 => markStarted(run, new Array<vscode.TestItem>(t2)));
+	});
 }
 
 function testingRunning(id:string, run:vscode.TestRun, request: vscode.TestRunRequest, queue: vscode.TestItem[], cancellation: vscode.CancellationToken) {
@@ -155,6 +173,7 @@ function testingDone(res:any, run:vscode.TestRun, request: vscode.TestRunRequest
 					const tresult = v1 as any;
 					//log(k1 + " " + tresult);
 					if (k1.startsWith(test.id + "(")) {
+						run.appendOutput(test.id + " ");
 						if (tresult['status'] == "Success") {
 							run.passed(test, 1);
 						} else {
@@ -196,7 +215,7 @@ function startWatchingWorkspace(controller: vscode.TestController, fileChangedEm
 	});
 }
 
-function addERCxTestsAPI(controller: vscode.TestController, document: vscode.TextDocument, range:vscode.Range) {
+function addERCxTestsAPI(controller: vscode.TestController, document: vscode.TextDocument, range:vscode.Range, ctrctName:string) {
 	const existing = controller.items.get("ERCx");
 	if (existing) {
 		return { file: existing, data: testData.get(existing) as TestFile };
@@ -215,7 +234,7 @@ function addERCxTestsAPI(controller: vscode.TestController, document: vscode.Tex
 					for (const tst of apitsts)
 						ercxTestsAPI.set(tst.name, tst);
 					log(ercxTestsAPI);
-					addERCxTestsAPI2(controller, document, range);
+					addERCxTestsAPI2(controller, document, range, ctrctName);
 				});
 			}
 		}, err => log("Property tests fetch error: " + err))
@@ -223,24 +242,28 @@ function addERCxTestsAPI(controller: vscode.TestController, document: vscode.Tex
 }
 
 // construct TestItems based on the test list from the API
-function addERCxTestsAPI2(controller: vscode.TestController, document: vscode.TextDocument, range:vscode.Range) {
+function addERCxTestsAPI2(controller: vscode.TestController, document: vscode.TextDocument, range:vscode.Range, ctrctName:string) {
 	const docTokens = getSolidityTokenLoc(document);
 	log("docTokens:" + docTokens);
 
 	const ercxRoot = controller.createTestItem("ERCx", document.uri.path.split('/').pop()! + " - ERC20 Tests", document.uri);
 	ercxRootSet.add(ercxRoot);
+	ercxTestData.set(ercxRoot, new ERCxTestData(ercxRoot, ctrctName));
 	const levels = new Map<string, vscode.TestItem>;
 
 	for (const et of ercxTestsAPI.values()) {
 		if (et.name == "testAbiFoundInEtherscan" || et.name == "testAddressIsImplementationContract") // these tests only make sense for deployed contracts not source code
 			continue;
 		const ti = controller.createTestItem(et.name, et.name.slice(4), document.uri);
+		ercxTestData.set(ti, new ERCxTestData(ti, ctrctName));
+
 		// find a token that fits one of the categories
 		ti.range = docTokens.get(et.concernedFunctions[0]) ?? range;
 
 		if (!levels.has(et.level)) { // first time finding a level?
 			const Level:string = et.level[0].toUpperCase() + et.level.slice(1); // capitalize first letter
 			const lti = controller.createTestItem(et.level, Level, document.uri);
+			ercxTestData.set(lti, new ERCxTestData(lti, ctrctName));
 			lti.range = range;
 			levels.set(et.level, lti);
 			ercxRoot.children.add(lti);
@@ -264,6 +287,12 @@ class ERCxTestAPI {
 			public readonly concernedFunctions:string[],
 			public readonly categories: string[]) {
 	}
+}
+
+class ERCxTestData {
+	constructor(public readonly test:vscode.TestItem,
+		public readonly contractName:string) {
+		}
 }
 
 function getSolidityTokenLoc(document:vscode.TextDocument):Map<string, vscode.Range> {
