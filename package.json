@@ -2,7 +2,7 @@
 	"name": "ercx-vscode",
 	"displayName": "ERCx VSCode",
 	"description": "Run the ERCx tests inside VSCode.",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"publisher": "RuntimeVerification",
 	"private": true,
 	"license": "BSD-3",
