@@ -34,6 +34,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		//vscode.window.showInformationMessage(`CodeLens action clicked with args=${fileName} ${ctrctName} ${range}`);
 		log(`CodeLens action clicked with args=${document.uri} ${ctrctName} ${range}`);
 		addERCxTestsAPI(ctrl, document, range, ctrctName);
+		// automatically focus on the Testing view after tests are generated
+		vscode.commands.executeCommand("workbench.view.testing.focus");
 	});
 	context.subscriptions.push(vscode.commands.registerCommand('ercx.generateTests20', (contractName:string) => {
 		log("Command: " + contractName);
