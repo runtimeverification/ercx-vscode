@@ -5,7 +5,6 @@
 // make shell - to enter the ercx shell
 
 import * as vscode from 'vscode';
-import { TestCase, testData, TestFile } from './testTree';
 //import { execSync } from "child_process";
 import { readFileSync } from 'fs';
 import { CodelensProvider } from './CodelensProvider';
@@ -35,8 +34,6 @@ export async function activate(context: vscode.ExtensionContext) {
 		//vscode.window.showInformationMessage(`CodeLens action clicked with args=${fileName} ${ctrctName} ${range}`);
 		log(`CodeLens action clicked with args=${document.uri} ${ctrctName} ${range}`);
 		addERCxTestsAPI(ctrl, document, range, ctrctName);
-		// automatically focus on the Testing view after tests are generated
-		vscode.commands.executeCommand("workbench.view.testing.focus");
 	});
 	context.subscriptions.push(vscode.commands.registerCommand('ercx.generateTests20', (contractName:string) => {
 		log("Command: " + contractName);
@@ -64,7 +61,6 @@ export async function activate(context: vscode.ExtensionContext) {
 	}));
 
 
-	const fileChangedEmitter = new vscode.EventEmitter<vscode.Uri>();
 	const runHandler = (request: vscode.TestRunRequest, cancellation: vscode.CancellationToken) => {
 		const run = ctrl.createTestRun(request, `Running Tests`, false);
 		const queue: vscode.TestItem[] = [];
@@ -123,10 +119,6 @@ export async function activate(context: vscode.ExtensionContext) {
 			}
 		}, err => log("Report error: " + err))
 		.catch(error => log("API error: " + error));
-	};
-
-	ctrl.refreshHandler = async () => {
-		await Promise.all(getWorkspaceTestPatterns().map(({ pattern }) => findInitialFiles(ctrl, pattern)));
 	};
 
 	ctrl.createRunProfile('Run Tests', vscode.TestRunProfileKind.Run, runHandler, true, undefined, true);
@@ -215,35 +207,13 @@ function testingDone(res:any, run:vscode.TestRun, request: vscode.TestRunRequest
 	log("Testing done");
 }
 
-function getWorkspaceTestPatterns() {
-	if (!vscode.workspace.workspaceFolders) {
-		return [];
-	}
-
-	return vscode.workspace.workspaceFolders.map(workspaceFolder => ({
-		workspaceFolder,
-		pattern: new vscode.RelativePattern(workspaceFolder, '**/*.sol'),
-	}));
-}
-
-async function findInitialFiles(controller: vscode.TestController, pattern: vscode.GlobPattern) {
-	//addERCxTests(controller);
-}
-
-function startWatchingWorkspace(controller: vscode.TestController, fileChangedEmitter: vscode.EventEmitter<vscode.Uri> ) {
-	return getWorkspaceTestPatterns().map(({ workspaceFolder, pattern }) => {
-		const watcher = vscode.workspace.createFileSystemWatcher(pattern);
-
-		//addERCxTests(controller);
-
-		return watcher;
-	});
-}
-
 function addERCxTestsAPI(controller: vscode.TestController, document: vscode.TextDocument, range:vscode.Range, ctrctName:string) {
+	// automatically focus on the Testing view after tests are generated
+	vscode.commands.executeCommand("workbench.view.testing.focus");
+
 	const existing = controller.items.get("ERCx");
 	if (existing) {
-		return { file: existing, data: testData.get(existing) as TestFile };
+		return { file: existing };
 	}
 
 	// fetch list of tests from the API
@@ -298,8 +268,6 @@ function addERCxTestsAPI2(controller: vscode.TestController, document: vscode.Te
 	}
 
 	controller.items.add(ercxRoot);
-	const data = new TestFile();
-	testData.set(ercxRoot, data);
 	//ercxRoot.canResolveChildren = true;
 }
 class ERCxTestAPI {
