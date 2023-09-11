@@ -71,6 +71,7 @@
 		"vscode-dts": "^0.3.3"
 	},
 	"dependencies": {
-		"cross-fetch": "^4.0.0"
+		"cross-fetch": "^4.0.0",
+		"solc": "^0.8.21"
 	}
 }

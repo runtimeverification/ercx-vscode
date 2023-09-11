@@ -6,11 +6,12 @@
 
 import * as vscode from 'vscode';
 import { TestCase, testData, TestFile } from './testTree';
-import { execSync } from "child_process";
+//import { execSync } from "child_process";
 import { readFileSync } from 'fs';
 import { CodelensProvider } from './CodelensProvider';
 import * as path from "path";
 import fetch from 'cross-fetch';
+import * as solc from 'solc';
 
 const ercxRootSet = new Set<vscode.TestItem>();
 const ercxTestsAPI = new Map<string, ERCxTestAPI>();
@@ -81,8 +82,6 @@ export async function activate(context: vscode.ExtensionContext) {
 			});
 		}
 
-		// try to find the result file if not found then run ERCx
-		const resultFile:string = queue.at(0)?.uri?.fsPath.toString().substring(0, queue.at(0)?.uri?.fsPath.toString().lastIndexOf(".")) + ".result.json";
 		const filePath:string = queue.at(0)?.uri?.fsPath.toString() + "";
 		const fileContent:string = readFileSync(filePath, "utf8");
 
@@ -322,7 +321,26 @@ class ERCxTestData {
 }
 
 function getSolidityTokenLoc(document:vscode.TextDocument):Map<string, vscode.Range> {
-    const fileAst = JSON.parse(execSync(`solc --ast-compact-json ${document.uri.path}`).toString().split(new RegExp(`======= \\S+ =======`))[1]);
+	const fileContent:string = readFileSync(document.fileName, "utf8");
+
+	const input = {
+		language: 'Solidity',
+		sources: {
+			'test.sol': {
+				content: fileContent
+			}
+		},
+		settings: {
+			outputSelection: {
+				'*': {
+					'': ['ast']
+				}
+			}
+		}
+	};
+
+	const fileAst = JSON.parse(solc.compile(JSON.stringify(input)));
+    //const fileAst = JSON.parse(execSync(`solc --ast-compact-json ${document.uri.path}`).toString().split(new RegExp(`======= \\S+ =======`))[1]);
 	log(fileAst);
 	const tokenLoc = new Map<string, vscode.Range>();
 	getSolidityTokenLoc2(document, fileAst, tokenLoc);
