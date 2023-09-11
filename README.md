@@ -1,9 +1,15 @@
 # VSCode for ERCx
 
-This extension explores ways to run the ERCx tests inside an IDE.
+This extension provides a way to run the [ERCx](https://ercx.runtimeverification.com/) tests inside VSCode.
+When you open a .sol file, click on the code lens above the contract name to generate
+the tests, then click run on the testing view.
 
+This accesses the ERCx API and a full suit of tests take around 2min depending on
+server load.
 
-## Running the Extension
+At this time, we only accept single files.
+
+## Running the Extension from source
 
 - Run `npm install` in terminal to install dependencies
 - Run the `Run Extension` target in the Debug View (`F5`). This will:
