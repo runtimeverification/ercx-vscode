@@ -6,6 +6,6 @@ All notable changes to the "ERCx" extension will be documented in this file.
 
 - Run individual tests
 
-## [0.0.3] - 2023-09-11
+## [0.0.4] - 2023-09-11
 
 - Initial release

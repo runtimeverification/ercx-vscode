@@ -2,7 +2,7 @@
 	"name": "ercx-vscode",
 	"displayName": "ERCx Test Gen",
 	"description": "Run the ERCx tests inside VSCode.",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"publisher": "RuntimeVerification",
 	"repository": "https://github.com/runtimeverification/ercx-vscode",
 	"icon": "media/ERC-X-symbol-transparent-square-100x100-01.png",
