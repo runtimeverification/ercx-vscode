@@ -13,7 +13,7 @@ At this time, we only accept single files.
 
 ### Preparation
 
-- Please have [Node.js](https://nodejs.org/en) and [yarn](https://yarnpkg.com/getting-started/install) installed.  
+- Please have [Node.js](https://nodejs.org/en) (>= 18) and [yarn](https://yarnpkg.com/getting-started/install) installed.  
 - Run `yarn install` in terminal to install dependencies
 ### Debug the extension locally
 

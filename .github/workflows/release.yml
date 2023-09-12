@@ -7,16 +7,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Use Node.js
-        uses: actions/setup-node@v1
+      - name: 'Install nodejs 18'
+        uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: '18'
       # Run install dependencies
       - name: Install dependencies
-        run: npm install
+        run: |
+          corepack enable
+          yarn install
       # Run tests
       - name: Build
-        run: npm run compile
+        run: yarn run build
       - name: Get current package version
         id: package_version
         uses: martinbeentjes/npm-get-version-action@v1.1.0
