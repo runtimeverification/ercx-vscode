@@ -349,10 +349,7 @@ async function getSolidityTokenLoc(document: vscode.TextDocument): Promise<Map<s
 }
 
 function getSolidityTokenLoc2(document: vscode.TextDocument, jsonObj: any, tokenLoc: Map<string, vscode.Range>) {
-  if (
-    (jsonObj['nodeType'] ?? '').endsWith('Definition') ||
-    (jsonObj['nodeType'] ?? '').endsWith('Declaration')
-  ) {
+  if ((jsonObj['nodeType'] ?? '').endsWith('Definition') || (jsonObj['nodeType'] ?? '').endsWith('Declaration')) {
     const name = jsonObj['name'];
     const src = jsonObj['src'];
     const srcParts = src.split(':');
