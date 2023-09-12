@@ -5,26 +5,35 @@
 // make shell - to enter the ercx shell
 
 import fetch from 'cross-fetch';
-import { readFileSync } from 'fs';
 import * as path from 'path';
-import * as solc from 'solc';
 import * as vscode from 'vscode';
 import { CodelensProvider } from './CodelensProvider';
 
 const ercxRootSet = new Set<vscode.TestItem>();
 const ercxTestsAPI = new Map<string, ERCxTestAPI>();
-const ercxAPIUri: string =
-  vscode.workspace.getConfiguration('ercx').get('ercxAPIUri') ??
-  'https://ercx.runtimeverification.com/api/v1/';
 const outputChannel = vscode.window.createOutputChannel('ERCx');
 const ercxTestData = new WeakMap<vscode.TestItem, ERCxTestData>();
+const fetchTimeout = 5000;
 
 function log(msg?: any) {
   console.log(msg);
   outputChannel.appendLine(msg);
 }
 
-export async function activate(context: vscode.ExtensionContext) {
+function getERCxAPIUri() {
+  return (
+    vscode.workspace.getConfiguration('ercx').get('ercxAPIUri') ??
+    'https://ercx.runtimeverification.com/api/v1/'
+  );
+}
+
+export type CompileSolidity = (input: string) => Promise<string>;
+let compileSolidity: CompileSolidity | undefined;
+export function setCompileSolidity(compileSolidity_: CompileSolidity) {
+  compileSolidity = compileSolidity_;
+}
+
+export async function initExtensionCommon(context: vscode.ExtensionContext) {
   const codelensProvider = new CodelensProvider();
   vscode.languages.registerCodeLensProvider('solidity', codelensProvider);
 
@@ -80,7 +89,7 @@ export async function activate(context: vscode.ExtensionContext) {
     ),
   );
 
-  const runHandler = (
+  const runHandler = async (
     request: vscode.TestRunRequest,
     cancellation: vscode.CancellationToken,
   ) => {
@@ -100,18 +109,23 @@ export async function activate(context: vscode.ExtensionContext) {
       });
     }
 
-    const filePath: string = queue.at(0)?.uri?.fsPath.toString() + '';
-    const fileContent: string = readFileSync(filePath, 'utf8');
+    const fileUri = queue.at(0)?.uri;
+    if (!fileUri) {
+      throw new Error(`queue.at(0)?.uri not found`);
+    }
+    const fileContent: string = new TextDecoder('utf-8').decode(
+      await vscode.workspace.fs.readFile(fileUri),
+    );
 
-    const apiRes = fetch(ercxAPIUri + 'reports', {
+    fetch(getERCxAPIUri() + 'reports', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         standard: 'ERC20',
         sourceCodeFile: {
-          name: path.parse(filePath).base,
+          name: path.basename(fileUri.fsPath),
           content: fileContent,
-          path: queue.at(0)?.uri?.fsPath.toString(),
+          path: fileUri.fsPath.toString(),
         },
         tokenClass: ercxTestData.get(queue[0])?.contractName,
       }),
@@ -128,7 +142,9 @@ export async function activate(context: vscode.ExtensionContext) {
               } else if (body['status'] == 'RUNNING') {
                 log('running...');
                 markStarted(run, queue);
-                new Promise((resolve) => setTimeout(resolve, 1000)).then((rr) =>
+                new Promise((resolve) =>
+                  setTimeout(resolve, fetchTimeout),
+                ).then((rr) =>
                   testingRunning(
                     body['id'] as string,
                     run,
@@ -182,7 +198,7 @@ function testingRunning(
   cancellation: vscode.CancellationToken,
 ) {
   if (!cancellation.isCancellationRequested) {
-    const apiRes = fetch(ercxAPIUri + 'reports/' + id + '?fields=text%2Cjson', {
+    fetch(getERCxAPIUri() + 'reports/' + id + '?fields=text,json', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
@@ -197,7 +213,9 @@ function testingRunning(
                 run.end();
               } else if (body['status'] == 'RUNNING') {
                 log('running...');
-                new Promise((resolve) => setTimeout(resolve, 1000)).then((rr) =>
+                new Promise((resolve) =>
+                  setTimeout(resolve, fetchTimeout),
+                ).then((rr) =>
                   testingRunning(
                     body['id'] as string,
                     run,
@@ -293,7 +311,7 @@ function addERCxTestsAPI(
   }
 
   // fetch list of tests from the API
-  const apiRes = fetch(ercxAPIUri + 'property-tests?standard=ERC20', {
+  fetch(getERCxAPIUri() + 'property-tests?standard=ERC20', {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   })
@@ -302,11 +320,11 @@ function addERCxTestsAPI(
         log(response.body);
         if (response.ok) {
           const x = response.json();
-          x.then((body) => {
+          x.then(async (body) => {
             const apitsts = body as ERCxTestAPI[];
             for (const tst of apitsts) ercxTestsAPI.set(tst.name, tst);
             log(ercxTestsAPI);
-            addERCxTestsAPI2(controller, document, range, ctrctName);
+            await addERCxTestsAPI2(controller, document, range, ctrctName);
           });
         }
       },
@@ -316,13 +334,13 @@ function addERCxTestsAPI(
 }
 
 // construct TestItems based on the test list from the API
-function addERCxTestsAPI2(
+async function addERCxTestsAPI2(
   controller: vscode.TestController,
   document: vscode.TextDocument,
   range: vscode.Range,
   ctrctName: string,
 ) {
-  const docTokens = getSolidityTokenLoc(document);
+  const docTokens = await getSolidityTokenLoc(document);
   log('ERCx add tests for: ' + ctrctName);
 
   const ercxRoot = controller.createTestItem(
@@ -387,10 +405,12 @@ class ERCxTestData {
   ) {}
 }
 
-function getSolidityTokenLoc(
+async function getSolidityTokenLoc(
   document: vscode.TextDocument,
-): Map<string, vscode.Range> {
-  const fileContent: string = readFileSync(document.fileName, 'utf8');
+): Promise<Map<string, vscode.Range>> {
+  const fileContent: string = new TextDecoder('utf-8').decode(
+    await vscode.workspace.fs.readFile(document.uri),
+  );
 
   const input = {
     language: 'Solidity',
@@ -407,8 +427,10 @@ function getSolidityTokenLoc(
       },
     },
   };
-
-  const fileAst = JSON.parse(solc.compile(JSON.stringify(input)));
+  if (compileSolidity === undefined) {
+    throw new Error('compileSolidity_ is undefined');
+  }
+  const fileAst = JSON.parse(await compileSolidity(JSON.stringify(input)));
   //const fileAst = JSON.parse(execSync(`solc --ast-compact-json ${document.uri.path}`).toString().split(new RegExp(`======= \\S+ =======`))[1]);
   log(fileAst);
   const tokenLoc = new Map<string, vscode.Range>();

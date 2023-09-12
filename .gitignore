@@ -2,5 +2,5 @@ out
 node_modules
 .vscode-test/
 *.vsix
-
 /vscode.d.ts
+.vscode-test-web
