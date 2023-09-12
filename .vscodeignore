@@ -8,8 +8,6 @@ src/**
 tsconfig.json
 node_modules
 .eslintignore
-.prettierignore
 build.js
-prettier.config.js
 .eslintrc.js
 .github

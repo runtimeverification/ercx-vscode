@@ -10,5 +10,4 @@
 *.vsix
 node_modules
 out
-prettier.config.js
 build.js

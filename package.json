@@ -59,13 +59,11 @@
     },
     "scripts": {
         "build": "rm -rf ./out && node build.js",
-        "check:all": "yarn check:eslint && yarn check:prettier",
+        "check:all": "yarn check:eslint",
         "check:eslint": "eslint \"**/*\"",
-        "check:prettier": "prettier --check \"**/*.*\"",
         "copy:files": "gulp copy-files",
-        "fix:all": "yarn fix:eslint && yarn fix:eslint && yarn fix:prettier",
+        "fix:all": "yarn fix:eslint && yarn fix:eslint",
         "fix:eslint": "eslint --fix \"**/*\"",
-        "fix:prettier": "prettier --write \"**/*.*\"",
         "vscode:prepublish": "yarn install && yarn build",
         "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
         "run-in-vscode-dev": "npx serve --cors -l 5000 --ssl-cert $HOME/certs/localhost.pem --ssl-key $HOME/certs/localhost-key.pem",
@@ -73,8 +71,7 @@
     },
     "lint-staged": {
         "**/*.*": [
-            "eslint",
-            "prettier --write"
+            "eslint"
         ]
     },
     "devDependencies": {
@@ -91,8 +88,6 @@
         "esbuild-plugin-wasm": "^1.1.0",
         "eslint": "^8.49.0",
         "lint-staged": "^14.0.1",
-        "prettier": "^3.0.3",
-        "prettier-plugin-packagejson": "^2.4.5",
         "typescript": "^5.2.2"
     },
     "dependencies": {
