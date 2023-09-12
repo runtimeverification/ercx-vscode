@@ -13,4 +13,3 @@ build.js
 prettier.config.js
 .eslintrc.js
 .github
-.husky

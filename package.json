@@ -67,15 +67,9 @@
         "fix:eslint": "eslint --fix \"**/*\"",
         "fix:prettier": "prettier --write \"**/*.*\"",
         "vscode:prepublish": "yarn install && yarn build",
-        "prepare": "husky install",
         "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
         "run-in-vscode-dev": "npx serve --cors -l 5000 --ssl-cert $HOME/certs/localhost.pem --ssl-key $HOME/certs/localhost-key.pem",
         "watch": "rm -rf ./out && node build.js --watch"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
     },
     "lint-staged": {
         "**/*.*": [
@@ -96,7 +90,6 @@
         "esbuild-plugin-polyfill-node": "^0.3.0",
         "esbuild-plugin-wasm": "^1.1.0",
         "eslint": "^8.49.0",
-        "husky": "^8.0.3",
         "lint-staged": "^14.0.1",
         "prettier": "^3.0.3",
         "prettier-plugin-packagejson": "^2.4.5",
