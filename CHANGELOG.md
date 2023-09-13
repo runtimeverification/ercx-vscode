@@ -6,6 +6,10 @@ All notable changes to the "ERCx" extension will be documented in this file.
 
 - Run individual tests
 
+## [0.0.5] - 2023-09-13
+
+- Make the extension runnable in the browser
+
 ## [0.0.4] - 2023-09-11
 
 - Initial release
