@@ -1,6 +1,6 @@
 {
     "name": "ercx-vscode",
-    "displayName": "ERCx Test Gen",
+    "displayName": "ERCx Testing",
     "description": "Run the ERCx tests inside VSCode.",
     "version": "0.0.5",
     "publisher": "RuntimeVerification",
