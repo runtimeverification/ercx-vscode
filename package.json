@@ -12,7 +12,7 @@
         "url": "https://github.com/radumereuta"
     },
     "engines": {
-        "vscode": "^1.82.0"
+        "vscode": "^1.75.0"
     },
     "categories": [
         "Programming Languages",
@@ -77,7 +77,7 @@
     "devDependencies": {
         "@types/js-yaml": "^4.0.5",
         "@types/node": "^16.18.43",
-        "@types/vscode": "1.71.0",
+        "@types/vscode": "1.75.0",
         "@types/yaml": "^1.9.7",
         "@typescript-eslint/eslint-plugin": "^6.7.0",
         "@typescript-eslint/parser": "^6.7.0",
