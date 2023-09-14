@@ -6,7 +6,7 @@ All notable changes to the "ERCx" extension will be documented in this file.
 
 - Run individual tests
 
-## [0.0.6] - 2023-09-14
+## [0.0.7] - 2023-09-14
 
 - Fix links
 
