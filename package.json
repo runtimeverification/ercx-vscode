@@ -1,8 +1,8 @@
 {
     "name": "ercx-vscode",
-    "displayName": "ERCx Test Gen",
+    "displayName": "ERCx Testing",
     "description": "Run the ERCx tests inside VSCode.",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "publisher": "RuntimeVerification",
     "repository": "https://github.com/runtimeverification/ercx-vscode",
     "icon": "media/ERC-X-symbol-transparent-square-100x100-01.png",
@@ -12,7 +12,7 @@
         "url": "https://github.com/radumereuta"
     },
     "engines": {
-        "vscode": "^1.82.0"
+        "vscode": "^1.75.0"
     },
     "categories": [
         "Programming Languages",
@@ -77,7 +77,7 @@
     "devDependencies": {
         "@types/js-yaml": "^4.0.5",
         "@types/node": "^16.18.43",
-        "@types/vscode": "1.71.0",
+        "@types/vscode": "1.75.0",
         "@types/yaml": "^1.9.7",
         "@typescript-eslint/eslint-plugin": "^6.7.0",
         "@typescript-eslint/parser": "^6.7.0",
