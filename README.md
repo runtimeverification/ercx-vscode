@@ -8,4 +8,4 @@ The Extension uses the [ERCx API](https://ercx.runtimeverification.com/open-api)
 
 The Extension only supports a single self-contained Solidity file as input.
 
-![loop](https://github.com/runtimeverification/ercx-vscode/blob/6a68fac5650feae064db2a31d539152791de57d8/media/ercx-loop.gif)
+![loop](https://raw.githubusercontent.com/runtimeverification/ercx-vscode/5ea45164451df9d0cb4505f7d9bc0540724a6572/media/ercx-loop.gif)
