@@ -268,7 +268,7 @@ async function addERCxTestsAPI2(controller: vscode.TestController, document: vsc
 
   const ercxRoot = controller.createTestItem('ERCx', document.uri.path.split('/').pop()! + ' - ERC20 Tests', document.uri);
   ercxRootSet.add(ercxRoot);
-  ercxTestData.set(ercxRoot, new ERCxTestData(ercxRoot, ctrctName));
+  ercxTestData.set(ercxRoot, new ERCxTestData(ercxRoot, ctrctName, TestLevel.Root));
   const levels = new Map<string, vscode.TestItem>();
 
   for (const et of ercxTestsAPI.values()) {
@@ -276,7 +276,7 @@ async function addERCxTestsAPI2(controller: vscode.TestController, document: vsc
       // these tests only make sense for deployed contracts not source code
       continue;
     const ti = controller.createTestItem(et.name, et.name.slice(4), document.uri);
-    ercxTestData.set(ti, new ERCxTestData(ti, ctrctName));
+    ercxTestData.set(ti, new ERCxTestData(ti, ctrctName, TestLevel.Level));
 
     // find a token that fits one of the categories
     ti.range = docTokens.get(et.concernedFunctions[0]) ?? range;
@@ -285,7 +285,7 @@ async function addERCxTestsAPI2(controller: vscode.TestController, document: vsc
       // first time finding a level?
       const Level: string = et.level[0].toUpperCase() + et.level.slice(1); // capitalize first letter
       const lti = controller.createTestItem(et.level, Level, document.uri);
-      ercxTestData.set(lti, new ERCxTestData(lti, ctrctName));
+      ercxTestData.set(lti, new ERCxTestData(lti, ctrctName, TestLevel.Individual));
       lti.range = range;
       levels.set(et.level, lti);
       ercxRoot.children.add(lti);
@@ -314,7 +314,11 @@ class ERCxTestData {
   constructor(
     public readonly test: vscode.TestItem,
     public readonly contractName: string,
+    public readonly testLevel: TestLevel
   ) {}
+}
+enum TestLevel {
+  Individual, Level, Root
 }
 
 async function getSolidityTokenLoc(document: vscode.TextDocument): Promise<Map<string, vscode.Range>> {
