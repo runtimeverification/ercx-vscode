@@ -80,10 +80,11 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
 
     // Loop through all included tests, or all known tests, and add them to our queue
     if (request.include) {
-      request.include.forEach((test) => {
-        queue.push(test);
-        markQueueing(run, test);
-      });
+      // add only the first test to the queue since the API
+      // only supports one test at a time
+      const test = request.include[0];
+      queue.push(test);
+      markQueueing(run, test);
     } else {
       ctrl.items.forEach((test) => {
         queue.push(test);
@@ -99,18 +100,46 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
       await vscode.workspace.fs.readFile(fileUri),
     );
 
+    var bodyStr:string = "";
+    switch (ercxTestData.get(queue[0])?.testLevel) {
+      case TestLevel.Root:
+        bodyStr = JSON.stringify({
+          standard: 'ERC20',
+          sourceCodeFile: {
+            name: path.basename(fileUri.fsPath),
+            content: fileContent,
+            path: fileUri.fsPath.toString(),
+          },
+          tokenClass: ercxTestData.get(queue[0])?.contractName,
+        }); break;
+        case TestLevel.Level:
+          bodyStr = JSON.stringify({
+            standard: 'ERC20',
+            sourceCodeFile: {
+              name: path.basename(fileUri.fsPath),
+              content: fileContent,
+              path: fileUri.fsPath.toString(),
+            },
+            testedLevels: queue[0].label,
+            tokenClass: ercxTestData.get(queue[0])?.contractName,
+          }); break;
+        case TestLevel.Individual:
+          bodyStr = JSON.stringify({
+            standard: 'ERC20',
+            sourceCodeFile: {
+              name: path.basename(fileUri.fsPath),
+              content: fileContent,
+              path: fileUri.fsPath.toString(),
+            },
+            onlyTest: queue[0].id,
+            tokenClass: ercxTestData.get(queue[0])?.contractName,
+          }); break;
+        }
+
     fetch(getERCxAPIUri() + 'reports', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        standard: 'ERC20',
-        sourceCodeFile: {
-          name: path.basename(fileUri.fsPath),
-          content: fileContent,
-          path: fileUri.fsPath.toString(),
-        },
-        tokenClass: ercxTestData.get(queue[0])?.contractName,
-      }),
+      body: bodyStr,
     }).then(
         (response) => {
           if (response.ok) {
@@ -276,7 +305,7 @@ async function addERCxTestsAPI2(controller: vscode.TestController, document: vsc
       // these tests only make sense for deployed contracts not source code
       continue;
     const ti = controller.createTestItem(et.name, et.name.slice(4), document.uri);
-    ercxTestData.set(ti, new ERCxTestData(ti, ctrctName, TestLevel.Level));
+    ercxTestData.set(ti, new ERCxTestData(ti, ctrctName, TestLevel.Individual));
 
     // find a token that fits one of the categories
     ti.range = docTokens.get(et.concernedFunctions[0]) ?? range;
@@ -285,7 +314,7 @@ async function addERCxTestsAPI2(controller: vscode.TestController, document: vsc
       // first time finding a level?
       const Level: string = et.level[0].toUpperCase() + et.level.slice(1); // capitalize first letter
       const lti = controller.createTestItem(et.level, Level, document.uri);
-      ercxTestData.set(lti, new ERCxTestData(lti, ctrctName, TestLevel.Individual));
+      ercxTestData.set(lti, new ERCxTestData(lti, ctrctName, TestLevel.Level));
       lti.range = range;
       levels.set(et.level, lti);
       ercxRoot.children.add(lti);
