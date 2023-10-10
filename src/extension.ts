@@ -145,7 +145,9 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
           if (response.ok) {
             const x = response.json();
             x.then((body) => {
-              if (body['status'] == 'DONE') {
+              if (body['status'] == 'DONE'
+               || body['status'] == 'EVALUATED_ONLY_TEST'
+               || body['status'] == 'EVALUATED_TESTED_LEVELS') {
                 const report = JSON.parse(body['json']);
                 testingDone(report, run, request, queue, cancellation);
                 run.end();
@@ -194,7 +196,9 @@ function testingRunning(id: string, run: vscode.TestRun, request: vscode.TestRun
           if (response.ok) {
             const x = response.json();
             x.then((body) => {
-              if (body['status'] == 'DONE') {
+              if (body['status'] == 'DONE'
+               || body['status'] == 'EVALUATED_ONLY_TEST'
+               || body['status'] == 'EVALUATED_TESTED_LEVELS') {
                 const report = JSON.parse(body['json']);
                 testingDone(report, run, request, queue, cancellation);
                 run.end();
