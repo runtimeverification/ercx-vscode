@@ -2,7 +2,7 @@
 
 All notable changes to the "ERCx" extension will be documented in this file.
 
-## [Unreleased]
+## [0.0.8] - 2023-10-10
 
 - Run individual tests
 
