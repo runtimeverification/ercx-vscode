@@ -100,7 +100,7 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
       await vscode.workspace.fs.readFile(fileUri),
     );
 
-    var bodyStr:string = "";
+    let bodyStr:string = "";
     switch (ercxTestData.get(queue[0])?.testLevel) {
       case TestLevel.Root:
         bodyStr = JSON.stringify({
