@@ -138,7 +138,10 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
 
     fetch(getERCxAPIUri() + 'reports', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'VSCode'
+       },
       body: bodyStr,
     }).then(
         (response) => {
@@ -190,7 +193,10 @@ function testingRunning(id: string, run: vscode.TestRun, request: vscode.TestRun
   if (!cancellation.isCancellationRequested) {
     fetch(getERCxAPIUri() + 'reports/' + id + '?fields=text,json', {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'VSCode'
+       },
     }).then(
         (response) => {
           if (response.ok) {
@@ -274,7 +280,10 @@ function addERCxTestsAPI( controller: vscode.TestController, document: vscode.Te
   // fetch list of tests from the API
   fetch(getERCxAPIUri() + 'property-tests?standard=ERC20', {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'User-Agent': 'VSCode'
+     },
   })
     .then(
       (response) => {
