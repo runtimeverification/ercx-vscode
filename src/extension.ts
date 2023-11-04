@@ -14,11 +14,32 @@ function log(msg?: any) {
   outputChannel.appendLine(msg);
 }
 
-function getERCxAPIUri() {
+function getERCxAPIUri(): string {
   return (
-    vscode.workspace.getConfiguration('ercx').get('ercxAPIUri') ??
-    'https://ercx.runtimeverification.com/api/v1/'
+    vscode.workspace.getConfiguration('ercx').get('ercxAPIUri', 'https://ercx.runtimeverification.com/api/v1/')
   );
+}
+
+type ERCxAPIHeader = {
+  'Content-Type': string,
+  'User-Agent': string,
+  // if this is assigned as undefined it will not be included in JSON.stringify
+  'X-API-KEY'?: string
+}
+
+function getERCxAPIHeader():ERCxAPIHeader {
+  let key:string = vscode.workspace.getConfiguration('ercx').get('ercxAPIKey', '');
+  if (key == '')
+    return {
+      'Content-Type': 'application/json',
+      'User-Agent': 'VSCode',
+    };
+  else
+    return {
+      'Content-Type': 'application/json',
+      'User-Agent': 'VSCode',
+      'X-API-KEY': key
+    };
 }
 
 export type CompileSolidity = (input: string) => Promise<string>;
@@ -136,12 +157,10 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
           }); break;
         }
 
+    
     fetch(getERCxAPIUri() + 'reports', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': 'VSCode'
-       },
+      headers: getERCxAPIHeader(),
       body: bodyStr,
     }).then(
         (response) => {
@@ -193,10 +212,7 @@ function testingRunning(id: string, run: vscode.TestRun, request: vscode.TestRun
   if (!cancellation.isCancellationRequested) {
     fetch(getERCxAPIUri() + 'reports/' + id + '?fields=text,json', {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': 'VSCode'
-       },
+      headers: getERCxAPIHeader(),
     }).then(
         (response) => {
           if (response.ok) {
@@ -280,10 +296,7 @@ function addERCxTestsAPI( controller: vscode.TestController, document: vscode.Te
   // fetch list of tests from the API
   fetch(getERCxAPIUri() + 'property-tests?standard=ERC20', {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'User-Agent': 'VSCode'
-     },
+    headers: getERCxAPIHeader(),
   })
     .then(
       (response) => {
