@@ -2,6 +2,11 @@
 
 All notable changes to the "ERCx" extension will be documented in this file.
 
+## [0.0.9] - 2023-11-07
+
+- Add option for API key.
+- Add `Solidity` in the name to improve search results in marketplace
+
 ## [0.0.8] - 2023-10-10
 
 - Run individual tests
