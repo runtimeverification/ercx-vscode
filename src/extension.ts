@@ -180,6 +180,9 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
                     testingRunning(body['id'] as string, run, request, queue, cancellation));
               } else {
                 log('Status: ' + body['status']);
+                run.end();
+                vscode.window.showErrorMessage("API call returned with status: " + body['status']
+                  + ". The code needs to be self contained in a single file and have no errors.");
               }
               // Make sure to end the run after all tests have been executed:
             });
@@ -230,6 +233,9 @@ function testingRunning(id: string, run: vscode.TestRun, request: vscode.TestRun
                   .then((rr) => testingRunning(body['id'] as string, run, request, queue, cancellation));
               } else {
                 log('Status: ' + body['status']);
+                run.end();
+                vscode.window.showErrorMessage("API call returned with status: " + body['status']
+                  + ". The code needs to be self contained in a single file and have no errors.");
               }
               // Make sure to end the run after all tests have been executed:
             });
