@@ -10,7 +10,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
   public readonly onDidChangeCodeLenses: vscode.Event<void> = this._onDidChangeCodeLenses.event;
 
   constructor() {
-    this.regex = /contract\s+(\S+)/g;
+    this.regex = /^\s*contract\s+(\S+)/gm;
 
     vscode.workspace.onDidChangeConfiguration((_) => {
       this._onDidChangeCodeLenses.fire();
@@ -24,9 +24,8 @@ export class CodelensProvider implements vscode.CodeLensProvider {
       const text = document.getText();
       let matches;
       while ((matches = regex.exec(text)) !== null) {
-        const line = document.lineAt(document.positionAt(matches.index).line);
-        const indexOf = line.text.indexOf(matches[1]);
-        const position = new vscode.Position(line.lineNumber, indexOf);
+        const indexOf = matches.index + matches[0].indexOf(matches[1]);
+        const position = document.positionAt(indexOf);
         const range = document.getWordRangeAtPosition(position, new RegExp(this.regex));
         if (range) {
           this.codeLenses.push(new vscode.CodeLens(range, {
