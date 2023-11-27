@@ -414,21 +414,23 @@ async function getSolidityTokenLoc(document: vscode.TextDocument): Promise<Map<s
 }
 
 function getSolidityTokenLoc2(document: vscode.TextDocument, jsonObj: any, tokenLoc: Map<string, vscode.Range>) {
-  if ((jsonObj['nodeType'] ?? '').endsWith('Definition') || (jsonObj['nodeType'] ?? '').endsWith('Declaration')) {
-    const name = jsonObj['name'];
-    const src = jsonObj['src'];
-    const srcParts = src.split(':');
-    const offset = parseInt(srcParts[0]);
-    const len = parseInt(srcParts[1]);
-    const range = new vscode.Range(document.positionAt(offset), document.positionAt(offset + len));
-    tokenLoc.set(name, range);
-  }
-  for (const [_k, v] of Object.entries(jsonObj)) {
-    //log(typeof v);
-    if (Array.isArray(v)) {
-      v.forEach((child: any) => getSolidityTokenLoc2(document, child, tokenLoc));
-    } else if (typeof v === 'object') {
-      getSolidityTokenLoc2(document, v, tokenLoc);
+  if (jsonObj != null) {
+      if (((jsonObj['nodeType'] ?? '').endsWith('Definition') || (jsonObj['nodeType'] ?? '').endsWith('Declaration'))) {
+      const name = jsonObj['name'];
+      const src = jsonObj['src'];
+      const srcParts = src.split(':');
+      const offset = parseInt(srcParts[0]);
+      const len = parseInt(srcParts[1]);
+      const range = new vscode.Range(document.positionAt(offset), document.positionAt(offset + len));
+      tokenLoc.set(name, range);
+    }
+    for (const [_k, v] of Object.entries(jsonObj)) {
+      //log(typeof v);
+      if (Array.isArray(v)) {
+        v.forEach((child: any) => getSolidityTokenLoc2(document, child, tokenLoc));
+      } else if (typeof v === 'object') {
+        getSolidityTokenLoc2(document, v, tokenLoc);
+      }
     }
   }
 }
