@@ -2,7 +2,7 @@
     "name": "ercx-vscode",
     "displayName": "ERCx Solidity Testing",
     "description": "Run the ERCx tests inside VSCode.",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "publisher": "RuntimeVerification",
     "repository": "https://github.com/runtimeverification/ercx-vscode",
     "icon": "media/ERC-X-symbol-transparent-square-100x100-01.png",
@@ -48,16 +48,34 @@
         "commands": [
             {
                 "command": "ercx.generateTests20",
-                "title": "Generate ERC20 tests",
-                "category": "ERCx",
+                "title": "ERC20",
                 "when": "editorLangId == solidity"
+            },
+            {
+                "command": "ercx.generateTests4626",
+                "title": "ERC4626",
+                "when": "editorLangId == solidity"
+            }
+        ],
+        "submenus": [
+            {
+                "id": "ercxSubmenu",
+                "label": "Generate ERCx tests"
             }
         ],
         "menus": {
             "editor/context": [
                 {
                     "when": "editorLangId == solidity",
+                    "submenu": "ercxSubmenu"
+                }
+            ],
+            "ercxSubmenu":[
+                {
                     "command": "ercx.generateTests20"
+                },
+                {
+                    "command": "ercx.generateTests4626"
                 }
             ]
         }

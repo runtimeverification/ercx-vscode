@@ -60,38 +60,48 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
     (document: vscode.TextDocument, ctrctName: string, range: vscode.Range) => {
       //vscode.window.showInformationMessage(`CodeLens action clicked with args=${fileName} ${ctrctName} ${range}`);
       log(`CodeLens action clicked with args=${document.uri} ${ctrctName} ${range}`);
-      addERCxTestsAPI(ctrl, document, range, ctrctName);
+      pickStandard(ctrl, document, range, ctrctName);
     },
   );
+
+  function triggerCommand(standard:string) {
+    log('triggerCommand: ' + standard);
+    log(vscode.window.activeTextEditor?.document.uri);
+    log(vscode.window.activeTextEditor?.selection.active);
+    if (vscode.window.activeTextEditor) {
+      const regexStr = /contract\s+(\S+)/g;
+      const regex = new RegExp(regexStr);
+      const document = vscode.window.activeTextEditor.document;
+      const cursorOffset: number = document.offsetAt(
+        vscode.window.activeTextEditor.selection.active,
+      );
+      const text: string = document.getText();
+      let matches;
+      let ctrctName = '';
+      let range: vscode.Range = vscode.window.activeTextEditor.selection;
+      // find the last contract before the cursor
+      while ((matches = regex.exec(text)) !== null && matches.index < cursorOffset) {
+        ctrctName = matches[1];
+        const line = document?.lineAt(document.positionAt(matches.index).line);
+        const indexOf = line.text.indexOf(matches[1]);
+        const position = new vscode.Position(line.lineNumber, indexOf);
+        range = document.getWordRangeAtPosition(position, new RegExp(regex)) ?? range;
+      }
+      addERCxTestsAPI(ctrl, document, range, ctrctName, standard)
+    }
+  }
+
   context.subscriptions.push(
     vscode.commands.registerCommand(
       'ercx.generateTests20',
-      (contractName: string) => {
-        log('Command: ' + contractName);
-        log(vscode.window.activeTextEditor?.document.uri);
-        log(vscode.window.activeTextEditor?.selection.active);
-        if (vscode.window.activeTextEditor) {
-          const regexStr = /contract\s+(\S+)/g;
-          const regex = new RegExp(regexStr);
-          const document = vscode.window.activeTextEditor.document;
-          const cursorOffset: number = document.offsetAt(
-            vscode.window.activeTextEditor.selection.active,
-          );
-          const text: string = document.getText();
-          let matches;
-          let ctrctName = '';
-          let range: vscode.Range = vscode.window.activeTextEditor.selection;
-          // find the last contract before the cursor
-          while ((matches = regex.exec(text)) !== null && matches.index < cursorOffset) {
-            ctrctName = matches[1];
-            const line = document?.lineAt(document.positionAt(matches.index).line);
-            const indexOf = line.text.indexOf(matches[1]);
-            const position = new vscode.Position(line.lineNumber, indexOf);
-            range = document.getWordRangeAtPosition(position, new RegExp(regex)) ?? range;
-          }
-          addERCxTestsAPI(ctrl, document, range, ctrctName);
-        }
-      },
+      (contractName: string) => triggerCommand('ERC20'),
+    ),
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'ercx.generateTests4626',
+      (contractName: string) => triggerCommand('ERC4626'),
     ),
   );
 
@@ -122,10 +132,11 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
     );
 
     let bodyStr:string = "";
+    const standard: string = ercxTestData.get(queue[0])?.standard ?? "ERC20";
     switch (ercxTestData.get(queue[0])?.testLevel) {
       case TestLevel.Root:
         bodyStr = JSON.stringify({
-          standard: 'ERC20',
+          standard: standard,
           sourceCodeFile: {
             name: path.basename(fileUri.fsPath),
             content: fileContent,
@@ -135,7 +146,7 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
         }); break;
         case TestLevel.Level:
           bodyStr = JSON.stringify({
-            standard: 'ERC20',
+            standard: standard,
             sourceCodeFile: {
               name: path.basename(fileUri.fsPath),
               content: fileContent,
@@ -146,7 +157,7 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
           }); break;
         case TestLevel.Individual:
           bodyStr = JSON.stringify({
-            standard: 'ERC20',
+            standard: standard,
             sourceCodeFile: {
               name: path.basename(fileUri.fsPath),
               content: fileContent,
@@ -289,8 +300,26 @@ function testingDone(res: any, run: vscode.TestRun, request: vscode.TestRunReque
   }
   log('Testing done');
 }
+function pickStandard( controller: vscode.TestController, document: vscode.TextDocument, range: vscode.Range, ctrctName: string) {
+  vscode.window.showQuickPick([
+    { label: 'ERC20', description: 'ERC20 tests'},
+    { label: 'ERC4626', description: 'ERC4626 tests'},
+  ],
+  { placeHolder: 'Select which standard to generate the tests for.' }
+  ).then((stdResponse) => {
+    if (stdResponse) {
+      log("ChooseERC" + stdResponse.label);
+      addERCxTestsAPI(controller, document, range, ctrctName, stdResponse.label)
+    }
+  });
+}
 
-function addERCxTestsAPI( controller: vscode.TestController, document: vscode.TextDocument, range: vscode.Range, ctrctName: string) {
+function addERCxTestsAPI(
+  controller: vscode.TestController,
+  document: vscode.TextDocument,
+  range: vscode.Range,
+  ctrctName: string,
+  standard: string) {
   // automatically focus on the Testing view after tests are generated
   vscode.commands.executeCommand('workbench.view.testing.focus');
 
@@ -300,7 +329,7 @@ function addERCxTestsAPI( controller: vscode.TestController, document: vscode.Te
   }
 
   // fetch list of tests from the API
-  fetch(getERCxAPIUri() + 'property-tests?standard=ERC20', {
+  fetch(getERCxAPIUri() + 'property-tests?standard=' + standard, {
     method: 'GET',
     headers: getERCxAPIHeader(),
   })
@@ -313,7 +342,7 @@ function addERCxTestsAPI( controller: vscode.TestController, document: vscode.Te
             const apitsts = body as ERCxTestAPI[];
             for (const tst of apitsts) ercxTestsAPI.set(tst.name, tst);
             log(ercxTestsAPI);
-            await addERCxTestsAPI2(controller, document, range, ctrctName);
+            await addERCxTestsAPI2(controller, document, range, ctrctName, standard);
           });
         }
       },
@@ -323,13 +352,18 @@ function addERCxTestsAPI( controller: vscode.TestController, document: vscode.Te
 }
 
 // construct TestItems based on the test list from the API
-async function addERCxTestsAPI2(controller: vscode.TestController, document: vscode.TextDocument, range: vscode.Range, ctrctName: string) {
+async function addERCxTestsAPI2(
+  controller: vscode.TestController,
+  document: vscode.TextDocument,
+  range: vscode.Range,
+  ctrctName: string,
+  standard: string) {
   const docTokens = await getSolidityTokenLoc(document);
-  log('ERCx add tests for: ' + ctrctName);
+  log('ERCx add ' + standard + ' tests for: ' + ctrctName);
 
-  const ercxRoot = controller.createTestItem('ERCx', document.uri.path.split('/').pop()! + ' - ERC20 Tests', document.uri);
+  const ercxRoot = controller.createTestItem('ERCx', document.uri.path.split('/').pop()! + ' - ' + standard + ' Tests', document.uri);
   ercxRootSet.add(ercxRoot);
-  ercxTestData.set(ercxRoot, new ERCxTestData(ercxRoot, ctrctName, TestLevel.Root));
+  ercxTestData.set(ercxRoot, new ERCxTestData(ercxRoot, ctrctName, TestLevel.Root, standard));
   const levels = new Map<string, vscode.TestItem>();
 
   for (const et of ercxTestsAPI.values()) {
@@ -337,7 +371,7 @@ async function addERCxTestsAPI2(controller: vscode.TestController, document: vsc
       // these tests only make sense for deployed contracts not source code
       continue;
     const ti = controller.createTestItem(et.name, et.name.slice(4), document.uri);
-    ercxTestData.set(ti, new ERCxTestData(ti, ctrctName, TestLevel.Individual));
+    ercxTestData.set(ti, new ERCxTestData(ti, ctrctName, TestLevel.Individual, standard));
 
     // find a token that fits one of the categories
     ti.range = docTokens.get(et.concernedFunctions[0]) ?? range;
@@ -346,7 +380,7 @@ async function addERCxTestsAPI2(controller: vscode.TestController, document: vsc
       // first time finding a level?
       const Level: string = et.level[0].toUpperCase() + et.level.slice(1); // capitalize first letter
       const lti = controller.createTestItem(et.level, Level, document.uri);
-      ercxTestData.set(lti, new ERCxTestData(lti, ctrctName, TestLevel.Level));
+      ercxTestData.set(lti, new ERCxTestData(lti, ctrctName, TestLevel.Level, standard));
       lti.range = range;
       levels.set(et.level, lti);
       ercxRoot.children.add(lti);
@@ -375,7 +409,8 @@ class ERCxTestData {
   constructor(
     public readonly test: vscode.TestItem,
     public readonly contractName: string,
-    public readonly testLevel: TestLevel
+    public readonly testLevel: TestLevel,
+    public readonly standard: string
   ) {}
 }
 enum TestLevel {
@@ -414,21 +449,23 @@ async function getSolidityTokenLoc(document: vscode.TextDocument): Promise<Map<s
 }
 
 function getSolidityTokenLoc2(document: vscode.TextDocument, jsonObj: any, tokenLoc: Map<string, vscode.Range>) {
-  if ((jsonObj['nodeType'] ?? '').endsWith('Definition') || (jsonObj['nodeType'] ?? '').endsWith('Declaration')) {
-    const name = jsonObj['name'];
-    const src = jsonObj['src'];
-    const srcParts = src.split(':');
-    const offset = parseInt(srcParts[0]);
-    const len = parseInt(srcParts[1]);
-    const range = new vscode.Range(document.positionAt(offset), document.positionAt(offset + len));
-    tokenLoc.set(name, range);
-  }
-  for (const [_k, v] of Object.entries(jsonObj)) {
-    //log(typeof v);
-    if (Array.isArray(v)) {
-      v.forEach((child: any) => getSolidityTokenLoc2(document, child, tokenLoc));
-    } else if (typeof v === 'object') {
-      getSolidityTokenLoc2(document, v, tokenLoc);
+  if (jsonObj != null) {
+      if (((jsonObj['nodeType'] ?? '').endsWith('Definition') || (jsonObj['nodeType'] ?? '').endsWith('Declaration'))) {
+      const name = jsonObj['name'];
+      const src = jsonObj['src'];
+      const srcParts = src.split(':');
+      const offset = parseInt(srcParts[0]);
+      const len = parseInt(srcParts[1]);
+      const range = new vscode.Range(document.positionAt(offset), document.positionAt(offset + len));
+      tokenLoc.set(name, range);
+    }
+    for (const [_k, v] of Object.entries(jsonObj)) {
+      //log(typeof v);
+      if (Array.isArray(v)) {
+        v.forEach((child: any) => getSolidityTokenLoc2(document, child, tokenLoc));
+      } else if (typeof v === 'object') {
+        getSolidityTokenLoc2(document, v, tokenLoc);
+      }
     }
   }
 }
