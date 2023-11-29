@@ -2,6 +2,10 @@
 
 All notable changes to the "ERCx" extension will be documented in this file.
 
+## [0.0.10] - 2023-11-29
+
+- Add support for ERC4626
+
 ## [0.0.9] - 2023-11-07
 
 - Add option for API key.
