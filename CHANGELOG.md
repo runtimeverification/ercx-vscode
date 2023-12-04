@@ -2,6 +2,10 @@
 
 All notable changes to the "ERCx" extension will be documented in this file.
 
+## [0.0.11] - 2023-12-04
+
+- Add support for ERC1155
+
 ## [0.0.10] - 2023-11-29
 
 - Add support for ERC4626
