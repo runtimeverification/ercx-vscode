@@ -206,9 +206,12 @@ function processResponse(response:Response, run: vscode.TestRun, request: vscode
             testingRunning(body['id'] as string, run, request, queue, cancellation));
       } else {
         log('Status: ' + body['status']);
+        const msg: string = "API call returned with status: " + body['status'] + ".";
+        run.appendOutput(msg + "\n");
+        run.appendOutput("Server message: " + body['error'] + "\n");
+        run.appendOutput("The code needs to be self contained in a single file and have no errors.")
         run.end();
-        vscode.window.showErrorMessage("API call returned with status: " + body['status']
-          + ". The code needs to be self contained in a single file and have no errors.");
+        vscode.window.showErrorMessage(msg + " See TEST RESULTS for details.");
       }
       // Make sure to end the run after all tests have been executed:
     });
@@ -274,6 +277,7 @@ function testingDone(res: any, run: vscode.TestRun, request: vscode.TestRunReque
               const feedback: string = ercxTestsAPI.get(test.id)?.feedback ?? 'error';
               const expected: string = ercxTestsAPI.get(test.id)?.property ?? 'error';
               run.failed( test, vscode.TestMessage.diff( new vscode.MarkdownString(feedback), expected, feedback, ), 1);
+              //run.errored(test, new vscode.TestMessage(new vscode.MarkdownString("not applicable")), 1);
               //run.failed(test, new vscode.TestMessage(new vscode.MarkdownString(feedback)), 1); // this can take Markdown as input
             }
           }
