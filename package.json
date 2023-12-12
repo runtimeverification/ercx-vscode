@@ -40,7 +40,7 @@
                 },
                 "ercx.enableCodeLens": {
                     "type": "boolean",
-                    "default": "true",
+                    "default": true,
                     "description": "Enable Code Lens in Solidity code."
                 }
             }

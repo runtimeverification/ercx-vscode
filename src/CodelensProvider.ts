@@ -18,7 +18,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
   }
 
   public provideCodeLenses(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
-    if (vscode.workspace.getConfiguration('ercx').get('enableCodeLens', true)) {
+    if (vscode.workspace.getConfiguration('ercx').get<boolean>('enableCodeLens', true)) {
       this.codeLenses = [];
       const regex = new RegExp(this.regex);
       const text = document.getText();
