@@ -197,6 +197,7 @@ function processResponse(response:Response, run: vscode.TestRun, request: vscode
         || body['status'] == 'EVALUATED_ONLY_TEST'
         || body['status'] == 'EVALUATED_TESTED_LEVELS') {
         const report = JSON.parse(body['json']);
+        run.appendOutput("API returned with status: " + body['status']);
         testingDone(report, run, request, queue, cancellation);
         run.end();
       } else if (body['status'] == 'RUNNING') {
@@ -276,8 +277,12 @@ function testingDone(res: any, run: vscode.TestRun, request: vscode.TestRunReque
             } else {
               const feedback: string = ercxTestsAPI.get(test.id)?.feedback ?? 'error';
               const expected: string = ercxTestsAPI.get(test.id)?.property ?? 'error';
-              run.failed( test, vscode.TestMessage.diff( new vscode.MarkdownString(feedback), expected, feedback, ), 1);
-              //run.errored(test, new vscode.TestMessage(new vscode.MarkdownString("not applicable")), 1);
+              if (test.parent?.id == 'fingerprint') {
+                // mark as errored only the Fingerprint tests
+                const msg:string = "Fingerprint tests are optional and may not apply on all cases.\n\n" + feedback;
+                run.errored(test, new vscode.TestMessage(new vscode.MarkdownString(msg)), 1);
+              } else
+                run.failed( test, vscode.TestMessage.diff( new vscode.MarkdownString(feedback), expected, feedback, ), 1);
               //run.failed(test, new vscode.TestMessage(new vscode.MarkdownString(feedback)), 1); // this can take Markdown as input
             }
           }
