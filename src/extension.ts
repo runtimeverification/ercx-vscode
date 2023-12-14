@@ -181,40 +181,47 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
       headers: getERCxAPIHeader(),
       body: bodyStr,
     }).then(
-        (response) => {
-          if (response.ok) {
-            const x = response.json();
-            x.then((body) => {
-              if (body['status'] == 'DONE'
-               || body['status'] == 'EVALUATED_ONLY_TEST'
-               || body['status'] == 'EVALUATED_TESTED_LEVELS') {
-                const report = JSON.parse(body['json']);
-                testingDone(report, run, request, queue, cancellation);
-                run.end();
-              } else if (body['status'] == 'RUNNING') {
-                log('running...');
-                markStarted(run, queue);
-                new Promise((resolve) => setTimeout(resolve, fetchTimeout)).then((rr) =>
-                    testingRunning(body['id'] as string, run, request, queue, cancellation));
-              } else {
-                log('Status: ' + body['status']);
-                run.end();
-                vscode.window.showErrorMessage("API call returned with status: " + body['status']
-                  + ". The code needs to be self contained in a single file and have no errors.");
-              }
-              // Make sure to end the run after all tests have been executed:
-            });
-          } else {
-            log('response !OK');
-            // Make sure to end the run after all tests have been executed:
-            run.end();
-          }
-        },
+        (response) => processResponse(response, run, request, queue, cancellation),
         (err) => log('Report error: ' + err),
       ).catch((error) => log('API error: ' + error));
   };
 
   ctrl.createRunProfile('Run Tests', vscode.TestRunProfileKind.Run, runHandler, true, undefined);
+}
+
+function processResponse(response:Response, run: vscode.TestRun, request: vscode.TestRunRequest, queue: vscode.TestItem[], cancellation: vscode.CancellationToken): void {
+  if (response.ok) {
+    const x = response.json();
+    x.then((body) => {
+      if (body['status'] == 'DONE'
+        || body['status'] == 'EVALUATED_ONLY_TEST'
+        || body['status'] == 'EVALUATED_TESTED_LEVELS') {
+        const report = JSON.parse(body['json']);
+        run.appendOutput("API returned with status: " + body['status']);
+        testingDone(report, run, request, queue, cancellation);
+        run.end();
+      } else if (body['status'] == 'RUNNING') {
+        log('running...');
+        markStarted(run, queue);
+        new Promise((resolve) => setTimeout(resolve, fetchTimeout)).then((rr) =>
+            testingRunning(body['id'] as string, run, request, queue, cancellation));
+      } else {
+        log('Status: ' + body['status']);
+        const msg: string = "API call returned with status: " + body['status'] + ".";
+        run.appendOutput(msg + "\n");
+        run.appendOutput("Server message: " + body['error'] + "\n");
+        run.appendOutput("The code needs to be self contained in a single file and have no errors.")
+        run.end();
+        vscode.window.showErrorMessage(msg + " See TEST RESULTS for details.");
+      }
+      // Make sure to end the run after all tests have been executed:
+    });
+  } else {
+    log('response !OK');
+    run.appendOutput("Server returned status !OK: " + response.status + " " + response.statusText)
+    // Make sure to end the run after all tests have been executed:
+    run.end();
+  }
 }
 
 function markQueueing(run: vscode.TestRun, test: vscode.TestItem) {
@@ -235,34 +242,7 @@ function testingRunning(id: string, run: vscode.TestRun, request: vscode.TestRun
       method: 'GET',
       headers: getERCxAPIHeader(),
     }).then(
-        (response) => {
-          if (response.ok) {
-            const x = response.json();
-            x.then((body) => {
-              if (body['status'] == 'DONE'
-               || body['status'] == 'EVALUATED_ONLY_TEST'
-               || body['status'] == 'EVALUATED_TESTED_LEVELS') {
-                const report = JSON.parse(body['json']);
-                testingDone(report, run, request, queue, cancellation);
-                run.end();
-              } else if (body['status'] == 'RUNNING') {
-                log('running...');
-                new Promise((resolve) => setTimeout(resolve, fetchTimeout))
-                  .then((rr) => testingRunning(body['id'] as string, run, request, queue, cancellation));
-              } else {
-                log('Status: ' + body['status']);
-                run.end();
-                vscode.window.showErrorMessage("API call returned with status: " + body['status']
-                  + ". The code needs to be self contained in a single file and have no errors.");
-              }
-              // Make sure to end the run after all tests have been executed:
-            });
-          } else {
-            log('response !OK');
-            // Make sure to end the run after all tests have been executed:
-            run.end();
-          }
-        },
+        (response) => processResponse(response, run, request, queue, cancellation),
         (err) => log('Report error: ' + err),
       )
       .catch((error) => log('API error: ' + error));
@@ -291,13 +271,17 @@ function testingDone(res: any, run: vscode.TestRun, request: vscode.TestRunReque
           const tresult = v1 as any;
           //log(k1 + " " + tresult);
           if (k1.startsWith(test.id + '(')) {
-            run.appendOutput(test.id + ' ');
             if (tresult['status'] == 'Success') {
               run.passed(test, 1);
             } else {
               const feedback: string = ercxTestsAPI.get(test.id)?.feedback ?? 'error';
               const expected: string = ercxTestsAPI.get(test.id)?.property ?? 'error';
-              run.failed( test, vscode.TestMessage.diff( new vscode.MarkdownString(feedback), expected, feedback, ), 1);
+              if (test.parent?.id == 'fingerprint') {
+                // mark as errored only the Fingerprint tests
+                const msg:string = "Fingerprint tests are optional and may not apply on all cases.\n\n" + feedback;
+                run.errored(test, new vscode.TestMessage(new vscode.MarkdownString(msg)), 1);
+              } else
+                run.failed( test, vscode.TestMessage.diff( new vscode.MarkdownString(feedback), expected, feedback, ), 1);
               //run.failed(test, new vscode.TestMessage(new vscode.MarkdownString(feedback)), 1); // this can take Markdown as input
             }
           }
@@ -343,13 +327,13 @@ function addERCxTestsAPI(
   })
     .then(
       (response) => {
-        log(response.body);
+        log("GetTestsBody: " + response.body);
         if (response.ok) {
           const x = response.json();
           x.then(async (body) => {
             const apitsts = body as ERCxTestAPI[];
             for (const tst of apitsts) ercxTestsAPI.set(tst.name, tst);
-            log(ercxTestsAPI);
+            log("TEST api: " + ercxTestsAPI);
             await addERCxTestsAPI2(controller, document, range, ctrctName, standard);
           });
         }
