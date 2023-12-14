@@ -271,7 +271,6 @@ function testingDone(res: any, run: vscode.TestRun, request: vscode.TestRunReque
           const tresult = v1 as any;
           //log(k1 + " " + tresult);
           if (k1.startsWith(test.id + '(')) {
-            //run.appendOutput(test.id + ' ');
             if (tresult['status'] == 'Success') {
               run.passed(test, 1);
             } else {
