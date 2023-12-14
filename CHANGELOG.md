@@ -2,6 +2,13 @@
 
 All notable changes to the "ERCx" extension will be documented in this file.
 
+## [0.0.12] - 2023-12-14
+
+- Mark Fingerprint tests as optional
+- Fix codeLens enable option
+- Update vulnerable dependency
+- Add more error messages from the server
+
 ## [0.0.11] - 2023-12-04
 
 - Add support for ERC1155
