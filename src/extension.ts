@@ -15,20 +15,22 @@ function log(msg?: any) {
 }
 
 function getERCxAPIUri(): string {
-  return (
-    vscode.workspace.getConfiguration('ercx').get('ercxAPIUri', 'https://ercx.runtimeverification.com/api/v1/')
-  );
+  return vscode.workspace
+    .getConfiguration('ercx')
+    .get('ercxAPIUri', 'https://ercx.runtimeverification.com/api/v1/');
 }
 
 type ERCxAPIHeader = {
-  'Content-Type': string,
-  'User-Agent': string,
+  'Content-Type': string;
+  'User-Agent': string;
   // if this is assigned as undefined it will not be included in JSON.stringify
-  'X-API-KEY'?: string
-}
+  'X-API-KEY'?: string;
+};
 
-function getERCxAPIHeader():ERCxAPIHeader {
-  let key:string = vscode.workspace.getConfiguration('ercx').get('ercxAPIKey', '');
+function getERCxAPIHeader(): ERCxAPIHeader {
+  let key: string = vscode.workspace
+    .getConfiguration('ercx')
+    .get('ercxAPIKey', '');
   if (key == '')
     return {
       'Content-Type': 'application/json',
@@ -38,7 +40,7 @@ function getERCxAPIHeader():ERCxAPIHeader {
     return {
       'Content-Type': 'application/json',
       'User-Agent': 'VSCode',
-      'X-API-KEY': key
+      'X-API-KEY': key,
     };
 }
 
@@ -59,12 +61,14 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
     'ercx.codelensAction',
     (document: vscode.TextDocument, ctrctName: string, range: vscode.Range) => {
       //vscode.window.showInformationMessage(`CodeLens action clicked with args=${fileName} ${ctrctName} ${range}`);
-      log(`CodeLens action clicked with args=${document.uri} ${ctrctName} ${range}`);
+      log(
+        `CodeLens action clicked with args=${document.uri} ${ctrctName} ${range}`,
+      );
       pickStandard(ctrl, document, range, ctrctName);
     },
   );
 
-  function triggerCommand(standard:string) {
+  function triggerCommand(standard: string) {
     log('triggerCommand: ' + standard);
     log(vscode.window.activeTextEditor?.document.uri);
     log(vscode.window.activeTextEditor?.selection.active);
@@ -80,14 +84,18 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
       let ctrctName = '';
       let range: vscode.Range = vscode.window.activeTextEditor.selection;
       // find the last contract before the cursor
-      while ((matches = regex.exec(text)) !== null && matches.index < cursorOffset) {
+      while (
+        (matches = regex.exec(text)) !== null &&
+        matches.index < cursorOffset
+      ) {
         ctrctName = matches[1];
         const line = document?.lineAt(document.positionAt(matches.index).line);
         const indexOf = line.text.indexOf(matches[1]);
         const position = new vscode.Position(line.lineNumber, indexOf);
-        range = document.getWordRangeAtPosition(position, new RegExp(regex)) ?? range;
+        range =
+          document.getWordRangeAtPosition(position, new RegExp(regex)) ?? range;
       }
-      addERCxTestsAPI(ctrl, document, range, ctrctName, standard)
+      addERCxTestsAPI(ctrl, document, range, ctrctName, standard);
     }
   }
 
@@ -112,7 +120,10 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
     ),
   );
 
-  const runHandler = async (request: vscode.TestRunRequest, cancellation: vscode.CancellationToken) => {
+  const runHandler = async (
+    request: vscode.TestRunRequest,
+    cancellation: vscode.CancellationToken,
+  ) => {
     const run = ctrl.createTestRun(request, `Running Tests`, false);
     const queue: vscode.TestItem[] = [];
 
@@ -138,8 +149,8 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
       await vscode.workspace.fs.readFile(fileUri),
     );
 
-    let bodyStr:string = "";
-    const standard: string = ercxTestData.get(queue[0])?.standard ?? "ERC20";
+    let bodyStr: string = '';
+    const standard: string = ercxTestData.get(queue[0])?.standard ?? 'ERC20';
     switch (ercxTestData.get(queue[0])?.testLevel) {
       case TestLevel.Root:
         bodyStr = JSON.stringify({
@@ -150,75 +161,109 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
             path: fileUri.fsPath.toString(),
           },
           tokenClass: ercxTestData.get(queue[0])?.contractName,
-        }); break;
-        case TestLevel.Level:
-          bodyStr = JSON.stringify({
-            standard: standard,
-            sourceCodeFile: {
-              name: path.basename(fileUri.fsPath),
-              content: fileContent,
-              path: fileUri.fsPath.toString(),
-            },
-            testedLevels: queue[0].label,
-            tokenClass: ercxTestData.get(queue[0])?.contractName,
-          }); break;
-        case TestLevel.Individual:
-          bodyStr = JSON.stringify({
-            standard: standard,
-            sourceCodeFile: {
-              name: path.basename(fileUri.fsPath),
-              content: fileContent,
-              path: fileUri.fsPath.toString(),
-            },
-            onlyTest: queue[0].id,
-            tokenClass: ercxTestData.get(queue[0])?.contractName,
-          }); break;
-        }
+        });
+        break;
+      case TestLevel.Level:
+        bodyStr = JSON.stringify({
+          standard: standard,
+          sourceCodeFile: {
+            name: path.basename(fileUri.fsPath),
+            content: fileContent,
+            path: fileUri.fsPath.toString(),
+          },
+          testedLevels: queue[0].label,
+          tokenClass: ercxTestData.get(queue[0])?.contractName,
+        });
+        break;
+      case TestLevel.Individual:
+        bodyStr = JSON.stringify({
+          standard: standard,
+          sourceCodeFile: {
+            name: path.basename(fileUri.fsPath),
+            content: fileContent,
+            path: fileUri.fsPath.toString(),
+          },
+          onlyTest: queue[0].id,
+          tokenClass: ercxTestData.get(queue[0])?.contractName,
+        });
+        break;
+    }
 
-    
     fetch(getERCxAPIUri() + 'reports', {
       method: 'POST',
       headers: getERCxAPIHeader(),
       body: bodyStr,
-    }).then(
-        (response) => processResponse(response, run, request, queue, cancellation),
+    })
+      .then(
+        (response) =>
+          processResponse(response, run, request, queue, cancellation),
         (err) => log('Report error: ' + err),
-      ).catch((error) => log('API error: ' + error));
+      )
+      .catch((error) => log('API error: ' + error));
   };
 
-  ctrl.createRunProfile('Run Tests', vscode.TestRunProfileKind.Run, runHandler, true, undefined);
+  ctrl.createRunProfile(
+    'Run Tests',
+    vscode.TestRunProfileKind.Run,
+    runHandler,
+    true,
+    undefined,
+  );
 }
 
-function processResponse(response:Response, run: vscode.TestRun, request: vscode.TestRunRequest, queue: vscode.TestItem[], cancellation: vscode.CancellationToken): void {
+function processResponse(
+  response: Response,
+  run: vscode.TestRun,
+  request: vscode.TestRunRequest,
+  queue: vscode.TestItem[],
+  cancellation: vscode.CancellationToken,
+): void {
   if (response.ok) {
     const x = response.json();
     x.then((body) => {
-      if (body['status'] == 'DONE'
-        || body['status'] == 'EVALUATED_ONLY_TEST'
-        || body['status'] == 'EVALUATED_TESTED_LEVELS') {
+      if (
+        body['status'] == 'DONE' ||
+        body['status'] == 'EVALUATED_ONLY_TEST' ||
+        body['status'] == 'EVALUATED_TESTED_LEVELS'
+      ) {
         const report = JSON.parse(body['json']);
-        run.appendOutput("API returned with status: " + body['status']);
+        run.appendOutput('API returned with status: ' + body['status']);
         testingDone(report, run, request, queue, cancellation);
         run.end();
       } else if (body['status'] == 'RUNNING') {
         log('running...');
         markStarted(run, queue);
         new Promise((resolve) => setTimeout(resolve, fetchTimeout)).then((rr) =>
-            testingRunning(body['id'] as string, run, request, queue, cancellation));
+          testingRunning(
+            body['id'] as string,
+            run,
+            request,
+            queue,
+            cancellation,
+          ),
+        );
       } else {
         log('Status: ' + body['status']);
-        const msg: string = "API call returned with status: " + body['status'] + ".";
-        run.appendOutput(msg + "\n");
-        run.appendOutput("Server message: " + body['error'] + "\n");
-        run.appendOutput("The code needs to be self contained in a single file and have no errors.")
+        const msg: string =
+          'API call returned with status: ' + body['status'] + '.';
+        run.appendOutput(msg + '\n');
+        run.appendOutput('Server message: ' + body['error'] + '\n');
+        run.appendOutput(
+          'The code needs to be self contained in a single file and have no errors.',
+        );
         run.end();
-        vscode.window.showErrorMessage(msg + " See TEST RESULTS for details.");
+        vscode.window.showErrorMessage(msg + ' See TEST RESULTS for details.');
       }
       // Make sure to end the run after all tests have been executed:
     });
   } else {
     log('response !OK');
-    run.appendOutput("Server returned status !OK: " + response.status + " " + response.statusText)
+    run.appendOutput(
+      'Server returned status !OK: ' +
+        response.status +
+        ' ' +
+        response.statusText,
+    );
     // Make sure to end the run after all tests have been executed:
     run.end();
   }
@@ -232,17 +277,27 @@ function markQueueing(run: vscode.TestRun, test: vscode.TestItem) {
 function markStarted(run: vscode.TestRun, test: vscode.TestItem[]) {
   test.forEach((t) => {
     run.started(t);
-    t.children.forEach((t2) => markStarted(run, new Array<vscode.TestItem>(t2)));
+    t.children.forEach((t2) =>
+      markStarted(run, new Array<vscode.TestItem>(t2)),
+    );
   });
 }
 
-function testingRunning(id: string, run: vscode.TestRun, request: vscode.TestRunRequest, queue: vscode.TestItem[], cancellation: vscode.CancellationToken) {
+function testingRunning(
+  id: string,
+  run: vscode.TestRun,
+  request: vscode.TestRunRequest,
+  queue: vscode.TestItem[],
+  cancellation: vscode.CancellationToken,
+) {
   if (!cancellation.isCancellationRequested) {
     fetch(getERCxAPIUri() + 'reports/' + id + '?fields=text,json', {
       method: 'GET',
       headers: getERCxAPIHeader(),
-    }).then(
-        (response) => processResponse(response, run, request, queue, cancellation),
+    })
+      .then(
+        (response) =>
+          processResponse(response, run, request, queue, cancellation),
         (err) => log('Report error: ' + err),
       )
       .catch((error) => log('API error: ' + error));
@@ -252,7 +307,13 @@ function testingRunning(id: string, run: vscode.TestRun, request: vscode.TestRun
   }
 }
 
-function testingDone(res: any, run: vscode.TestRun, request: vscode.TestRunRequest, queue: vscode.TestItem[], cancellation: vscode.CancellationToken) {
+function testingDone(
+  res: any,
+  run: vscode.TestRun,
+  request: vscode.TestRunRequest,
+  queue: vscode.TestItem[],
+  cancellation: vscode.CancellationToken,
+) {
   // For every test that was queued, try to run it. Call run.passed() or run.failed().
   while (queue.length > 0 && !cancellation.isCancellationRequested) {
     const test = queue.pop()!;
@@ -274,14 +335,30 @@ function testingDone(res: any, run: vscode.TestRun, request: vscode.TestRunReque
             if (tresult['status'] == 'Success') {
               run.passed(test, 1);
             } else {
-              const feedback: string = ercxTestsAPI.get(test.id)?.feedback ?? 'error';
-              const expected: string = ercxTestsAPI.get(test.id)?.property ?? 'error';
+              const feedback: string =
+                ercxTestsAPI.get(test.id)?.feedback ?? 'error';
+              const expected: string =
+                ercxTestsAPI.get(test.id)?.property ?? 'error';
               if (test.parent?.id == 'fingerprint') {
                 // mark as errored only the Fingerprint tests
-                const msg:string = "Fingerprint tests are optional and may not apply on all cases.\n\n" + feedback;
-                run.errored(test, new vscode.TestMessage(new vscode.MarkdownString(msg)), 1);
+                const msg: string =
+                  'Fingerprint tests are optional and may not apply on all cases.\n\n' +
+                  feedback;
+                run.errored(
+                  test,
+                  new vscode.TestMessage(new vscode.MarkdownString(msg)),
+                  1,
+                );
               } else
-                run.failed( test, vscode.TestMessage.diff( new vscode.MarkdownString(feedback), expected, feedback, ), 1);
+                run.failed(
+                  test,
+                  vscode.TestMessage.diff(
+                    new vscode.MarkdownString(feedback),
+                    expected,
+                    feedback,
+                  ),
+                  1,
+                );
               //run.failed(test, new vscode.TestMessage(new vscode.MarkdownString(feedback)), 1); // this can take Markdown as input
             }
           }
@@ -291,19 +368,33 @@ function testingDone(res: any, run: vscode.TestRun, request: vscode.TestRunReque
   }
   log('Testing done');
 }
-function pickStandard( controller: vscode.TestController, document: vscode.TextDocument, range: vscode.Range, ctrctName: string) {
-  vscode.window.showQuickPick([
-    { label: 'ERC20', description: 'ERC20 tests'},
-    { label: 'ERC4626', description: 'ERC4626 tests'},
-    { label: 'ERC1155', description: 'ERC1155 tests'},
-  ],
-  { placeHolder: 'Select which standard to generate the tests for.' }
-  ).then((stdResponse) => {
-    if (stdResponse) {
-      log("ChooseERC" + stdResponse.label);
-      addERCxTestsAPI(controller, document, range, ctrctName, stdResponse.label)
-    }
-  });
+function pickStandard(
+  controller: vscode.TestController,
+  document: vscode.TextDocument,
+  range: vscode.Range,
+  ctrctName: string,
+) {
+  vscode.window
+    .showQuickPick(
+      [
+        { label: 'ERC20', description: 'ERC20 tests' },
+        { label: 'ERC4626', description: 'ERC4626 tests' },
+        { label: 'ERC1155', description: 'ERC1155 tests' },
+      ],
+      { placeHolder: 'Select which standard to generate the tests for.' },
+    )
+    .then((stdResponse) => {
+      if (stdResponse) {
+        log('ChooseERC' + stdResponse.label);
+        addERCxTestsAPI(
+          controller,
+          document,
+          range,
+          ctrctName,
+          stdResponse.label,
+        );
+      }
+    });
 }
 
 function addERCxTestsAPI(
@@ -311,7 +402,8 @@ function addERCxTestsAPI(
   document: vscode.TextDocument,
   range: vscode.Range,
   ctrctName: string,
-  standard: string) {
+  standard: string,
+) {
   // automatically focus on the Testing view after tests are generated
   vscode.commands.executeCommand('workbench.view.testing.focus');
 
@@ -327,14 +419,20 @@ function addERCxTestsAPI(
   })
     .then(
       (response) => {
-        log("GetTestsBody: " + response.body);
+        log('GetTestsBody: ' + response.body);
         if (response.ok) {
           const x = response.json();
           x.then(async (body) => {
             const apitsts = body as ERCxTestAPI[];
             for (const tst of apitsts) ercxTestsAPI.set(tst.name, tst);
-            log("TEST api: " + ercxTestsAPI);
-            await addERCxTestsAPI2(controller, document, range, ctrctName, standard);
+            log('TEST api: ' + ercxTestsAPI);
+            await addERCxTestsAPI2(
+              controller,
+              document,
+              range,
+              ctrctName,
+              standard,
+            );
           });
         }
       },
@@ -349,21 +447,39 @@ async function addERCxTestsAPI2(
   document: vscode.TextDocument,
   range: vscode.Range,
   ctrctName: string,
-  standard: string) {
+  standard: string,
+) {
   const docTokens = await getSolidityTokenLoc(document);
   log('ERCx add ' + standard + ' tests for: ' + ctrctName);
 
-  const ercxRoot = controller.createTestItem('ERCx', document.uri.path.split('/').pop()! + ' - ' + standard + ' Tests', document.uri);
+  const ercxRoot = controller.createTestItem(
+    'ERCx',
+    document.uri.path.split('/').pop()! + ' - ' + standard + ' Tests',
+    document.uri,
+  );
   ercxRootSet.add(ercxRoot);
-  ercxTestData.set(ercxRoot, new ERCxTestData(ercxRoot, ctrctName, TestLevel.Root, standard));
+  ercxTestData.set(
+    ercxRoot,
+    new ERCxTestData(ercxRoot, ctrctName, TestLevel.Root, standard),
+  );
   const levels = new Map<string, vscode.TestItem>();
 
   for (const et of ercxTestsAPI.values()) {
-    if (et.name == 'testAbiFoundInEtherscan' ||et.name == 'testAddressIsImplementationContract')
+    if (
+      et.name == 'testAbiFoundInEtherscan' ||
+      et.name == 'testAddressIsImplementationContract'
+    )
       // these tests only make sense for deployed contracts not source code
       continue;
-    const ti = controller.createTestItem(et.name, et.name.slice(4), document.uri);
-    ercxTestData.set(ti, new ERCxTestData(ti, ctrctName, TestLevel.Individual, standard));
+    const ti = controller.createTestItem(
+      et.name,
+      et.name.slice(4),
+      document.uri,
+    );
+    ercxTestData.set(
+      ti,
+      new ERCxTestData(ti, ctrctName, TestLevel.Individual, standard),
+    );
 
     // find a token that fits one of the categories
     ti.range = docTokens.get(et.concernedFunctions[0]) ?? range;
@@ -372,7 +488,10 @@ async function addERCxTestsAPI2(
       // first time finding a level?
       const Level: string = et.level[0].toUpperCase() + et.level.slice(1); // capitalize first letter
       const lti = controller.createTestItem(et.level, Level, document.uri);
-      ercxTestData.set(lti, new ERCxTestData(lti, ctrctName, TestLevel.Level, standard));
+      ercxTestData.set(
+        lti,
+        new ERCxTestData(lti, ctrctName, TestLevel.Level, standard),
+      );
       lti.range = range;
       levels.set(et.level, lti);
       ercxRoot.children.add(lti);
@@ -402,14 +521,18 @@ class ERCxTestData {
     public readonly test: vscode.TestItem,
     public readonly contractName: string,
     public readonly testLevel: TestLevel,
-    public readonly standard: string
+    public readonly standard: string,
   ) {}
 }
 enum TestLevel {
-  Individual, Level, Root
+  Individual,
+  Level,
+  Root,
 }
 
-async function getSolidityTokenLoc(document: vscode.TextDocument): Promise<Map<string, vscode.Range>> {
+async function getSolidityTokenLoc(
+  document: vscode.TextDocument,
+): Promise<Map<string, vscode.Range>> {
   const fileContent: string = new TextDecoder('utf-8').decode(
     await vscode.workspace.fs.readFile(document.uri),
   );
@@ -440,21 +563,33 @@ async function getSolidityTokenLoc(document: vscode.TextDocument): Promise<Map<s
   return tokenLoc;
 }
 
-function getSolidityTokenLoc2(document: vscode.TextDocument, jsonObj: any, tokenLoc: Map<string, vscode.Range>) {
+function getSolidityTokenLoc2(
+  document: vscode.TextDocument,
+  jsonObj: any,
+  tokenLoc: Map<string, vscode.Range>,
+) {
   if (jsonObj != null) {
-      if (((jsonObj['nodeType'] ?? '').endsWith('Definition') || (jsonObj['nodeType'] ?? '').endsWith('Declaration'))) {
+    if (
+      (jsonObj['nodeType'] ?? '').endsWith('Definition') ||
+      (jsonObj['nodeType'] ?? '').endsWith('Declaration')
+    ) {
       const name = jsonObj['name'];
       const src = jsonObj['src'];
       const srcParts = src.split(':');
       const offset = parseInt(srcParts[0]);
       const len = parseInt(srcParts[1]);
-      const range = new vscode.Range(document.positionAt(offset), document.positionAt(offset + len));
+      const range = new vscode.Range(
+        document.positionAt(offset),
+        document.positionAt(offset + len),
+      );
       tokenLoc.set(name, range);
     }
     for (const [_k, v] of Object.entries(jsonObj)) {
       //log(typeof v);
       if (Array.isArray(v)) {
-        v.forEach((child: any) => getSolidityTokenLoc2(document, child, tokenLoc));
+        v.forEach((child: any) =>
+          getSolidityTokenLoc2(document, child, tokenLoc),
+        );
       } else if (typeof v === 'object') {
         getSolidityTokenLoc2(document, v, tokenLoc);
       }
