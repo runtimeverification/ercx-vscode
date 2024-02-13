@@ -2,6 +2,10 @@
 
 All notable changes to the "ERCx" extension will be documented in this file.
 
+## [Unreleased]
+
+- Add support for ERC721
+
 ## [0.0.12] - 2023-12-14
 
 - Mark Fingerprint tests as optional

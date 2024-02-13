@@ -108,8 +108,8 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand(
-      'ercx.generateTests4626',
-      (contractName: string) => triggerCommand('ERC4626'),
+      'ercx.generateTests721',
+      (contractName: string) => triggerCommand('ERC721'),
     ),
   );
 
@@ -117,6 +117,13 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       'ercx.generateTests1155',
       (contractName: string) => triggerCommand('ERC1155'),
+    ),
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'ercx.generateTests4626',
+      (contractName: string) => triggerCommand('ERC4626'),
     ),
   );
 
@@ -378,8 +385,9 @@ function pickStandard(
     .showQuickPick(
       [
         { label: 'ERC20', description: 'ERC20 tests' },
-        { label: 'ERC4626', description: 'ERC4626 tests' },
+        { label: 'ERC721', description: 'ERC721 tests' },
         { label: 'ERC1155', description: 'ERC1155 tests' },
+        { label: 'ERC4626', description: 'ERC4626 tests' },
       ],
       { placeHolder: 'Select which standard to generate the tests for.' },
     )

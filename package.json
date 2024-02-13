@@ -52,13 +52,18 @@
         "when": "editorLangId == solidity"
       },
       {
-        "command": "ercx.generateTests4626",
-        "title": "ERC4626",
+        "command": "ercx.generateTests721",
+        "title": "ERC721",
         "when": "editorLangId == solidity"
       },
       {
         "command": "ercx.generateTests1155",
         "title": "ERC1155",
+        "when": "editorLangId == solidity"
+      },
+      {
+        "command": "ercx.generateTests4626",
+        "title": "ERC4626",
         "when": "editorLangId == solidity"
       }
     ],
@@ -80,10 +85,13 @@
           "command": "ercx.generateTests20"
         },
         {
-          "command": "ercx.generateTests4626"
+          "command": "ercx.generateTests721"
         },
         {
           "command": "ercx.generateTests1155"
+        },
+        {
+          "command": "ercx.generateTests4626"
         }
       ]
     }
