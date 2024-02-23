@@ -37,6 +37,15 @@ export enum TestResult {
   Passed = 1,
 }
 
+export enum TaskStatus {
+  PENDING = 'PENDING',
+  RUNNING = 'RUNNING',
+  DONE = 'DONE',
+  ERROR = 'ERROR',
+  EVALUATED_ONLY_TEST = 'EVALUATED_ONLY_TEST',
+  EVALUATED_TESTED_LEVELS = 'EVALUATED_TESTED_LEVELS',
+}
+
 export interface Evaluation {
   test: PropertyTest;
   result: TestResult;
@@ -49,4 +58,26 @@ export interface ERCxTestData {
   contractName: string;
   testLevel: TestLevel;
   standard: string;
+}
+
+export interface Feedback {
+  feedback: string;
+  mutant_id: number;
+  similarity: number;
+  mutation_type: string;
+}
+
+export interface Report {
+  id: string;
+  tokenClass?: string | null;
+  version: number;
+  createdAt: Date;
+  updatedAt: Date;
+  status: TaskStatus;
+  standard: TestSuiteStandard;
+  evaluations?: Evaluation[];
+  error?: string;
+  feedback: {
+    feedbacks: Feedback[];
+  };
 }
