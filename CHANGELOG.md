@@ -4,8 +4,6 @@ All notable changes to the "ERCx" extension will be documented in this file.
 
 ## [Unreleased]
 
-- Add support for ERC721
-
 ## [0.0.13] - 2024-02-23
 
 - Add support for ERC721 test suite.
