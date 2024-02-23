@@ -33,7 +33,7 @@
           "default": "https://ercx.runtimeverification.com/api/v1/",
           "description": "URL to the ERCx api."
         },
-        "ercx.ercxAPIKey": {
+        "ercx.apiKey": {
           "type": "string",
           "default": "",
           "description": "Access token to the ERCx api. Blank for public tests."
