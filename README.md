@@ -13,3 +13,17 @@ You need to install an extension for Solidity syntax highlighting for this exten
 as it activates `onLanguage:solidity`.
 
 ![loop](https://raw.githubusercontent.com/runtimeverification/ercx-vscode/5ea45164451df9d0cb4505f7d9bc0540724a6572/media/ercx-loop.gif)
+
+## Setting the API Key
+
+Using this extension requires setting the API key. You can get one from the [ERCx Open API](https://ercx.runtimeverification.com/open-api) page.
+
+Then you can set it in the VS Code settings:
+
+```json
+{
+  ...
+  "ercx.apiKey": "xxxx",
+  ...
+}
+```
