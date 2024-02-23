@@ -1,129 +1,142 @@
 {
-    "name": "ercx-vscode",
-    "displayName": "ERCx Solidity Testing",
-    "description": "Run the ERCx tests inside VSCode.",
-    "version": "0.0.12",
-    "publisher": "RuntimeVerification",
-    "repository": "https://github.com/runtimeverification/ercx-vscode",
-    "icon": "media/ERC-X-symbol-transparent-square-100x100-01.png",
-    "author": {
-        "name": "Runtime Verification",
-        "email": "radu.mereuta@runtimeverification.com",
-        "url": "https://github.com/radumereuta"
-    },
-    "engines": {
-        "vscode": "^1.75.0"
-    },
-    "categories": [
-        "Programming Languages",
-        "Testing"
-    ],
-    "activationEvents": [
-        "onLanguage:solidity"
-    ],
-    "main": "./out/native/extension.js",
-    "browser": "./out/web/extension.js",
-    "contributes": {
-        "configuration": {
-            "type": "object",
-            "title": "ERCx configuration",
-            "properties": {
-                "ercx.ercxAPIUri": {
-                    "type": "string",
-                    "default": "https://ercx.runtimeverification.com/api/v1/",
-                    "description": "URL to the ERCx api."
-                },
-                "ercx.ercxAPIKey": {
-                    "type": "string",
-                    "default": "",
-                    "description": "Access token to the ERCx api. Blank for public tests."
-                },
-                "ercx.enableCodeLens": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Enable Code Lens in Solidity code."
-                }
-            }
+  "name": "ercx-vscode",
+  "displayName": "ERCx Solidity Testing",
+  "description": "Run the ERCx tests inside VSCode.",
+  "version": "0.0.13",
+  "publisher": "RuntimeVerification",
+  "repository": "https://github.com/runtimeverification/ercx-vscode",
+  "icon": "media/ERC-X-symbol-transparent-square-100x100-01.png",
+  "author": {
+    "name": "Runtime Verification",
+    "email": "radu.mereuta@runtimeverification.com",
+    "url": "https://github.com/radumereuta"
+  },
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Testing"
+  ],
+  "activationEvents": [
+    "onLanguage:solidity"
+  ],
+  "main": "./out/native/extension.js",
+  "browser": "./out/web/extension.js",
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "ERCx configuration",
+      "properties": {
+        "ercx.ercxAPIUri": {
+          "type": "string",
+          "default": "https://ercx.runtimeverification.com/api/v1/",
+          "description": "URL to the ERCx api."
         },
-        "commands": [
-            {
-                "command": "ercx.generateTests20",
-                "title": "ERC20",
-                "when": "editorLangId == solidity"
-            },
-            {
-                "command": "ercx.generateTests4626",
-                "title": "ERC4626",
-                "when": "editorLangId == solidity"
-            },
-            {
-                "command": "ercx.generateTests1155",
-                "title": "ERC1155",
-                "when": "editorLangId == solidity"
-            }
-        ],
-        "submenus": [
-            {
-                "id": "ercxSubmenu",
-                "label": "Generate ERCx tests"
-            }
-        ],
-        "menus": {
-            "editor/context": [
-                {
-                    "when": "editorLangId == solidity",
-                    "submenu": "ercxSubmenu"
-                }
-            ],
-            "ercxSubmenu":[
-                {
-                    "command": "ercx.generateTests20"
-                },
-                {
-                    "command": "ercx.generateTests4626"
-                },
-                {
-                    "command": "ercx.generateTests1155"
-                }
-            ]
+        "ercx.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Access token to the ERCx api. Blank for public tests."
+        },
+        "ercx.enableCodeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Code Lens in Solidity code."
         }
+      }
     },
-    "scripts": {
-        "build": "rm -rf ./out && node build.js",
-        "check:all": "yarn check:eslint",
-        "check:eslint": "eslint \"**/*\"",
-        "copy:files": "gulp copy-files",
-        "fix:all": "yarn fix:eslint && yarn fix:eslint",
-        "fix:eslint": "eslint --fix \"**/*\"",
-        "vscode:prepublish": "yarn install && yarn build",
-        "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
-        "run-in-vscode-dev": "npx serve --cors -l 5000 --ssl-cert $HOME/certs/localhost.pem --ssl-key $HOME/certs/localhost-key.pem",
-        "watch": "rm -rf ./out && node build.js --watch"
-    },
-    "lint-staged": {
-        "**/*.*": [
-            "eslint"
-        ]
-    },
-    "devDependencies": {
-        "@types/js-yaml": "^4.0.5",
-        "@types/node": "^16.18.43",
-        "@types/vscode": "1.75.0",
-        "@types/yaml": "^1.9.7",
-        "@typescript-eslint/eslint-plugin": "^6.7.0",
-        "@typescript-eslint/parser": "^6.7.0",
-        "@vscode/test-web": "^0.0.49",
-        "concurrently": "^8.2.1",
-        "esbuild": "^0.19.2",
-        "esbuild-plugin-polyfill-node": "^0.3.0",
-        "esbuild-plugin-wasm": "^1.1.0",
-        "eslint": "^8.49.0",
-        "lint-staged": "^14.0.1",
-        "typescript": "^5.2.2"
-    },
-    "dependencies": {
-        "@agnostico/browser-solidity-compiler": "^0.1.1",
-        "cross-fetch": "^4.0.0",
-        "solc": "^0.8.21"
+    "commands": [
+      {
+        "command": "ercx.generateTests20",
+        "title": "ERC20",
+        "when": "editorLangId == solidity"
+      },
+      {
+        "command": "ercx.generateTests721",
+        "title": "ERC721",
+        "when": "editorLangId == solidity"
+      },
+      {
+        "command": "ercx.generateTests1155",
+        "title": "ERC1155",
+        "when": "editorLangId == solidity"
+      },
+      {
+        "command": "ercx.generateTests4626",
+        "title": "ERC4626",
+        "when": "editorLangId == solidity"
+      }
+    ],
+    "submenus": [
+      {
+        "id": "ercxSubmenu",
+        "label": "Generate ERCx tests"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "editorLangId == solidity",
+          "submenu": "ercxSubmenu"
+        }
+      ],
+      "ercxSubmenu": [
+        {
+          "command": "ercx.generateTests20"
+        },
+        {
+          "command": "ercx.generateTests721"
+        },
+        {
+          "command": "ercx.generateTests1155"
+        },
+        {
+          "command": "ercx.generateTests4626"
+        }
+      ]
     }
+  },
+  "scripts": {
+    "build": "rm -rf ./out && node build.js",
+    "check:all": "yarn check:eslint",
+    "check:eslint": "eslint \"**/*\"",
+    "check:prettier": "prettier --check \"**/*.*\"",
+    "copy:files": "gulp copy-files",
+    "fix:all": "yarn fix:eslint && yarn fix:eslint",
+    "fix:eslint": "eslint --fix \"**/*\"",
+    "fix:prettier": "prettier --write \"**/*.*\"",
+    "vscode:prepublish": "yarn install && yarn build",
+    "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
+    "run-in-vscode-dev": "npx serve --cors -l 5000 --ssl-cert $HOME/certs/localhost.pem --ssl-key $HOME/certs/localhost-key.pem",
+    "watch": "rm -rf ./out && node build.js --watch"
+  },
+  "lint-staged": {
+    "**/*.*": [
+      "eslint",
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.5",
+    "@types/node": "^16.18.43",
+    "@types/vscode": "1.75.0",
+    "@types/yaml": "^1.9.7",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
+    "@vscode/test-web": "^0.0.49",
+    "concurrently": "^8.2.1",
+    "esbuild": "^0.19.2",
+    "esbuild-plugin-polyfill-node": "^0.3.0",
+    "esbuild-plugin-wasm": "^1.1.0",
+    "eslint": "^8.49.0",
+    "lint-staged": "^14.0.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@agnostico/browser-solidity-compiler": "^0.1.1",
+    "cross-fetch": "^4.0.0",
+    "prettier": "^3.2.5",
+    "prettier-plugin-packagejson": "^2.4.10",
+    "solc": "^0.8.21"
+  }
 }
