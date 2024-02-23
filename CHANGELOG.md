@@ -6,6 +6,12 @@ All notable changes to the "ERCx" extension will be documented in this file.
 
 - Add support for ERC721
 
+## [0.0.13] - 2024-02-23
+
+- Add support for ERC721 test suite.
+- Use the latest `Standard`, `Security`, and `Features` test levels.
+- Support to test multiple solidity files.
+
 ## [0.0.12] - 2023-12-14
 
 - Mark Fingerprint tests as optional
