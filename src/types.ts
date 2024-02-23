@@ -18,7 +18,14 @@ export enum PropertyTestLevel {
   Standard = 'standard',
   Security = 'security',
   Features = 'features',
+  Status = 'status',
 }
+
+export const FreePropertyTestLevels = [
+  PropertyTestLevel.Abi,
+  PropertyTestLevel.Standard,
+  PropertyTestLevel.Status,
+];
 
 export interface PropertyTest {
   name: string;

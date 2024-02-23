@@ -5,7 +5,9 @@ import { CodelensProvider } from './CodelensProvider';
 import {
   ERCxTestData,
   Evaluation,
+  FreePropertyTestLevels,
   PropertyTest,
+  PropertyTestLevel,
   Report,
   TaskStatus,
   TestLevel,
@@ -393,7 +395,7 @@ function testingDone(
           run.skipped(test);
         } else {
           const feedback = evaluation.test.feedback;
-          const expected = evaluation.test.expected;
+          const expected = evaluation.test.property;
           if (test.parent?.id === 'features') {
             // mark as errored only the Fingerprint tests
             const msg: string =
@@ -548,7 +550,9 @@ async function addERCxPropertyTests2(
       const level: string = test.level[0].toUpperCase() + test.level.slice(1); // capitalize first letter
       const levelTestItem = controller.createTestItem(
         test.level,
-        level,
+        FreePropertyTestLevels.includes(test.level as PropertyTestLevel)
+          ? level
+          : `${level} (PAID)`,
         document.uri,
       );
       ercxTestData.set(levelTestItem, {
