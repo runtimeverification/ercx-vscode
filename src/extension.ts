@@ -393,6 +393,18 @@ function testingDone(
           run.passed(test, 1);
         } else if (evaluation.result === TestResult.NotTested) {
           run.skipped(test);
+        } else if (evaluation.result === TestResult.Inconclusive) {
+          const feedback = evaluation.test.feedback;
+          const expected = evaluation.test.property;
+          const inconclusive = evaluation.test.inconclusive;
+          run.failed(
+            test,
+            vscode.TestMessage.diff(
+              new vscode.MarkdownString(inconclusive),
+              expected,
+              feedback,
+            ),
+          );
         } else {
           const feedback = evaluation.test.feedback;
           const expected = evaluation.test.property;
