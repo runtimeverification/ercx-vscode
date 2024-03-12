@@ -2,9 +2,9 @@
 
 All notable changes to the "ERCx" extension will be documented in this file.
 
-## [Unreleased]
+## [0.0.14] - 2024-03-12
 
-- Add the inconclusive tests.
+- Add the inconclusive tests to the test results.
 
 ## [0.0.13] - 2024-02-23
 
