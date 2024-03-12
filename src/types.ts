@@ -34,6 +34,7 @@ export interface PropertyTest {
   property: string;
   feedback: string;
   expected: string;
+  inconclusive: string;
   concernedFunctions: string[];
   categories: string[];
 }
@@ -41,6 +42,7 @@ export interface PropertyTest {
 export enum TestResult {
   Failed = 0,
   NotTested = -1,
+  Inconclusive = -2,
   Passed = 1,
 }
 

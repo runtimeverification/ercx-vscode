@@ -96,7 +96,7 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
     },
   );
 
-  function triggerCommand(standard: string) {
+  function triggerCommand(standard: TestSuiteStandard) {
     log('triggerCommand: ' + standard);
     if (vscode.window.activeTextEditor) {
       const regexStr = /contract\s+(\S+)/g;
@@ -128,28 +128,28 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand(
       'ercx.generateTests20',
-      (contractName: string) => triggerCommand('ERC20'),
+      (contractName: string) => triggerCommand(TestSuiteStandard.ERC20),
     ),
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand(
       'ercx.generateTests721',
-      (contractName: string) => triggerCommand('ERC721'),
+      (contractName: string) => triggerCommand(TestSuiteStandard.ERC721),
     ),
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand(
       'ercx.generateTests1155',
-      (contractName: string) => triggerCommand('ERC1155'),
+      (contractName: string) => triggerCommand(TestSuiteStandard.ERC1155),
     ),
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand(
       'ercx.generateTests4626',
-      (contractName: string) => triggerCommand('ERC4626'),
+      (contractName: string) => triggerCommand(TestSuiteStandard.ERC4626),
     ),
   );
 
@@ -393,6 +393,18 @@ function testingDone(
           run.passed(test, 1);
         } else if (evaluation.result === TestResult.NotTested) {
           run.skipped(test);
+        } else if (evaluation.result === TestResult.Inconclusive) {
+          const feedback = evaluation.test.feedback;
+          const expected = evaluation.test.property;
+          const inconclusive = evaluation.test.inconclusive;
+          run.errored(
+            test,
+            vscode.TestMessage.diff(
+              new vscode.MarkdownString(inconclusive),
+              expected,
+              feedback,
+            ),
+          );
         } else {
           const feedback = evaluation.test.feedback;
           const expected = evaluation.test.property;
