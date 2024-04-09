@@ -450,14 +450,14 @@ async function getUserRateLimit() {
       headers: getERCxAPIHeader(),
     });
     if (response.status !== 200) {
-      throw new Error('Failed to fetch rate limit: ' + response.status);
+      throw new Error('Failed to check the rate limit: ' + response.status);
     }
     const rateLimit: RateLimit = await response.json();
     return rateLimit;
   } catch (error) {
-    log('Failed to fetch rate limit: ' + error);
+    log('Failed to check the rate limit: ' + error);
     vscode.window.showErrorMessage(
-      'Failed to fetch rate limit. Please make sure you set a valid "ercx.apiKey" in the settings.',
+      'Failed to check the rate limit. Please make sure you set a valid "ercx.apiKey" in the settings.',
     );
   }
 }
