@@ -2,6 +2,11 @@
 
 All notable changes to the "ERCx" extension will be documented in this file.
 
+## [0.0.15] - 2024-04-09
+
+- The extension will now check the user rate limit and display a warning if the rate limit is exceeded.
+- Support to run multiple test suites of ERCx standards on the same contract.
+
 ## [0.0.14] - 2024-03-12
 
 - Add the inconclusive tests to the test results.
