@@ -8,6 +8,7 @@ import {
   FreePropertyTestLevels,
   PropertyTest,
   PropertyTestLevel,
+  RateLimit,
   Report,
   TaskStatus,
   TestLevel,
@@ -90,7 +91,7 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
     ) => {
       //vscode.window.showInformationMessage(`CodeLens action clicked with args=${fileName} ${contractName} ${range}`);
       log(
-        `CodeLens action clicked with args=${document.uri} ${contractName} ${range}`,
+        `CodeLens action clicked with args=${document.uri} ${contractName} ${JSON.stringify(range)}`,
       );
       pickStandard(controller, document, range, contractName);
     },
@@ -224,12 +225,16 @@ export async function initExtensionCommon(context: vscode.ExtensionContext) {
     }
 
     try {
-      const response = await fetch(getERCxAPIUri() + 'reports', {
-        method: 'POST',
-        headers: getERCxAPIHeader(),
-        body: bodyStr,
-      });
-      await processResponse(response, run, request, queue, cancellation);
+      if (await checkUserRateLimit()) {
+        const response = await fetch(getERCxAPIUri() + 'reports', {
+          method: 'POST',
+          headers: getERCxAPIHeader(),
+          body: bodyStr,
+        });
+        await processResponse(response, run, request, queue, cancellation);
+      } else {
+        run.end();
+      }
     } catch (error) {
       log('API error: ' + error);
     }
@@ -437,6 +442,71 @@ function testingDone(
   }
   log('Testing done');
 }
+
+async function getUserRateLimit() {
+  try {
+    const response = await fetch(getERCxAPIUri() + 'user/rate-limit', {
+      method: 'GET',
+      headers: getERCxAPIHeader(),
+    });
+    if (response.status !== 200) {
+      throw new Error('Failed to fetch rate limit: ' + response.status);
+    }
+    const rateLimit: RateLimit = await response.json();
+    return rateLimit;
+  } catch (error) {
+    log('Failed to fetch rate limit: ' + error);
+    vscode.window.showErrorMessage(
+      'Failed to fetch rate limit. Please make sure you set a valid "ercx.apiKey" in the settings.',
+    );
+  }
+}
+
+/**
+ * @returns true if the user has remaining runs or unlimited runs, false if the user has no remaining runs or cancels the operation
+ */
+async function checkUserRateLimit(): Promise<boolean> {
+  const rateLimit = await getUserRateLimit();
+  log('Rate Limit: ' + JSON.stringify(rateLimit));
+  if (!rateLimit) {
+    return false;
+  }
+
+  if (rateLimit.evaluations.remaining === 0) {
+    if (rateLimit.evaluations.limit === 0) {
+      vscode.window.showErrorMessage(
+        'Please upgrade your account to run tests. https://ercx.runtimeverification.com/pricing',
+      );
+    } else {
+      vscode.window.showErrorMessage(
+        `You have reached the maximum number of runs for today. The rate limit will reset at ${new Date(rateLimit.evaluations.reset).toLocaleTimeString()}.`,
+      );
+    }
+    return false;
+  } else if (rateLimit.evaluations.remaining === -1) {
+    // Unlimited runs, so we don't need to check
+    return true;
+  } else {
+    const yesLabel = 'Yes';
+    const pick = await vscode.window.showQuickPick(
+      [
+        {
+          label: yesLabel,
+          description: 'Run tests',
+        },
+        {
+          label: 'No',
+          description: 'Cancel',
+        },
+      ],
+      {
+        placeHolder: `You have ${rateLimit.evaluations.remaining} runs remaining today. Continue?`,
+      },
+    );
+    return pick?.label === yesLabel;
+  }
+}
+
 async function pickStandard(
   controller: vscode.TestController,
   document: vscode.TextDocument,
@@ -454,6 +524,7 @@ async function pickStandard(
   );
   if (stdResponse) {
     log('Chose ' + stdResponse.label);
+
     addERCxPropertyTests(
       controller,
       document,
@@ -464,8 +535,11 @@ async function pickStandard(
   }
 }
 
-function getDocumentTestItemId(document: vscode.TextDocument) {
-  return `ERCx-${document.uri.fsPath}`;
+function getDocumentTestItemId(
+  document: vscode.TextDocument,
+  standard: TestSuiteStandard,
+) {
+  return `ERCx-${standard}-${document.uri.fsPath}`;
 }
 
 async function addERCxPropertyTests(
@@ -473,12 +547,14 @@ async function addERCxPropertyTests(
   document: vscode.TextDocument,
   range: vscode.Range,
   contractName: string,
-  standard: string,
+  standard: TestSuiteStandard,
 ) {
   // automatically focus on the Testing view after tests are generated
   vscode.commands.executeCommand('workbench.view.testing.focus');
 
-  const existing = controller.items.get(getDocumentTestItemId(document));
+  const existing = controller.items.get(
+    getDocumentTestItemId(document, standard),
+  );
   if (existing) {
     return { file: existing };
   }
@@ -517,13 +593,13 @@ async function addERCxPropertyTests2(
   document: vscode.TextDocument,
   range: vscode.Range,
   contractName: string,
-  standard: string,
+  standard: TestSuiteStandard,
 ) {
   const docTokens = await getSolidityTokenLoc(document);
   log('ERCx add ' + standard + ' tests for: ' + contractName);
 
   const ercxRoot = controller.createTestItem(
-    getDocumentTestItemId(document),
+    getDocumentTestItemId(document, standard),
     document.uri.path.split('/').pop()! + ' - ' + standard + ' Tests',
     document.uri,
   );

@@ -90,3 +90,11 @@ export interface Report {
     feedbacks: Feedback[];
   };
 }
+
+export type RateLimit = {
+  evaluations: {
+    limit: number;
+    remaining: number;
+    reset: string;
+  };
+};
